@@ -67,13 +67,13 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
             data-reveal
           >
             <header class="flex items-start justify-between gap-3">
-              <div class="space-y-2">
+              <div class="space-y-2 min-w-0">
                 <span class="tag-pill">{categoryLabels[c.category]}</span>
-                <h3 class="font-display text-[1.45rem] md:text-[1.6rem] leading-[1.05]">{c.title}</h3>
+                <h3 class="font-display text-[1.45rem] md:text-[1.6rem] leading-[1.05]" data-title>{c.title}</h3>
               </div>
               <div class="text-right shrink-0">
                 <div class="text-[0.7rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Vanaf</div>
-                <div class="font-display text-2xl tabular" data-price>€{c.price}</div>
+                <div class="font-display text-2xl tabular" data-price-display>€{c.price}</div>
               </div>
             </header>
 
@@ -129,7 +129,9 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
     </div>
 
     <p class="text-xs text-(--color-ink-soft) text-center max-w-xl mx-auto leading-relaxed" data-reveal>
-      Demo-notitie: boekingen worden alleen in deze browser onthouden via localStorage. In een productieversie loopt dit via een echte agenda (bv. Supabase of het bestaande boekingssysteem); de UI blijft hetzelfde.
+      Demo-notitie: boekingen worden lokaal opgeslagen via localStorage. Bekijk
+      <a href="/admin" class="underline underline-offset-2 hover:text-(--color-signal)">/admin</a>
+      om aan te passen wat de bezoeker hier ziet. In productie loopt dit via een echte agenda; de UI blijft hetzelfde.
     </p>
   </div>
 </section>
@@ -148,7 +150,7 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
 
     <div data-modal-form class="space-y-5">
       <header class="space-y-1">
-        <div class="eyebrow text-(--color-signal)">Reserveer plek</div>
+        <div class="eyebrow text-(--color-signal)" data-modal-eyebrow>Reserveer plek</div>
         <h3 id="booking-title" class="font-display text-2xl md:text-[1.7rem] leading-tight" data-modal-title>—</h3>
         <p class="text-sm text-(--color-ink-soft)" data-modal-sub>—</p>
       </header>
@@ -161,7 +163,8 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
         <div class="tabular font-display text-lg" data-modal-price>—</div>
       </div>
 
-      <form data-booking-form class="space-y-4">
+      <!-- Booking form -->
+      <form data-booking-form class="space-y-4" data-mode="book">
         <div class="grid grid-cols-2 gap-3">
           <label class="block">
             <span class="text-xs font-medium text-(--color-ink-soft) uppercase tracking-[0.12em]">Voornaam</span>
@@ -176,7 +179,7 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
           <span class="text-xs font-medium text-(--color-ink-soft) uppercase tracking-[0.12em]">E-mailadres</span>
           <input type="email" name="email" required class="mt-1 w-full px-3 py-2.5 rounded-lg border border-(--color-line) bg-(--color-sail) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition" />
         </label>
-        <label class="block">
+        <label class="block" data-seats-wrap>
           <span class="text-xs font-medium text-(--color-ink-soft) uppercase tracking-[0.12em]">Aantal plekken</span>
           <select name="seats" class="mt-1 w-full px-3 py-2.5 rounded-lg border border-(--color-line) bg-(--color-sail) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition">
             <option value="1">1 deelnemer</option>
@@ -185,22 +188,26 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
             <option value="4">4 deelnemers</option>
           </select>
         </label>
-        <button type="submit" class="btn-signal w-full justify-center">
-          Bevestig reservering
+        <label class="block" data-note-wrap hidden>
+          <span class="text-xs font-medium text-(--color-ink-soft) uppercase tracking-[0.12em]">Opmerking (optioneel)</span>
+          <textarea name="note" rows="2" class="mt-1 w-full px-3 py-2.5 rounded-lg border border-(--color-line) bg-(--color-sail) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition resize-none"></textarea>
+        </label>
+        <button type="submit" class="btn-signal w-full justify-center" data-submit-btn>
+          <span data-submit-label>Bevestig reservering</span>
           <Icon name="arrow-right" size={16} />
         </button>
-        <p class="text-[0.7rem] text-(--color-ink-soft) text-center">
+        <p class="text-[0.7rem] text-(--color-ink-soft) text-center" data-submit-note>
           Geen betaling vereist in de demo. Plek wordt direct vastgehouden.
         </p>
       </form>
     </div>
 
     <div data-modal-success hidden class="text-center space-y-4 py-4">
-      <div class="w-16 h-16 mx-auto rounded-full bg-(--color-ink) text-(--color-sail) grid place-items-center">
+      <div class="w-16 h-16 mx-auto rounded-full bg-(--color-ink) text-(--color-sail) grid place-items-center" data-success-icon-wrap>
         <Icon name="check" size={28} stroke={2.2} />
       </div>
-      <h3 class="font-display text-2xl">Reservering vastgelegd</h3>
-      <p class="text-sm text-(--color-ink-soft) max-w-sm mx-auto">
+      <h3 class="font-display text-2xl" data-success-title>Reservering vastgelegd</h3>
+      <p class="text-sm text-(--color-ink-soft) max-w-sm mx-auto" data-success-body>
         We hebben je plek vastgehouden voor <strong data-success-course>—</strong>. In een productieversie krijg je nu direct een bevestigingsmail met betaallink.
       </p>
       <button type="button" data-modal-close class="btn-primary mx-auto">
@@ -212,18 +219,42 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
 </div>
 
 <script>
-  type Booking = { courseId: string; seats: number };
+  type Booking = { courseId: string; seats: number; ts?: number };
+  type WaitlistEntry = { courseId: string; ts: number };
+  type CourseOverride = {
+    capacity?: number;
+    preBooked?: number;
+    price?: number;
+    title?: string;
+    closed?: boolean;
+  };
+  type OverridesMap = Record<string, CourseOverride>;
+
   const STORAGE_KEY = "vg-bookings-v1";
+  const WAITLIST_KEY = "vg-waitlist-v1";
+  const OVERRIDES_KEY = "vg-course-overrides-v1";
 
   const readBookings = (): Booking[] => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       return raw ? (JSON.parse(raw) as Booking[]) : [];
-    } catch {
-      return [];
-    }
+    } catch { return []; }
   };
   const writeBookings = (b: Booking[]) => localStorage.setItem(STORAGE_KEY, JSON.stringify(b));
+  const readWaitlist = (): WaitlistEntry[] => {
+    try {
+      const raw = localStorage.getItem(WAITLIST_KEY);
+      return raw ? (JSON.parse(raw) as WaitlistEntry[]) : [];
+    } catch { return []; }
+  };
+  const writeWaitlist = (w: WaitlistEntry[]) => localStorage.setItem(WAITLIST_KEY, JSON.stringify(w));
+  const readOverrides = (): OverridesMap => {
+    try {
+      const raw = localStorage.getItem(OVERRIDES_KEY);
+      return raw ? (JSON.parse(raw) as OverridesMap) : {};
+    } catch { return {}; }
+  };
+
   const seatsForCourse = (id: string): number =>
     readBookings().filter((b) => b.courseId === id).reduce((acc, b) => acc + b.seats, 0);
 
@@ -231,13 +262,62 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
   const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-course-card]"));
   const remainingTotalEl = document.querySelector<HTMLElement>("[data-stat-remaining]");
 
+  // Apply admin overrides to dataset + visible content. Runs once on init and after admin changes.
+  const applyOverrides = () => {
+    const overrides = readOverrides();
+    cards.forEach((card) => {
+      const id = card.dataset.courseId!;
+      const ov = overrides[id] ?? {};
+
+      if (ov.capacity !== undefined) card.dataset.capacity = String(ov.capacity);
+      if (ov.preBooked !== undefined) card.dataset.preBooked = String(ov.preBooked);
+      if (ov.price !== undefined) {
+        card.dataset.price = String(ov.price);
+        const priceEl = card.querySelector<HTMLElement>("[data-price-display]");
+        if (priceEl) priceEl.textContent = `€${ov.price}`;
+      }
+      if (ov.title !== undefined) {
+        const titleEl = card.querySelector<HTMLElement>("[data-title]");
+        if (titleEl) titleEl.textContent = ov.title;
+      }
+      card.dataset.closed = ov.closed ? "1" : "";
+      card.classList.toggle("is-closed", !!ov.closed);
+    });
+  };
+
+  // Count-up tween for the big stats number.
+  let currentStatValue: number | null = null;
+  const animateStat = (target: number) => {
+    if (!remainingTotalEl) return;
+    if (currentStatValue === null) {
+      remainingTotalEl.textContent = String(target);
+      currentStatValue = target;
+      return;
+    }
+    const start = currentStatValue;
+    const delta = target - start;
+    if (delta === 0) return;
+    const duration = 600;
+    const startTs = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - startTs) / duration);
+      const eased = 1 - Math.pow(1 - t, 4);
+      const val = Math.round(start + delta * eased);
+      remainingTotalEl.textContent = String(val);
+      if (t < 1) requestAnimationFrame(step);
+      else currentStatValue = target;
+    };
+    requestAnimationFrame(step);
+  };
+
   const renderCard = (card: HTMLElement) => {
     const id = card.dataset.courseId!;
     const capacity = Number(card.dataset.capacity);
     const preBooked = Number(card.dataset.preBooked);
+    const closed = card.dataset.closed === "1";
     const userBooked = seatsForCourse(id);
     const taken = preBooked + userBooked;
-    const remaining = Math.max(0, capacity - taken);
+    const remaining = closed ? 0 : Math.max(0, capacity - taken);
     const pct = Math.min(100, Math.round((taken / capacity) * 100));
 
     const fill = card.querySelector<HTMLElement>("[data-avail-fill]")!;
@@ -248,32 +328,37 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
     const bookLabel = card.querySelector<HTMLElement>("[data-book-label]")!;
     const trigger = card.querySelector<HTMLButtonElement>("[data-book-trigger]")!;
 
-    fill.style.width = `${pct}%`;
-    bar.classList.toggle("is-low", remaining > 0 && remaining <= 3);
-    bar.classList.toggle("is-full", remaining === 0);
-    dot.className = "status-dot " + (remaining === 0 ? "status-dot--full" : remaining <= 3 ? "status-dot--low" : "status-dot--ok");
-    count.textContent = `${remaining} / ${capacity}`;
+    fill.style.width = `${closed ? 100 : pct}%`;
+    bar.classList.toggle("is-low", !closed && remaining > 0 && remaining <= 3);
+    bar.classList.toggle("is-full", closed || remaining === 0);
+    dot.className = "status-dot " + (closed || remaining === 0 ? "status-dot--full" : remaining <= 3 ? "status-dot--low" : "status-dot--ok");
+    count.textContent = closed ? "gesloten" : `${remaining} / ${capacity}`;
 
-    if (remaining === 0) {
+    if (closed) {
+      label.textContent = "Tijdelijk gesloten";
+      bookLabel.textContent = "Op de wachtlijst";
+      trigger.dataset.mode = "waitlist";
+      trigger.classList.add("opacity-90");
+    } else if (remaining === 0) {
       label.textContent = "Volgeboekt";
       bookLabel.textContent = "Op de wachtlijst";
-      trigger.classList.add("opacity-70");
-      trigger.dataset.full = "1";
+      trigger.dataset.mode = "waitlist";
+      trigger.classList.add("opacity-90");
     } else if (remaining === 1) {
-      label.textContent = `Nog 1 plek vrij`;
+      label.textContent = "Nog 1 plek vrij";
       bookLabel.textContent = "Reserveer plek";
-      trigger.classList.remove("opacity-70");
-      delete trigger.dataset.full;
+      trigger.dataset.mode = "book";
+      trigger.classList.remove("opacity-90");
     } else if (remaining <= 3) {
       label.textContent = `Bijna vol, nog ${remaining}`;
       bookLabel.textContent = "Reserveer plek";
-      trigger.classList.remove("opacity-70");
-      delete trigger.dataset.full;
+      trigger.dataset.mode = "book";
+      trigger.classList.remove("opacity-90");
     } else {
       label.textContent = `Plek voor ${remaining} van ${capacity}`;
       bookLabel.textContent = "Reserveer plek";
-      trigger.classList.remove("opacity-70");
-      delete trigger.dataset.full;
+      trigger.dataset.mode = "book";
+      trigger.classList.remove("opacity-90");
     }
   };
 
@@ -281,15 +366,29 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
     cards.forEach(renderCard);
     if (remainingTotalEl) {
       const total = cards.reduce((acc, card) => {
+        if (card.dataset.closed === "1") return acc;
         const cap = Number(card.dataset.capacity);
         const pre = Number(card.dataset.preBooked);
         const id = card.dataset.courseId!;
         return acc + Math.max(0, cap - pre - seatsForCourse(id));
       }, 0);
-      remainingTotalEl.textContent = String(total);
+      animateStat(total);
     }
   };
+  applyOverrides();
   renderAll();
+
+  // Pick up admin changes from other tabs and same-tab admin changes.
+  window.addEventListener("storage", (e) => {
+    if (e.key === OVERRIDES_KEY || e.key === STORAGE_KEY) {
+      applyOverrides();
+      renderAll();
+    }
+  });
+  window.addEventListener("vg-overrides-changed", () => {
+    applyOverrides();
+    renderAll();
+  });
 
   // Filters
   const filterBtns = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter]"));
@@ -320,6 +419,7 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
 
   // Modal
   const modal = document.querySelector<HTMLElement>("[data-modal]")!;
+  const modalEyebrow = modal.querySelector<HTMLElement>("[data-modal-eyebrow]")!;
   const modalTitle = modal.querySelector<HTMLElement>("[data-modal-title]")!;
   const modalSub = modal.querySelector<HTMLElement>("[data-modal-sub]")!;
   const modalAvail = modal.querySelector<HTMLElement>("[data-modal-avail]")!;
@@ -328,8 +428,15 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
   const formWrap = modal.querySelector<HTMLElement>("[data-modal-form]")!;
   const successWrap = modal.querySelector<HTMLElement>("[data-modal-success]")!;
   const successCourse = modal.querySelector<HTMLElement>("[data-success-course]")!;
+  const successTitle = modal.querySelector<HTMLElement>("[data-success-title]")!;
+  const successBody = modal.querySelector<HTMLElement>("[data-success-body]")!;
   const seatsSelect = modalForm.querySelector<HTMLSelectElement>("[name=seats]")!;
+  const seatsWrap = modalForm.querySelector<HTMLElement>("[data-seats-wrap]")!;
+  const noteWrap = modalForm.querySelector<HTMLElement>("[data-note-wrap]")!;
+  const submitLabel = modalForm.querySelector<HTMLElement>("[data-submit-label]")!;
+  const submitNote = modalForm.querySelector<HTMLElement>("[data-submit-note]")!;
   let activeCourseId: string | null = null;
+  let activeMode: "book" | "waitlist" = "book";
 
   const closeModal = () => {
     modal.classList.remove("is-open");
@@ -352,52 +459,87 @@ const filters: { key: "all" | CourseCategory; label: string }[] = [
     if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal();
   });
 
-  cards.forEach((card) => {
-    const trigger = card.querySelector<HTMLButtonElement>("[data-book-trigger]")!;
-    trigger.addEventListener("click", () => {
-      const id = card.dataset.courseId!;
-      const capacity = Number(card.dataset.capacity);
-      const preBooked = Number(card.dataset.preBooked);
-      const remaining = Math.max(0, capacity - preBooked - seatsForCourse(id));
-      const title = card.querySelector("h3")?.textContent ?? "";
-      const periode = card.querySelector("dd")?.textContent ?? "";
-      const price = Number(card.dataset.price);
+  const openModalFor = (card: HTMLElement, mode: "book" | "waitlist") => {
+    const id = card.dataset.courseId!;
+    const capacity = Number(card.dataset.capacity);
+    const preBooked = Number(card.dataset.preBooked);
+    const closed = card.dataset.closed === "1";
+    const remaining = closed ? 0 : Math.max(0, capacity - preBooked - seatsForCourse(id));
+    const title = card.querySelector<HTMLElement>("[data-title]")?.textContent ?? "";
+    const periode = card.querySelector("dd")?.textContent ?? "";
+    const price = Number(card.dataset.price);
 
-      activeCourseId = id;
-      modalTitle.textContent = title;
-      modalSub.textContent = `${periode} · ${card.querySelectorAll("dd")[2]?.textContent ?? ""}`;
-      modalAvail.textContent = remaining > 0 ? `${remaining} van ${capacity} plekken vrij` : "Wachtlijst, alle plekken vol";
-      modalPrice.textContent = `€${price}`;
+    activeCourseId = id;
+    activeMode = mode;
+    modalForm.dataset.mode = mode;
 
-      // Limit seats select to remaining
+    modalTitle.textContent = title;
+    modalSub.textContent = `${periode} · ${card.querySelectorAll("dd")[2]?.textContent ?? ""}`;
+    modalPrice.textContent = `€${price}`;
+
+    if (mode === "waitlist") {
+      modalEyebrow.textContent = closed ? "Wachtlijst (tijdelijk gesloten)" : "Wachtlijst";
+      modalAvail.textContent = closed ? "Deze week is tijdelijk gesloten" : "Volgeboekt, kom op de wachtlijst";
+      seatsWrap.hidden = true;
+      noteWrap.hidden = false;
+      submitLabel.textContent = "Schrijf me in op de wachtlijst";
+      submitNote.textContent = "Je hoort het binnen 24u als er een plek vrijkomt.";
+    } else {
+      modalEyebrow.textContent = "Reserveer plek";
+      modalAvail.textContent = `${remaining} van ${capacity} plekken vrij`;
+      seatsWrap.hidden = false;
+      noteWrap.hidden = true;
+      submitLabel.textContent = "Bevestig reservering";
+      submitNote.textContent = "Geen betaling vereist in de demo. Plek wordt direct vastgehouden.";
+
       Array.from(seatsSelect.options).forEach((opt) => {
         const need = Number(opt.value);
-        opt.disabled = remaining === 0 || need > remaining;
+        opt.disabled = need > remaining;
       });
       const firstAvail = Array.from(seatsSelect.options).find((o) => !o.disabled);
       if (firstAvail) seatsSelect.value = firstAvail.value;
+    }
 
-      modal.hidden = false;
-      requestAnimationFrame(() => modal.classList.add("is-open"));
-      document.body.style.overflow = "hidden";
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add("is-open"));
+    document.body.style.overflow = "hidden";
+  };
+
+  cards.forEach((card) => {
+    const trigger = card.querySelector<HTMLButtonElement>("[data-book-trigger]")!;
+    trigger.addEventListener("click", () => {
+      const mode = (trigger.dataset.mode as "book" | "waitlist") ?? "book";
+      openModalFor(card, mode);
     });
   });
 
   modalForm.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!activeCourseId) return;
-    const data = new FormData(modalForm);
-    const seats = Number(data.get("seats") ?? "1");
-    const bookings = readBookings();
-    bookings.push({ courseId: activeCourseId, seats });
-    writeBookings(bookings);
-    renderAll();
-
     const card = cards.find((c) => c.dataset.courseId === activeCourseId);
-    successCourse.textContent = card?.querySelector("h3")?.textContent ?? "deze cursus";
+    const courseLabel = card?.querySelector<HTMLElement>("[data-title]")?.textContent ?? "deze cursus";
+
+    if (activeMode === "waitlist") {
+      const list = readWaitlist();
+      list.push({ courseId: activeCourseId, ts: Date.now() });
+      writeWaitlist(list);
+      successTitle.textContent = "Op de wachtlijst gezet";
+      successBody.innerHTML = `Je staat op de wachtlijst voor <strong>${courseLabel}</strong>. Zodra er een plek vrijkomt sturen we een mail; eerst aanmelden, eerst aan de beurt.`;
+      showToast("Op de wachtlijst gezet");
+    } else {
+      const data = new FormData(modalForm);
+      const seats = Number(data.get("seats") ?? "1");
+      const bookings = readBookings();
+      bookings.push({ courseId: activeCourseId, seats, ts: Date.now() });
+      writeBookings(bookings);
+      successTitle.textContent = "Reservering vastgelegd";
+      successBody.innerHTML = `We hebben je plek vastgehouden voor <strong>${courseLabel}</strong>. In een productieversie krijg je nu direct een bevestigingsmail met betaallink.`;
+      showToast(`Plek vastgehouden voor ${seats} ${seats === 1 ? "deelnemer" : "deelnemers"}`);
+      window.dispatchEvent(new CustomEvent("vg-booking-made", { detail: { courseId: activeCourseId, seats, courseLabel } }));
+    }
+    renderAll();
     formWrap.hidden = true;
     successWrap.hidden = false;
-    showToast(`Plek vastgehouden voor ${seats} ${seats === 1 ? "deelnemer" : "deelnemers"}`);
   });
 
   // Toast

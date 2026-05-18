@@ -7,32 +7,40 @@ const fleet = [
     desc: "Klassieke houten kielboot voor twee. Goed bestuurbaar, vergevingsgezind, en met een mooie lange historie.",
     persons: "2 – 4",
     price: "€ 95 / dag",
-    sailIcon: "M50 12 V62 L18 62 Z",
+    photo: null,
+    placeholderPath: "M12 60 L48 22 L84 60 Z",
     accent: "var(--color-tide)",
+    placeholder: true,
   },
   {
     name: "Laser Pico",
     desc: "Lichte open jol voor één of twee zeilers. Snel reageert, doe wat de wind doet.",
     persons: "1 – 2",
     price: "€ 65 / dag",
-    sailIcon: "M48 14 V60 L20 60 Z",
+    photo: "/photos/slider-laser.jpg",
+    photoPosition: "75% center",
     accent: "var(--color-signal)",
+    placeholder: false,
   },
   {
     name: "Optimist",
     desc: "Het standaardschip voor de jongste zeilers. Met een Optimist begint elke Nederlandse zeil-CV.",
     persons: "1",
     price: "€ 45 / dag",
-    sailIcon: "M46 18 V58 L22 58 Z",
+    photo: "/photos/slider-kids.jpg",
+    photoPosition: "65% center",
     accent: "var(--color-rope)",
+    placeholder: false,
   },
   {
-    name: "Sloep (electrisch)",
+    name: "Sloep (elektrisch)",
     desc: "Voor wie het water op wil zonder zeilkennis: een rustige rondvaart-sloep met elektrische motor.",
     persons: "tot 7",
     price: "€ 175 / dag",
-    sailIcon: "M22 50 H50 V58 H22 Z",
+    photo: null,
+    placeholderPath: "M14 56 H82 Q86 56 86 60 L78 70 H18 L10 60 Q10 56 14 56 Z M48 32 V56 M22 56 V36",
     accent: "var(--color-foam)",
+    placeholder: true,
   },
 ];
 ---
@@ -58,30 +66,48 @@ const fleet = [
 
   <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
     {fleet.map((boat) => (
-      <article class="group surface-paper rounded-(--radius-card) p-6 flex flex-col gap-4 hover:border-(--color-ink) hover:-translate-y-1 transition-all duration-500" data-reveal>
-        <div class="aspect-square rounded-xl bg-(--color-ink) text-(--color-sail) grid place-items-center relative overflow-hidden">
-          <svg viewBox="0 0 72 72" class="w-3/4 h-3/4 sail-icon" aria-hidden="true">
-            <path d={boat.sailIcon} fill="var(--color-sail)" opacity="0.95"/>
-            <path d="M22 60 Q36 56 50 60 V62 H22 Z" fill={boat.accent}/>
-          </svg>
-          <div class="absolute inset-0 opacity-30" style="background: radial-gradient(80% 60% at 50% 100%, rgba(189, 211, 214, 0.5), transparent 70%);"></div>
+      <article class="group surface-paper rounded-(--radius-card) overflow-hidden flex flex-col hover:border-(--color-ink) hover:-translate-y-1 transition-all duration-500" data-reveal>
+        <div class="relative aspect-[4/3] overflow-hidden">
+          {boat.photo ? (
+            <img
+              src={boat.photo}
+              alt={`${boat.name} op het Veerse Meer`}
+              loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
+              style={`object-position: ${boat.photoPosition};`}
+            />
+          ) : (
+            <div class="absolute inset-0" style={`background: linear-gradient(135deg, ${boat.accent} 0%, var(--color-deep) 100%);`}>
+              <svg viewBox="0 0 96 80" class="absolute inset-0 w-full h-full" aria-hidden="true">
+                <path d="M0 60 Q24 56 48 60 T96 60 V80 H0 Z" fill="var(--color-foam)" opacity="0.4"/>
+                <path d="M0 66 Q24 62 48 66 T96 66 V80 H0 Z" fill="var(--color-foam)" opacity="0.5"/>
+                <path d={boat.placeholderPath} fill="var(--color-sail)" opacity="0.95"/>
+              </svg>
+            </div>
+          )}
+          <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, rgba(10,30,51,0) 60%, rgba(10,30,51,0.6) 100%);"></div>
+          <div class="absolute top-3 left-3 flex items-center gap-2">
+            <span class="chip bg-(--color-sail)/95 text-(--color-ink) backdrop-blur text-[0.66rem]">
+              <Icon name="users" size={11} /> {boat.persons}
+            </span>
+            {boat.placeholder && (
+              <span class="chip bg-(--color-ink)/85 text-(--color-foam) backdrop-blur text-[0.6rem]">
+                Voorbeeldbeeld
+              </span>
+            )}
+          </div>
+          <h3 class="absolute bottom-3 left-4 right-4 font-display text-2xl text-(--color-sail) leading-none">{boat.name}</h3>
         </div>
 
-        <header class="flex items-start justify-between gap-2">
-          <h3 class="font-display text-xl">{boat.name}</h3>
-          <span class="chip bg-(--color-sand)/40 text-(--color-ink-soft) text-[0.66rem]">
-            <Icon name="users" size={12} /> {boat.persons}
-          </span>
-        </header>
-
-        <p class="text-sm text-(--color-ink-soft) leading-relaxed">{boat.desc}</p>
-
-        <div class="mt-auto pt-4 border-t border-(--color-line) flex items-center justify-between">
-          <span class="font-display text-lg tabular">{boat.price}</span>
-          <a href="#contact" class="text-xs font-medium text-(--color-ink) hover:text-(--color-signal) flex items-center gap-1 transition-colors">
-            Huur aanvragen
-            <Icon name="arrow-up-right" size={12} />
-          </a>
+        <div class="p-5 md:p-6 flex flex-col gap-3 flex-1">
+          <p class="text-sm text-(--color-ink-soft) leading-relaxed">{boat.desc}</p>
+          <div class="mt-auto pt-4 border-t border-(--color-line) flex items-center justify-between">
+            <span class="font-display text-lg tabular">{boat.price}</span>
+            <a href="#contact" class="text-xs font-medium text-(--color-ink) hover:text-(--color-signal) flex items-center gap-1 transition-colors">
+              Huur aanvragen
+              <Icon name="arrow-up-right" size={12} />
+            </a>
+          </div>
         </div>
       </article>
     ))}

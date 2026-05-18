@@ -60,20 +60,44 @@ const pillars = [
 
       <!-- Quote / portret met foto -->
       <article class="rounded-(--radius-card) bg-(--color-ink) text-(--color-sail) relative overflow-hidden grid md:grid-cols-5" data-reveal>
-        <div class="md:col-span-2 relative aspect-[4/3] md:aspect-auto">
+        <div class="md:col-span-2 relative aspect-[4/3] md:aspect-auto md:min-h-[320px]">
           <img src="/photos/herfstweek.jpg" alt="Cursisten in een Bahia op het Veerse Meer" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[right_center]" />
-          <div class="absolute inset-0 md:bg-gradient-to-r md:from-transparent md:to-(--color-ink)/70" aria-hidden="true"></div>
+          <div class="absolute inset-0 md:bg-gradient-to-r md:from-transparent md:to-(--color-ink)/70 bg-gradient-to-t from-(--color-ink)/80 to-transparent" aria-hidden="true"></div>
+          <div class="absolute bottom-3 left-3 right-3 md:hidden flex flex-wrap gap-1.5">
+            <span class="chip bg-(--color-sail)/95 text-(--color-ink) text-[0.6rem]">CWO Instructeur III</span>
+          </div>
         </div>
-        <div class="md:col-span-3 p-7 md:p-9 relative">
+        <div class="md:col-span-3 p-7 md:p-9 relative flex flex-col">
           <div class="eyebrow text-(--color-signal)">Hoofdinstructeur</div>
-          <blockquote class="font-display italic text-2xl md:text-3xl leading-[1.15] mt-3">
-            "Zeilen leren is niet een trucje. Het is leren omgaan met iets dat je niet onder controle hebt. Dat duurt langer dan een week, maar we beginnen hier."
+          <svg viewBox="0 0 36 36" class="w-7 h-7 text-(--color-signal)/30 mt-4" aria-hidden="true">
+            <path d="M11 8 C6 8 4 12 4 16 C4 20 7 23 11 23 V18 H8 V16 C8 13 9 11 12 11 Z M27 8 C22 8 20 12 20 16 C20 20 23 23 27 23 V18 H24 V16 C24 13 25 11 28 11 Z" fill="currentColor"/>
+          </svg>
+          <blockquote class="font-display italic text-2xl md:text-3xl leading-[1.15] mt-3 flex-1">
+            Zeilen leren is niet een trucje. Het is leren omgaan met iets dat je niet onder controle hebt. Dat duurt langer dan een week, maar we beginnen hier.
           </blockquote>
-          <div class="mt-5 flex items-center gap-3 text-sm text-(--color-foam)">
-            <div class="w-9 h-9 rounded-full bg-(--color-foam)/15 grid place-items-center font-display text-sm">JK</div>
-            <div>
-              <div class="text-(--color-sail)">Jan-Kees de Looff</div>
-              <div class="text-[0.78rem] text-(--color-foam)/70">Sinds 1998 op het Veerse Meer</div>
+          <div class="mt-6 pt-5 border-t border-(--color-foam)/15 flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-(--color-foam)/20 to-(--color-foam)/5 grid place-items-center shrink-0 ring-1 ring-(--color-foam)/15 overflow-hidden">
+              <svg viewBox="0 0 48 48" class="w-full h-full" aria-hidden="true">
+                <defs>
+                  <linearGradient id="instr-bg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#1F5B82"/>
+                    <stop offset="1" stop-color="#0A1E33"/>
+                  </linearGradient>
+                </defs>
+                <rect width="48" height="48" fill="url(#instr-bg)"/>
+                <circle cx="24" cy="19" r="7" fill="#E8DCC1"/>
+                <path d="M24 28 C16 28 11 33 10 42 H38 C37 33 32 28 24 28 Z" fill="#E8DCC1"/>
+                <path d="M12 14 Q24 6 36 14 V18 Q24 14 12 18 Z" fill="#0A1E33"/>
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="text-(--color-sail) font-medium">Jan-Kees de Looff</div>
+              <div class="text-[0.78rem] text-(--color-foam)/70">Sinds 1998 op het Veerse Meer, CWO Instructeur III</div>
+              <div class="hidden md:flex flex-wrap gap-1.5 mt-2.5">
+                <span class="chip border border-(--color-foam)/25 text-(--color-foam) text-[0.6rem]">CWO Instructeur III</span>
+                <span class="chip border border-(--color-foam)/25 text-(--color-foam) text-[0.6rem]">Reddingsdiploma A</span>
+                <span class="chip border border-(--color-foam)/25 text-(--color-foam) text-[0.6rem]">VHF-marifoon</span>
+              </div>
             </div>
           </div>
         </div>

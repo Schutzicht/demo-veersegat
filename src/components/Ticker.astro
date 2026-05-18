@@ -1,0 +1,167 @@
+---
+// Fictieve maar realistische "boekingen" voor de social-proof ticker.
+// Doel: bezoeker ziet activiteit op het systeem. Bij echte boekingen
+// (uit de Cursussen-modal) worden die direct vooraan in de queue gezet.
+---
+
+<div data-ticker class="ticker" aria-live="polite" hidden>
+  <div class="ticker__icon" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6 9 17l-5-5"/>
+    </svg>
+  </div>
+  <div class="ticker__body min-w-0">
+    <div class="ticker__line truncate" data-ticker-line>—</div>
+    <div class="ticker__when" data-ticker-when>—</div>
+  </div>
+  <button type="button" data-ticker-dismiss aria-label="Verberg meldingen" class="ticker__close">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m6 6 12 12"/><path d="m18 6-12 12"/>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .ticker {
+    position: fixed;
+    z-index: 45;
+    left: 1rem;
+    bottom: 1rem;
+    max-width: calc(100vw - 2rem);
+    width: 20rem;
+    background: var(--color-ink);
+    color: var(--color-sail);
+    border: 1px solid color-mix(in oklab, var(--color-sail) 12%, transparent);
+    border-radius: 14px;
+    padding: 0.7rem 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.82rem;
+    box-shadow: 0 22px 40px -24px rgba(10, 30, 51, 0.55);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.4s var(--ease-out-quart), transform 0.4s var(--ease-out-quart);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .ticker.is-visible { opacity: 1; transform: translateY(0); }
+  .ticker__icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--color-signal) 100%, transparent);
+    color: var(--color-sail);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .ticker__body { flex: 1; min-width: 0; }
+  .ticker__line { font-weight: 500; line-height: 1.25; }
+  .ticker__when {
+    font-size: 0.68rem;
+    color: rgba(246, 240, 226, 0.55);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .ticker__close {
+    background: transparent;
+    border: none;
+    color: rgba(246, 240, 226, 0.45);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+  .ticker__close:hover { color: var(--color-sail); }
+  @media (min-width: 768px) {
+    .ticker { left: 1.5rem; bottom: 1.5rem; }
+  }
+</style>
+
+<script>
+  type FakeBooking = { name: string; place: string; seats: number; course: string; ago: number };
+
+  // Plausibele Zeeuwse namen + plaatsen. Bewust niet "te Engels".
+  const namen = ["Marije", "Sem", "Lieke", "Tim", "Floor", "Bas", "Anouk", "Ruben", "Jasmijn", "Daan", "Eva", "Niels", "Roos", "Stijn", "Maartje"];
+  const plaatsen = ["Goes", "Middelburg", "Vlissingen", "Zierikzee", "Veere", "Domburg", "Renesse", "Yerseke", "Tholen", "Westkapelle", "Burgh-Haamstede", "Sint-Maartensdijk"];
+  const cursussen = ["Optimist jeugdweek 29", "Valk volwassenenweek 31", "Weekendcursus Valk", "Bahia jeugdweek 30", "Herfstweek allround", "OptiFun jeugdweek 28"];
+
+  const fakeBookings: FakeBooking[] = Array.from({ length: 10 }).map(() => ({
+    name: namen[Math.floor(Math.random() * namen.length)],
+    place: plaatsen[Math.floor(Math.random() * plaatsen.length)],
+    seats: 1 + Math.floor(Math.random() * 3),
+    course: cursussen[Math.floor(Math.random() * cursussen.length)],
+    ago: 2 + Math.floor(Math.random() * 50),
+  })).sort((a, b) => a.ago - b.ago);
+
+  const ticker = document.querySelector<HTMLElement>("[data-ticker]");
+  const line = document.querySelector<HTMLElement>("[data-ticker-line]");
+  const when = document.querySelector<HTMLElement>("[data-ticker-when]");
+  const dismiss = document.querySelector<HTMLButtonElement>("[data-ticker-dismiss]");
+
+  if (!ticker || !line || !when || !dismiss) {
+    // missing, abort
+  } else {
+    const DISMISS_KEY = "vg-ticker-dismissed";
+    const sessionDismissed = sessionStorage.getItem(DISMISS_KEY) === "1";
+    let cursor = 0;
+    let queue: { line: string; when: string }[] = fakeBookings.map((b) => ({
+      line: `${b.name} uit ${b.place} boekte ${b.seats} ${b.seats === 1 ? "plek" : "plekken"} voor ${b.course}`,
+      when: `${b.ago} minuten geleden`,
+    }));
+    let realCount = 0;
+
+    const setMessage = (msg: { line: string; when: string }) => {
+      line.textContent = msg.line;
+      when.textContent = msg.when;
+    };
+
+    const rotate = () => {
+      if (!queue.length) return;
+      setMessage(queue[cursor % queue.length]);
+      cursor++;
+    };
+
+    const show = () => {
+      if (sessionDismissed) return;
+      ticker.hidden = false;
+      requestAnimationFrame(() => ticker.classList.add("is-visible"));
+    };
+    const hide = () => {
+      ticker.classList.remove("is-visible");
+      setTimeout(() => { ticker.hidden = true; }, 400);
+    };
+
+    dismiss.addEventListener("click", () => {
+      sessionStorage.setItem(DISMISS_KEY, "1");
+      hide();
+    });
+
+    // Eerste melding verschijnt pas na de intro-splash, lekker subtiel.
+    setTimeout(() => {
+      rotate();
+      show();
+    }, 4200);
+
+    setInterval(() => {
+      if (ticker.hidden) return;
+      rotate();
+    }, 7000);
+
+    // Echte boekingen vooraan in de queue zetten.
+    window.addEventListener("vg-booking-made", ((e: Event) => {
+      const detail = (e as CustomEvent).detail as { courseId: string; seats: number; courseLabel: string };
+      realCount++;
+      const msg = {
+        line: `Iemand boekte zojuist ${detail.seats} ${detail.seats === 1 ? "plek" : "plekken"} voor ${detail.courseLabel}`,
+        when: "zojuist",
+      };
+      queue.unshift(msg);
+      cursor = 0;
+      setMessage(msg);
+      show();
+    }) as EventListener);
+  }
+</script>

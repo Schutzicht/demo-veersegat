@@ -1,0 +1,83 @@
+---
+import Icon from "./Icon.astro";
+
+const faqs = [
+  {
+    q: "Vanaf welke leeftijd kan mijn kind meedoen?",
+    a: "We beginnen bij vijf jaar in onze OptiFun-week, zolang het kind comfortabel het water in durft en kan zwemmen. Vanaf zes jaar varen we met de echte Optimisten.",
+  },
+  {
+    q: "Moet mijn kind kunnen zwemmen?",
+    a: "Ja. Zwemdiploma A is verplicht voor alle deelnemers. Reddingsvesten zijn op het water altijd verplicht; die krijg je van ons in bruikleen.",
+  },
+  {
+    q: "Wat als het regent of waait?",
+    a: "Lichte regen varen we gewoon door. Bij onweer of windkracht 6+ blijven we aan wal en doen we theorie, knopen leren of een rondje Veere. Volgeboekte lesdagen worden niet ingehaald; bij meer dan twee aaneengesloten weersdagen kijken we naar een passende oplossing.",
+  },
+  {
+    q: "Hoe zit het met annuleren?",
+    a: "Tot vier weken voor aanvang gratis annuleren. Tussen vier en twee weken: 50% retour. Daarna geldt het volledige bedrag, tenzij je een vervanger aanlevert (dat mag).",
+  },
+  {
+    q: "Kan ik tussentijds van cursus wisselen?",
+    a: "In overleg, ja. Als er plek is in een andere week verschuiven we kosteloos. Bel even, dan regelen we het.",
+  },
+  {
+    q: "Hebben jullie een eigen kantine of moet ik lunch meenemen?",
+    a: "Er is een lunchhoek op het terrein, geen volwaardige kantine. Een lunchpakket meegeven is het handigst. Koffie, thee en koek krijg je van ons.",
+  },
+  {
+    q: "Mag ik blijven kijken vanaf de wal?",
+    a: "Graag zelfs. Op vrijdagmiddag is er een korte demo voor familie, en de uitslagen van de week worden hardop voorgelezen.",
+  },
+  {
+    q: "Verhuren jullie ook aan mensen zonder diploma?",
+    a: "Voor de zeilboten niet. Voor de elektrische sloep wel, mits je 18+ bent en een korte instructie hebt gehad.",
+  },
+];
+---
+
+<section id="faq" class="container-vg py-16 md:py-28 scroll-mt-20">
+  <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+    <header class="lg:col-span-4 space-y-4 lg:sticky lg:top-24" data-reveal>
+      <div class="eyebrow">Veelgestelde vragen</div>
+      <h2 class="font-display text-[clamp(1.85rem,5.2vw,3.6rem)] leading-[1.02]">
+        Voor je <span class="italic">belt</span>, lees dit even.
+      </h2>
+      <p class="text-(--color-ink-soft) max-w-md leading-relaxed">
+        De vragen die we het vaakst aan de telefoon krijgen, alvast op een rij. Staat het er niet bij, bel of mail gerust.
+      </p>
+      <div class="flex flex-wrap items-center gap-3 pt-2">
+        <a href="tel:+31118501398" class="btn-ghost text-xs">
+          <Icon name="phone" size={14} />
+          0118 - 501 398
+        </a>
+        <a href="mailto:info@veersegat.nl" class="link-arrow text-xs">
+          Stuur een mail
+          <Icon name="arrow-right" size={12} />
+        </a>
+      </div>
+    </header>
+
+    <div class="lg:col-span-8 divide-y divide-(--color-line)" data-reveal>
+      {faqs.map((item, i) => (
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-start justify-between gap-4 cursor-pointer list-none">
+            <div class="flex items-baseline gap-3 md:gap-4">
+              <span class="text-xs tabular text-(--color-ink-soft) mt-0.5 shrink-0">{String(i + 1).padStart(2, "0")}</span>
+              <span class="font-display text-lg md:text-xl leading-snug">{item.q}</span>
+            </div>
+            <span class="w-8 h-8 md:w-9 md:h-9 rounded-full border border-(--color-line) grid place-items-center text-(--color-ink-soft) shrink-0 transition-all duration-300 group-open:rotate-45 group-open:bg-(--color-ink) group-open:border-(--color-ink) group-open:text-(--color-sail)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M12 5v14"/><path d="M5 12h14"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="pt-3 pl-7 md:pl-10 pr-12 text-(--color-ink-soft) leading-relaxed text-[0.95rem]">
+            {item.a}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

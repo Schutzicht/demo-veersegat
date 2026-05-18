@@ -1,0 +1,516 @@
+---
+import "../styles/global.css";
+import Icon from "../components/Icon.astro";
+import { courses, categoryLabels, formatDateRange } from "../data/courses.ts";
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0A1E33" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,30..100;1,9..144,300..700,30..100&family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <title>Beheer · Zeilschool Het Veerse Gat</title>
+  </head>
+  <body class="bg-(--color-sail-2) min-h-screen">
+    <!-- Top bar -->
+    <header class="bg-(--color-ink) text-(--color-sail) sticky top-0 z-40">
+      <div class="container-vg flex items-center justify-between gap-4 py-3.5">
+        <div class="flex items-center gap-3 min-w-0">
+          <img src="/brand/mark.svg" alt="" width="32" height="32" class="w-8 h-8 shrink-0" />
+          <div class="leading-tight min-w-0">
+            <div class="font-display italic text-base md:text-lg truncate">Beheer</div>
+            <div class="text-[0.62rem] uppercase tracking-[0.2em] text-(--color-foam)/70 truncate">Zeilschool Het Veerse Gat</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="hidden md:inline chip border border-(--color-foam)/25 text-(--color-foam) text-[0.66rem]">
+            <span class="w-1.5 h-1.5 rounded-full bg-(--color-signal) shimmer"></span>
+            Demo-modus
+          </span>
+          <a href="/" class="btn-ghost text-xs text-(--color-sail) border-(--color-foam)/30 hover:bg-(--color-sail) hover:text-(--color-ink)">
+            <Icon name="arrow-up-right" size={14} />
+            <span class="hidden sm:inline">Bekijk publieke site</span>
+            <span class="sm:hidden">Site</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container-vg py-6 md:py-10 space-y-8">
+      <!-- Intro -->
+      <section class="surface-paper rounded-(--radius-card) p-5 md:p-7 grid md:grid-cols-12 gap-5 items-start" data-reveal>
+        <div class="md:col-span-8 space-y-2">
+          <div class="eyebrow">Wat je hier doet</div>
+          <h1 class="font-display text-2xl md:text-3xl leading-tight">
+            Cursussen aan- of uitzetten, plekken aanpassen, wachtlijsten zien. <span class="italic">Zonder ons.</span>
+          </h1>
+          <p class="text-sm text-(--color-ink-soft) max-w-2xl leading-relaxed pt-1">
+            Wat je hier verandert, ziet je bezoeker direct op de publieke site. Demo-versie: aanpassingen worden lokaal in deze browser opgeslagen. In productie loopt dit via een database (bv. Supabase), maar de schermen blijven hetzelfde.
+          </p>
+        </div>
+        <div class="md:col-span-4 grid grid-cols-3 md:grid-cols-1 gap-3">
+          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2.5">
+            <div class="text-[0.62rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Cursussen</div>
+            <div class="font-display text-xl md:text-2xl tabular" data-stat-courses>{courses.length}</div>
+          </div>
+          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2.5">
+            <div class="text-[0.62rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Boekingen</div>
+            <div class="font-display text-xl md:text-2xl tabular" data-stat-bookings>0</div>
+          </div>
+          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2.5">
+            <div class="text-[0.62rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Wachtlijst</div>
+            <div class="font-display text-xl md:text-2xl tabular" data-stat-waitlist>0</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tabs -->
+      <div class="flex flex-wrap items-center gap-2 border-b border-(--color-line) pb-3">
+        <button type="button" data-tab="courses" class="tab-btn is-active">Cursussen</button>
+        <button type="button" data-tab="bookings" class="tab-btn">Boekingen</button>
+        <button type="button" data-tab="waitlist" class="tab-btn">Wachtlijst</button>
+        <button type="button" data-tab="instellingen" class="tab-btn">Instellingen</button>
+      </div>
+
+      <!-- Cursussen tab -->
+      <section data-panel="courses" class="space-y-3">
+        {courses.map((c) => (
+          <article
+            class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) overflow-hidden"
+            data-admin-course
+            data-course-id={c.id}
+            data-default-capacity={c.capacity}
+            data-default-pre-booked={c.preBooked}
+            data-default-price={c.price}
+            data-default-title={c.title}
+          >
+            <header class="px-5 md:px-6 py-4 flex flex-wrap items-center justify-between gap-3 border-b border-(--color-line) bg-(--color-sail-2)">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <span class="status-dot" data-course-status></span>
+                <div class="min-w-0">
+                  <div class="font-display text-lg md:text-[1.25rem] leading-tight" data-course-title-display>{c.title}</div>
+                  <div class="text-xs text-(--color-ink-soft) tabular">{categoryLabels[c.category]} · {formatDateRange(c.startDate, c.endDate)} · {c.boat}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="flex items-center gap-2 text-xs text-(--color-ink-soft) cursor-pointer select-none">
+                  <input type="checkbox" data-course-closed class="sr-only" />
+                  <span class="toggle"><span class="toggle__dot"></span></span>
+                  <span data-course-closed-label>Open</span>
+                </label>
+                <button type="button" data-course-reset class="text-xs text-(--color-ink-soft) hover:text-(--color-signal) underline underline-offset-4 hidden" title="Zet alles terug">Reset</button>
+              </div>
+            </header>
+
+            <div class="px-5 md:px-6 py-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <label class="block">
+                <span class="text-[0.66rem] font-medium text-(--color-ink-soft) uppercase tracking-[0.14em]">Titel</span>
+                <input type="text" data-course-title-input value={c.title} class="mt-1 w-full px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition text-sm" />
+              </label>
+              <label class="block">
+                <span class="text-[0.66rem] font-medium text-(--color-ink-soft) uppercase tracking-[0.14em]">Capaciteit</span>
+                <input type="number" min="0" max="80" data-course-capacity value={c.capacity} class="mt-1 w-full px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition text-sm tabular" />
+              </label>
+              <label class="block">
+                <span class="text-[0.66rem] font-medium text-(--color-ink-soft) uppercase tracking-[0.14em]">Al geboekt (baseline)</span>
+                <input type="number" min="0" data-course-pre-booked value={c.preBooked} class="mt-1 w-full px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition text-sm tabular" />
+              </label>
+              <label class="block">
+                <span class="text-[0.66rem] font-medium text-(--color-ink-soft) uppercase tracking-[0.14em]">Prijs (€)</span>
+                <input type="number" min="0" step="5" data-course-price value={c.price} class="mt-1 w-full px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition text-sm tabular" />
+              </label>
+            </div>
+
+            <div class="px-5 md:px-6 pb-5 flex flex-wrap items-center justify-between gap-3 text-xs text-(--color-ink-soft)">
+              <div class="flex items-center gap-3">
+                <span class="tabular" data-course-summary>—</span>
+              </div>
+              <div class="text-[0.66rem]">Wijzigingen worden direct opgeslagen</div>
+            </div>
+          </article>
+        ))}
+      </section>
+
+      <!-- Boekingen tab -->
+      <section data-panel="bookings" hidden class="space-y-3">
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) overflow-hidden">
+          <header class="px-5 md:px-6 py-4 border-b border-(--color-line) bg-(--color-sail-2)">
+            <div class="font-display text-lg">Reserveringen</div>
+            <div class="text-xs text-(--color-ink-soft) mt-0.5">Boekingen die zijn binnengekomen via de publieke site.</div>
+          </header>
+          <div data-bookings-list class="divide-y divide-(--color-line)">
+            <div class="px-5 md:px-6 py-8 text-center text-sm text-(--color-ink-soft)">Nog geen boekingen.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Wachtlijst tab -->
+      <section data-panel="waitlist" hidden class="space-y-3">
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) overflow-hidden">
+          <header class="px-5 md:px-6 py-4 border-b border-(--color-line) bg-(--color-sail-2)">
+            <div class="font-display text-lg">Wachtlijst</div>
+            <div class="text-xs text-(--color-ink-soft) mt-0.5">Mensen die wachten op een vrije plek. Eerst aangemeld, eerst aan de beurt.</div>
+          </header>
+          <div data-waitlist-list class="divide-y divide-(--color-line)">
+            <div class="px-5 md:px-6 py-8 text-center text-sm text-(--color-ink-soft)">Nog niemand op de wachtlijst.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Instellingen tab -->
+      <section data-panel="instellingen" hidden class="space-y-4">
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-5 md:p-7 space-y-4">
+          <div class="font-display text-lg">Demo-data</div>
+          <p class="text-sm text-(--color-ink-soft) max-w-xl leading-relaxed">
+            Boekingen, wachtlijst-inschrijvingen en cursus-overrides worden lokaal opgeslagen.
+            Reset hier alles in één klap, of alleen een specifiek onderdeel.
+          </p>
+          <div class="flex flex-wrap gap-2 pt-2">
+            <button type="button" data-reset="bookings" class="btn-ghost text-xs">Reset alleen boekingen</button>
+            <button type="button" data-reset="waitlist" class="btn-ghost text-xs">Reset alleen wachtlijst</button>
+            <button type="button" data-reset="overrides" class="btn-ghost text-xs">Reset alleen cursus-aanpassingen</button>
+            <button type="button" data-reset="all" class="btn-primary text-xs">Reset alles</button>
+          </div>
+        </div>
+
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-5 md:p-7 space-y-3">
+          <div class="font-display text-lg">In productie</div>
+          <p class="text-sm text-(--color-ink-soft) max-w-xl leading-relaxed">
+            Deze schermen koppelen we aan een echte database. Boekingen genereren dan automatisch:
+          </p>
+          <ul class="space-y-1.5 text-sm text-(--color-ink-soft) pl-4 list-disc">
+            <li>Een bevestigingsmail met betaallink (Mollie/Stripe)</li>
+            <li>Een melding aan jullie kant (mail of intern systeem)</li>
+            <li>Een ICS-uitnodiging die in de Google/Outlook-agenda van de klant landt</li>
+            <li>Een wachtlijst-trigger: bij annulering automatisch de eerste op de wachtlijst informeren</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast -->
+    <div data-toast class="toast" role="status" aria-live="polite">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <span data-toast-msg>Opgeslagen</span>
+    </div>
+
+    <style>
+      .tab-btn {
+        font-size: 0.86rem;
+        padding: 0.5rem 0.95rem;
+        border-radius: 999px;
+        border: 1px solid var(--color-line);
+        background: transparent;
+        color: var(--color-ink-soft);
+        cursor: pointer;
+        transition: all 0.25s;
+        font-weight: 500;
+      }
+      .tab-btn:hover { color: var(--color-ink); border-color: var(--color-ink); }
+      .tab-btn.is-active {
+        background: var(--color-ink);
+        color: var(--color-sail);
+        border-color: var(--color-ink);
+      }
+
+      .toggle {
+        position: relative;
+        width: 36px;
+        height: 20px;
+        background: var(--color-sand);
+        border-radius: 999px;
+        transition: background 0.25s;
+        flex-shrink: 0;
+      }
+      .toggle__dot {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background: var(--color-sail);
+        border-radius: 999px;
+        transition: transform 0.25s var(--ease-out-quart);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+      }
+      input[data-course-closed]:checked + .toggle {
+        background: var(--color-signal);
+      }
+      input[data-course-closed]:checked + .toggle .toggle__dot {
+        transform: translateX(16px);
+      }
+    </style>
+
+    <script>
+      type Booking = { courseId: string; seats: number; ts?: number };
+      type WaitlistEntry = { courseId: string; ts: number };
+      type CourseOverride = {
+        capacity?: number;
+        preBooked?: number;
+        price?: number;
+        title?: string;
+        closed?: boolean;
+      };
+
+      const STORAGE_KEY = "vg-bookings-v1";
+      const WAITLIST_KEY = "vg-waitlist-v1";
+      const OVERRIDES_KEY = "vg-course-overrides-v1";
+
+      const read = <T,>(key: string, fallback: T): T => {
+        try {
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) as T : fallback;
+        } catch { return fallback; }
+      };
+      const write = (key: string, val: unknown) => {
+        localStorage.setItem(key, JSON.stringify(val));
+        // Sturen we ook door zodat publieke pagina (in een andere tab) reageert.
+        window.dispatchEvent(new CustomEvent("vg-overrides-changed"));
+      };
+
+      // Tabs
+      const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-tab]"));
+      const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-panel]"));
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((t) => t.classList.toggle("is-active", t === tab));
+          const key = tab.dataset.tab;
+          panels.forEach((p) => { p.hidden = p.dataset.panel !== key; });
+        });
+      });
+
+      // Course cards
+      const courseCards = Array.from(document.querySelectorAll<HTMLElement>("[data-admin-course]"));
+
+      const renderCard = (card: HTMLElement) => {
+        const id = card.dataset.courseId!;
+        const overrides = read<Record<string, CourseOverride>>(OVERRIDES_KEY, {});
+        const ov = overrides[id] ?? {};
+
+        const titleInput = card.querySelector<HTMLInputElement>("[data-course-title-input]")!;
+        const titleDisplay = card.querySelector<HTMLElement>("[data-course-title-display]")!;
+        const capacityInput = card.querySelector<HTMLInputElement>("[data-course-capacity]")!;
+        const preBookedInput = card.querySelector<HTMLInputElement>("[data-course-pre-booked]")!;
+        const priceInput = card.querySelector<HTMLInputElement>("[data-course-price]")!;
+        const closedInput = card.querySelector<HTMLInputElement>("[data-course-closed]")!;
+        const closedLabel = card.querySelector<HTMLElement>("[data-course-closed-label]")!;
+        const summary = card.querySelector<HTMLElement>("[data-course-summary]")!;
+        const status = card.querySelector<HTMLElement>("[data-course-status]")!;
+        const resetBtn = card.querySelector<HTMLButtonElement>("[data-course-reset]")!;
+
+        const title = ov.title ?? card.dataset.defaultTitle!;
+        const capacity = ov.capacity ?? Number(card.dataset.defaultCapacity);
+        const preBooked = ov.preBooked ?? Number(card.dataset.defaultPreBooked);
+        const price = ov.price ?? Number(card.dataset.defaultPrice);
+        const closed = !!ov.closed;
+
+        if (document.activeElement !== titleInput) titleInput.value = title;
+        if (document.activeElement !== capacityInput) capacityInput.value = String(capacity);
+        if (document.activeElement !== preBookedInput) preBookedInput.value = String(preBooked);
+        if (document.activeElement !== priceInput) priceInput.value = String(price);
+        closedInput.checked = closed;
+        closedLabel.textContent = closed ? "Tijdelijk gesloten" : "Open";
+        titleDisplay.textContent = title;
+
+        // Bereken vrije plekken
+        const userBookings = read<Booking[]>(STORAGE_KEY, [])
+          .filter((b) => b.courseId === id)
+          .reduce((acc, b) => acc + b.seats, 0);
+        const taken = preBooked + userBookings;
+        const remaining = closed ? 0 : Math.max(0, capacity - taken);
+
+        status.className = "status-dot " + (closed ? "status-dot--full" : remaining === 0 ? "status-dot--full" : remaining <= 3 ? "status-dot--low" : "status-dot--ok");
+        summary.textContent = closed
+          ? "Gesloten — bezoekers zien een wachtlijst-formulier"
+          : remaining === 0
+            ? `Volgeboekt · ${capacity} van ${capacity} gevuld`
+            : `${remaining} vrij · ${taken} van ${capacity} bezet${userBookings ? ` (${userBookings} via demo)` : ""}`;
+
+        const hasOverride = Object.keys(ov).length > 0;
+        resetBtn.classList.toggle("hidden", !hasOverride);
+      };
+
+      const renderAll = () => {
+        courseCards.forEach(renderCard);
+        renderStats();
+        renderBookingsList();
+        renderWaitlistList();
+      };
+
+      const setOverride = (id: string, patch: Partial<CourseOverride>) => {
+        const overrides = read<Record<string, CourseOverride>>(OVERRIDES_KEY, {});
+        const next = { ...(overrides[id] ?? {}), ...patch };
+        // Clean: alleen behouden als afwijkt van default
+        const card = courseCards.find((c) => c.dataset.courseId === id);
+        if (card) {
+          const defaults = {
+            capacity: Number(card.dataset.defaultCapacity),
+            preBooked: Number(card.dataset.defaultPreBooked),
+            price: Number(card.dataset.defaultPrice),
+            title: card.dataset.defaultTitle,
+          };
+          if (next.capacity === defaults.capacity) delete next.capacity;
+          if (next.preBooked === defaults.preBooked) delete next.preBooked;
+          if (next.price === defaults.price) delete next.price;
+          if (next.title === defaults.title) delete next.title;
+          if (next.closed === false) delete next.closed;
+        }
+        if (Object.keys(next).length === 0) {
+          delete overrides[id];
+        } else {
+          overrides[id] = next;
+        }
+        write(OVERRIDES_KEY, overrides);
+        renderAll();
+      };
+
+      courseCards.forEach((card) => {
+        const id = card.dataset.courseId!;
+        const titleInput = card.querySelector<HTMLInputElement>("[data-course-title-input]")!;
+        const capacityInput = card.querySelector<HTMLInputElement>("[data-course-capacity]")!;
+        const preBookedInput = card.querySelector<HTMLInputElement>("[data-course-pre-booked]")!;
+        const priceInput = card.querySelector<HTMLInputElement>("[data-course-price]")!;
+        const closedInput = card.querySelector<HTMLInputElement>("[data-course-closed]")!;
+        const resetBtn = card.querySelector<HTMLButtonElement>("[data-course-reset]")!;
+
+        titleInput.addEventListener("input", () => setOverride(id, { title: titleInput.value }));
+        capacityInput.addEventListener("input", () => {
+          const v = Number(capacityInput.value);
+          if (!Number.isNaN(v)) setOverride(id, { capacity: v });
+        });
+        preBookedInput.addEventListener("input", () => {
+          const v = Number(preBookedInput.value);
+          if (!Number.isNaN(v)) setOverride(id, { preBooked: v });
+        });
+        priceInput.addEventListener("input", () => {
+          const v = Number(priceInput.value);
+          if (!Number.isNaN(v)) setOverride(id, { price: v });
+        });
+        closedInput.addEventListener("change", () => {
+          setOverride(id, { closed: closedInput.checked });
+          showToast(closedInput.checked ? "Cursus gesloten voor inschrijvingen" : "Cursus weer geopend");
+        });
+        resetBtn.addEventListener("click", () => {
+          const overrides = read<Record<string, CourseOverride>>(OVERRIDES_KEY, {});
+          delete overrides[id];
+          write(OVERRIDES_KEY, overrides);
+          renderAll();
+          showToast("Wijzigingen teruggezet");
+        });
+      });
+
+      // Stats
+      const renderStats = () => {
+        const bookings = read<Booking[]>(STORAGE_KEY, []);
+        const waitlist = read<WaitlistEntry[]>(WAITLIST_KEY, []);
+        document.querySelector("[data-stat-bookings]")!.textContent = String(bookings.length);
+        document.querySelector("[data-stat-waitlist]")!.textContent = String(waitlist.length);
+      };
+
+      // Bookings list
+      const titleFor = (id: string): string => {
+        const card = courseCards.find((c) => c.dataset.courseId === id);
+        const overrides = read<Record<string, CourseOverride>>(OVERRIDES_KEY, {});
+        return overrides[id]?.title ?? card?.dataset.defaultTitle ?? id;
+      };
+      const formatTime = (ts?: number) => {
+        if (!ts) return "—";
+        const d = new Date(ts);
+        return d.toLocaleString("nl-NL", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+      };
+      const renderBookingsList = () => {
+        const list = read<Booking[]>(STORAGE_KEY, []);
+        const wrap = document.querySelector<HTMLElement>("[data-bookings-list]")!;
+        if (!list.length) {
+          wrap.innerHTML = '<div class="px-5 md:px-6 py-8 text-center text-sm text-(--color-ink-soft)">Nog geen boekingen.</div>';
+          return;
+        }
+        wrap.innerHTML = list.slice().reverse().map((b) => `
+          <div class="px-5 md:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 text-sm">
+            <div class="min-w-0">
+              <div class="font-medium truncate">${titleFor(b.courseId)}</div>
+              <div class="text-xs text-(--color-ink-soft) tabular">${formatTime(b.ts)}</div>
+            </div>
+            <div class="chip bg-(--color-sand)/40 text-(--color-ink-soft) border border-(--color-line)">${b.seats} ${b.seats === 1 ? "plek" : "plekken"}</div>
+          </div>
+        `).join("");
+      };
+      const renderWaitlistList = () => {
+        const list = read<WaitlistEntry[]>(WAITLIST_KEY, []);
+        const wrap = document.querySelector<HTMLElement>("[data-waitlist-list]")!;
+        if (!list.length) {
+          wrap.innerHTML = '<div class="px-5 md:px-6 py-8 text-center text-sm text-(--color-ink-soft)">Nog niemand op de wachtlijst.</div>';
+          return;
+        }
+        wrap.innerHTML = list.slice().reverse().map((w, i) => `
+          <div class="px-5 md:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 text-sm">
+            <div class="min-w-0 flex items-center gap-3">
+              <span class="tabular text-xs text-(--color-ink-soft) shrink-0">#${list.length - i}</span>
+              <div class="min-w-0">
+                <div class="font-medium truncate">${titleFor(w.courseId)}</div>
+                <div class="text-xs text-(--color-ink-soft) tabular">${formatTime(w.ts)}</div>
+              </div>
+            </div>
+            <div class="chip bg-(--color-signal)/10 text-(--color-signal) border border-(--color-signal)/30">Wacht op plek</div>
+          </div>
+        `).join("");
+      };
+
+      // Reset buttons
+      const resetActions: Record<string, () => void> = {
+        bookings: () => localStorage.removeItem(STORAGE_KEY),
+        waitlist: () => localStorage.removeItem(WAITLIST_KEY),
+        overrides: () => localStorage.removeItem(OVERRIDES_KEY),
+        all: () => {
+          localStorage.removeItem(STORAGE_KEY);
+          localStorage.removeItem(WAITLIST_KEY);
+          localStorage.removeItem(OVERRIDES_KEY);
+        },
+      };
+      document.querySelectorAll<HTMLButtonElement>("[data-reset]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const what = btn.dataset.reset!;
+          const labels: Record<string, string> = {
+            bookings: "alle boekingen",
+            waitlist: "de wachtlijst",
+            overrides: "alle cursus-aanpassingen",
+            all: "alle demo-data",
+          };
+          if (!confirm(`${labels[what]} wissen?`)) return;
+          resetActions[what]?.();
+          window.dispatchEvent(new CustomEvent("vg-overrides-changed"));
+          renderAll();
+          showToast("Gereset");
+        });
+      });
+
+      // Toast
+      const toast = document.querySelector<HTMLElement>("[data-toast]");
+      const toastMsg = document.querySelector<HTMLElement>("[data-toast-msg]");
+      let toastTimer: number | undefined;
+      function showToast(msg: string) {
+        if (!toast || !toastMsg) return;
+        toastMsg.textContent = msg;
+        toast.classList.add("is-visible");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2400);
+      }
+
+      // Sync from other tabs
+      window.addEventListener("storage", () => renderAll());
+
+      renderAll();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,222 @@
+---
+interface Props {
+  active: "site" | "admin";
+}
+const { active } = Astro.props;
+---
+
+<div class="demo-dock" data-demo-dock>
+  <span class="demo-dock__label">
+    <span class="demo-dock__dot"></span>
+    Demo
+  </span>
+  <div class="demo-dock__tabs" role="tablist" aria-label="Demo-weergave">
+    <a
+      href="/"
+      role="tab"
+      class={`demo-dock__tab ${active === "site" ? "is-active" : ""}`}
+      aria-selected={active === "site"}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/>
+      </svg>
+      <span>Publieke site</span>
+    </a>
+    <a
+      href="/admin"
+      role="tab"
+      class={`demo-dock__tab ${active === "admin" ? "is-active" : ""}`}
+      aria-selected={active === "admin"}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
+      </svg>
+      <span>Beheer</span>
+    </a>
+  </div>
+  <button
+    type="button"
+    data-dock-collapse
+    class="demo-dock__collapse"
+    aria-label="Minimaliseer demo-balk"
+    title="Minimaliseer"
+  >
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m18 15-6-6-6 6"/>
+    </svg>
+  </button>
+</div>
+
+<button
+  type="button"
+  data-dock-restore
+  class="demo-dock-restore"
+  aria-label="Toon demo-balk"
+  hidden
+>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="m6 9 6 6 6-6"/>
+  </svg>
+  <span>Demo</span>
+</button>
+
+<style>
+  .demo-dock {
+    position: fixed;
+    top: 4.75rem;
+    right: 1rem;
+    z-index: 47;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 4px 4px 4px 0.7rem;
+    background: var(--color-ink);
+    color: var(--color-sail);
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--color-sail) 18%, transparent);
+    box-shadow: 0 18px 40px -22px rgba(10, 30, 51, 0.55);
+    font-family: var(--font-sans);
+    transition: opacity 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
+  }
+  .demo-dock.is-hidden {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+  }
+  .demo-dock__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 500;
+    color: rgba(246, 240, 226, 0.55);
+    padding-right: 0.4rem;
+    border-right: 1px solid rgba(246, 240, 226, 0.12);
+  }
+  .demo-dock__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-signal);
+    box-shadow: 0 0 0 3px rgba(228, 90, 43, 0.25);
+    animation: dock-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes dock-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(228, 90, 43, 0.25); }
+    50% { box-shadow: 0 0 0 5px rgba(228, 90, 43, 0.12); }
+  }
+  .demo-dock__tabs {
+    display: flex;
+    gap: 2px;
+  }
+  .demo-dock__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: rgba(246, 240, 226, 0.65);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.42rem 0.8rem;
+    border-radius: 999px;
+    transition: background 0.25s, color 0.25s;
+    white-space: nowrap;
+  }
+  .demo-dock__tab:hover { color: var(--color-sail); }
+  .demo-dock__tab.is-active {
+    background: var(--color-signal);
+    color: var(--color-sail);
+  }
+  .demo-dock__tab svg { opacity: 0.9; }
+  .demo-dock__collapse {
+    appearance: none;
+    background: transparent;
+    border: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    color: rgba(246, 240, 226, 0.45);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    margin-left: 2px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .demo-dock__collapse:hover {
+    color: var(--color-sail);
+    background: rgba(246, 240, 226, 0.08);
+  }
+
+  .demo-dock-restore {
+    position: fixed;
+    top: 4.75rem;
+    right: 1rem;
+    z-index: 47;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.8rem 0.4rem 0.7rem;
+    background: var(--color-ink);
+    color: var(--color-sail);
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--color-sail) 18%, transparent);
+    font-size: 0.72rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 14px 30px -18px rgba(10, 30, 51, 0.5);
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
+    pointer-events: none;
+  }
+  .demo-dock-restore.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Mobile aanpassing: kleiner pill, hide het label */
+  @media (max-width: 640px) {
+    .demo-dock {
+      top: auto;
+      bottom: 1rem;
+      right: 1rem;
+      padding: 3px 3px 3px 0.55rem;
+    }
+    .demo-dock__label { font-size: 0.56rem; letter-spacing: 0.16em; padding-right: 0.3rem; }
+    .demo-dock__tab { font-size: 0.7rem; padding: 0.35rem 0.6rem; }
+    .demo-dock__tab span { display: none; }
+    .demo-dock__tab svg { width: 16px; height: 16px; }
+    .demo-dock-restore { top: auto; bottom: 1rem; right: 1rem; }
+  }
+</style>
+
+<script>
+  const KEY = "vg-dock-collapsed";
+  const dock = document.querySelector<HTMLElement>("[data-demo-dock]");
+  const restore = document.querySelector<HTMLButtonElement>("[data-dock-restore]");
+  const collapse = document.querySelector<HTMLButtonElement>("[data-dock-collapse]");
+  if (dock && restore && collapse) {
+    const setHidden = (hidden: boolean) => {
+      dock.classList.toggle("is-hidden", hidden);
+      restore.hidden = !hidden;
+      if (hidden) {
+        requestAnimationFrame(() => restore.classList.add("is-visible"));
+      } else {
+        restore.classList.remove("is-visible");
+        setTimeout(() => { restore.hidden = true; }, 300);
+      }
+    };
+    if (sessionStorage.getItem(KEY) === "1") setHidden(true);
+    collapse.addEventListener("click", () => {
+      sessionStorage.setItem(KEY, "1");
+      setHidden(true);
+    });
+    restore.addEventListener("click", () => {
+      sessionStorage.removeItem(KEY);
+      setHidden(false);
+    });
+  }
+</script>

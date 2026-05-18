@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import DemoDock from "../components/DemoDock.astro";
 
 interface Props {
   title?: string;
@@ -32,6 +33,8 @@ const {
     <title>{title}</title>
   </head>
   <body class="has-intro" id="top">
+    <script is:inline src="/scripts/seed.js"></script>
+
     <!-- Demo intro splash -->
     <div id="demo-intro" data-intro class="demo-intro" aria-modal="true" role="dialog">
       <div class="demo-intro__inner">
@@ -41,24 +44,34 @@ const {
           Hijs het zeil,<br/>kijk even mee.
         </h1>
         <p class="demo-intro__body">
-          Dit is een ontwerp-demo voor <strong>Zeilschool Het Veerse Gat</strong> in Veere, gemaakt door Jorik Schut van Schut Marketing. Adres, telefoonnummer, vlooten en cursusopzet komen van veersegat.nl. De vormgeving, copy en het boekingssysteem zijn een voorstel voor hoe de site eruit zou kunnen zien.
+          Dit is een ontwerp-demo voor <strong>Zeilschool Het Veerse Gat</strong> in Veere, gemaakt door <strong>Agensea.nl</strong>. Adres, telefoonnummer, vloot en cursusopzet komen van veersegat.nl. De vormgeving, copy en het boekingssysteem zijn een voorstel voor hoe de site eruit zou kunnen zien.
         </p>
         <ul class="demo-intro__notes">
           <li>Echt: adres Polredijk 21, contact, certificeringen, type cursussen, vloot.</li>
           <li>Voorstel: hero-claim, sectiekopjes, sfeerbeelden, live boekingsteller.</li>
-          <li>Het boekingssysteem werkt: probeer een cursus te boeken, de plaatsen lopen direct vol.</li>
+          <li>De demo heeft twee kanten: een publieke site én een beheerkant waar je live cursussen kunt aanpassen.</li>
         </ul>
-        <button type="button" data-intro-dismiss class="demo-intro__cta">
-          Bekijk de demo
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
-          </svg>
-        </button>
-        <p class="demo-intro__small">Ideeën of correcties welkom: info@schutmarketing.nl</p>
+        <div class="demo-intro__ctas">
+          <button type="button" data-intro-dismiss class="demo-intro__cta demo-intro__cta--primary">
+            Bekijk de publieke site
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+            </svg>
+          </button>
+          <a href="/admin" class="demo-intro__cta demo-intro__cta--ghost">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Open de beheerkant
+          </a>
+        </div>
+        <p class="demo-intro__small">Vraag of suggestie? Stuur een bericht via agensea.nl</p>
       </div>
     </div>
 
     <Header />
+    <DemoDock active="site" />
     <div data-lang-banner class="lang-banner" role="status"></div>
     <main>
       <slot />

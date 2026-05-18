@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Icon from "../components/Icon.astro";
+import DemoDock from "../components/DemoDock.astro";
 import { courses, categoryLabels, formatDateRange } from "../data/courses.ts";
 ---
 
@@ -21,14 +22,16 @@ import { courses, categoryLabels, formatDateRange } from "../data/courses.ts";
     <title>Beheer · Zeilschool Het Veerse Gat</title>
   </head>
   <body class="bg-(--color-sail-2) min-h-screen">
+    <script is:inline src="/scripts/seed.js"></script>
+
     <!-- Top bar -->
     <header class="bg-(--color-ink) text-(--color-sail) sticky top-0 z-40">
-      <div class="container-vg flex items-center justify-between gap-4 py-3.5">
-        <div class="flex items-center gap-3 min-w-0">
-          <img src="/brand/mark.svg" alt="" width="32" height="32" class="w-8 h-8 shrink-0" />
+      <div class="container-vg flex items-center justify-between gap-4 py-3 md:py-3.5">
+        <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
+          <img src="/brand/mark.svg" alt="" width="32" height="32" class="w-7 h-7 md:w-8 md:h-8 shrink-0" />
           <div class="leading-tight min-w-0">
-            <div class="font-display italic text-base md:text-lg truncate">Beheer</div>
-            <div class="text-[0.62rem] uppercase tracking-[0.2em] text-(--color-foam)/70 truncate">Zeilschool Het Veerse Gat</div>
+            <div class="font-display italic text-[0.95rem] md:text-lg truncate">Beheer</div>
+            <div class="text-[0.56rem] md:text-[0.62rem] uppercase tracking-[0.2em] text-(--color-foam)/70 truncate">Zeilschool Het Veerse Gat</div>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -45,30 +48,32 @@ import { courses, categoryLabels, formatDateRange } from "../data/courses.ts";
       </div>
     </header>
 
-    <main class="container-vg py-6 md:py-10 space-y-8">
+    <DemoDock active="admin" />
+
+    <main class="container-vg py-4 md:py-10 space-y-5 md:space-y-8">
       <!-- Intro -->
-      <section class="surface-paper rounded-(--radius-card) p-5 md:p-7 grid md:grid-cols-12 gap-5 items-start" data-reveal>
+      <section class="surface-paper rounded-(--radius-card) p-4 md:p-7 grid md:grid-cols-12 gap-4 md:gap-5 items-start">
         <div class="md:col-span-8 space-y-2">
-          <div class="eyebrow">Wat je hier doet</div>
-          <h1 class="font-display text-2xl md:text-3xl leading-tight">
-            Cursussen aan- of uitzetten, plekken aanpassen, wachtlijsten zien. <span class="italic">Zonder ons.</span>
+          <div class="eyebrow text-[0.66rem]">Wat je hier doet</div>
+          <h1 class="font-display text-[1.35rem] md:text-3xl leading-[1.1]">
+            Cursussen beheren, plekken aanpassen, wachtlijsten zien. <span class="italic">Zonder ons.</span>
           </h1>
           <p class="text-sm text-(--color-ink-soft) max-w-2xl leading-relaxed pt-1">
-            Wat je hier verandert, ziet je bezoeker direct op de publieke site. Demo-versie: aanpassingen worden lokaal in deze browser opgeslagen. In productie loopt dit via een database (bv. Supabase), maar de schermen blijven hetzelfde.
+            Wat je hier verandert, ziet je bezoeker direct op de publieke site. In productie loopt dit via een database; de schermen blijven hetzelfde.
           </p>
         </div>
-        <div class="md:col-span-4 grid grid-cols-3 md:grid-cols-1 gap-3">
-          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2.5">
-            <div class="text-[0.62rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Cursussen</div>
-            <div class="font-display text-xl md:text-2xl tabular" data-stat-courses>{courses.length}</div>
+        <div class="md:col-span-4 grid grid-cols-3 md:grid-cols-1 gap-2.5">
+          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2">
+            <div class="text-[0.6rem] uppercase tracking-[0.14em] text-(--color-ink-soft)">Cursussen</div>
+            <div class="font-display text-lg md:text-2xl tabular" data-stat-courses>{courses.length}</div>
           </div>
-          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2.5">
-            <div class="text-[0.62rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Boekingen</div>
-            <div class="font-display text-xl md:text-2xl tabular" data-stat-bookings>0</div>
+          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2">
+            <div class="text-[0.6rem] uppercase tracking-[0.14em] text-(--color-ink-soft)">Boekingen</div>
+            <div class="font-display text-lg md:text-2xl tabular" data-stat-bookings>0</div>
           </div>
-          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2.5">
-            <div class="text-[0.62rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Wachtlijst</div>
-            <div class="font-display text-xl md:text-2xl tabular" data-stat-waitlist>0</div>
+          <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-3 py-2">
+            <div class="text-[0.6rem] uppercase tracking-[0.14em] text-(--color-ink-soft)">Wachtlijst</div>
+            <div class="font-display text-lg md:text-2xl tabular" data-stat-waitlist>0</div>
           </div>
         </div>
       </section>
@@ -179,6 +184,7 @@ import { courses, categoryLabels, formatDateRange } from "../data/courses.ts";
             <button type="button" data-reset="waitlist" class="btn-ghost text-xs">Reset alleen wachtlijst</button>
             <button type="button" data-reset="overrides" class="btn-ghost text-xs">Reset alleen cursus-aanpassingen</button>
             <button type="button" data-reset="all" class="btn-primary text-xs">Reset alles</button>
+            <button type="button" data-reseed class="btn-signal text-xs ml-auto">Vul demo-data opnieuw</button>
           </div>
         </div>
 
@@ -493,6 +499,22 @@ import { courses, categoryLabels, formatDateRange } from "../data/courses.ts";
           renderAll();
           showToast("Gereset");
         });
+      });
+
+      // Reseed demo data (wist seed-flag + boekingen/wachtlijst + laadt seed.js opnieuw)
+      document.querySelector<HTMLButtonElement>("[data-reseed]")?.addEventListener("click", () => {
+        if (!confirm("Demo-data terug naar uitgangswaarde?")) return;
+        localStorage.removeItem("vg-bookings-v1");
+        localStorage.removeItem("vg-waitlist-v1");
+        localStorage.removeItem("vg-demo-seeded-v1");
+        const s = document.createElement("script");
+        s.src = "/scripts/seed.js?t=" + Date.now();
+        s.onload = () => {
+          window.dispatchEvent(new CustomEvent("vg-overrides-changed"));
+          renderAll();
+          showToast("Demo-data ververst");
+        };
+        document.body.appendChild(s);
       });
 
       // Toast

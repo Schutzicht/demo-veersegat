@@ -1,0 +1,81 @@
+---
+import Icon from "./Icon.astro";
+
+const programs = [
+  {
+    duration: "Halve dag",
+    title: "Kennismaking met zeilen",
+    body: "Drie uur op het water, drie boten, een korte instructie en daarna alle bemanningsrotaties die je team nodig heeft om elkaar anders te zien.",
+    bullets: ["8 – 24 personen", "Instructie aan boord", "Koffie & koek op de steiger"],
+  },
+  {
+    duration: "Hele dag",
+    title: "Teamzeilen met regatta",
+    body: "Ochtend les, middag wedstrijdje varen tussen de boeien. Eindigt met prijsuitreiking in onze loods, garnalenbroodje optioneel.",
+    bullets: ["12 – 36 personen", "Per team een instructeur", "Inclusief lunch & podium"],
+  },
+];
+---
+
+<section id="bedrijfsuitjes" class="relative bg-(--color-ink) text-(--color-sail) overflow-hidden scroll-mt-20">
+  <!-- Top wave: zachte dome -->
+  <div class="relative -mt-px text-(--color-sail) leading-none" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" class="w-full h-10 md:h-14 block">
+      <path d="M0 0 H1440 V35 Q720 75 0 35 Z" fill="currentColor"/>
+    </svg>
+  </div>
+
+  <div class="absolute inset-0 opacity-[0.05] pointer-events-none" aria-hidden="true" style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;); mix-blend-mode: screen;"></div>
+
+  <div class="container-vg relative py-16 md:py-24">
+    <div class="grid lg:grid-cols-12 gap-12 items-start">
+      <header class="lg:col-span-5 space-y-5" data-reveal>
+        <div class="eyebrow text-(--color-signal)">Bedrijfsuitjes</div>
+        <h2 class="font-display text-[clamp(1.85rem,5.2vw,3.6rem)] leading-[1.02]">
+          Een dag op het water is geen <span class="italic">teambuilding</span>, het is een vorm van eerlijkheid.
+        </h2>
+        <p class="text-(--color-foam) max-w-md leading-relaxed">
+          Zes Zeeuwse bedrijven en drie multinationals leggen jaarlijks bij ons aan. We organiseren halve of hele dagen, dragen alle bemanning aan, en zorgen voor catering die niet uit een groothandel komt.
+        </p>
+        <div class="flex flex-wrap items-center gap-3 pt-2">
+          <a href="#contact" class="btn-signal">
+            Vraag offerte aan
+            <Icon name="arrow-right" size={16} />
+          </a>
+          <a href="tel:+31118501398" class="link-arrow text-(--color-sail) border-(--color-foam)/40 hover:border-(--color-sail)">
+            <Icon name="phone" size={14} />
+            0118 - 501 398
+          </a>
+        </div>
+      </header>
+
+      <div class="lg:col-span-7 space-y-4">
+        {programs.map((p) => (
+          <article class="rounded-(--radius-card) border border-(--color-foam)/15 bg-(--color-ink-2)/50 backdrop-blur p-6 md:p-7 hover:border-(--color-signal)/60 transition-colors" data-reveal>
+            <div class="flex items-start justify-between gap-3 mb-3">
+              <span class="chip border border-(--color-foam)/30 text-(--color-foam)">{p.duration}</span>
+              <Icon name="sail" size={20} class="text-(--color-signal)/80" />
+            </div>
+            <h3 class="font-display text-2xl md:text-[1.7rem] leading-tight">{p.title}</h3>
+            <p class="text-(--color-foam) mt-3 text-[0.95rem] leading-relaxed">{p.body}</p>
+            <ul class="mt-5 grid sm:grid-cols-3 gap-3 text-sm">
+              {p.bullets.map((b) => (
+                <li class="flex items-start gap-2 text-(--color-foam-2)">
+                  <Icon name="check" size={16} class="text-(--color-signal) mt-0.5 shrink-0" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom wave: zachte dome omgekeerd -->
+  <div class="relative -mb-px text-(--color-sail) leading-none" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" class="w-full h-10 md:h-14 block">
+      <path d="M0 80 H1440 V45 Q720 5 0 45 Z" fill="currentColor"/>
+    </svg>
+  </div>
+</section>

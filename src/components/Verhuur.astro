@@ -1,0 +1,89 @@
+---
+import Icon from "./Icon.astro";
+
+const fleet = [
+  {
+    name: "Valk",
+    desc: "Klassieke houten kielboot voor twee. Goed bestuurbaar, vergevingsgezind, en met een mooie lange historie.",
+    persons: "2 – 4",
+    price: "€ 95 / dag",
+    sailIcon: "M50 12 V62 L18 62 Z",
+    accent: "var(--color-tide)",
+  },
+  {
+    name: "Laser Pico",
+    desc: "Lichte open jol voor één of twee zeilers. Snel reageert, doe wat de wind doet.",
+    persons: "1 – 2",
+    price: "€ 65 / dag",
+    sailIcon: "M48 14 V60 L20 60 Z",
+    accent: "var(--color-signal)",
+  },
+  {
+    name: "Optimist",
+    desc: "Het standaardschip voor de jongste zeilers. Met een Optimist begint elke Nederlandse zeil-CV.",
+    persons: "1",
+    price: "€ 45 / dag",
+    sailIcon: "M46 18 V58 L22 58 Z",
+    accent: "var(--color-rope)",
+  },
+  {
+    name: "Sloep (electrisch)",
+    desc: "Voor wie het water op wil zonder zeilkennis: een rustige rondvaart-sloep met elektrische motor.",
+    persons: "tot 7",
+    price: "€ 175 / dag",
+    sailIcon: "M22 50 H50 V58 H22 Z",
+    accent: "var(--color-foam)",
+  },
+];
+---
+
+<section id="verhuur" class="container-vg py-16 md:py-28 scroll-mt-20">
+  <div class="grid lg:grid-cols-12 gap-8 lg:gap-10 items-end mb-10 md:mb-12" data-reveal>
+    <div class="lg:col-span-7 space-y-4">
+      <div class="eyebrow">Bootverhuur</div>
+      <h2 class="font-display text-[clamp(1.85rem,5.2vw,3.6rem)] leading-[1.02]">
+        Een vloot om <span class="italic">in te stappen</span>, niet om te bewonderen.
+      </h2>
+      <p class="text-(--color-ink-soft) max-w-xl leading-relaxed">
+        Wie het CWO-diploma op zak heeft, mag bij ons huren. Per uur, per dag, per weekend. We bekijken samen welke boot bij je past, en geven een korte briefing voor je het meer op gaat.
+      </p>
+    </div>
+    <div class="lg:col-span-5 lg:text-right">
+      <a href="#contact" class="link-arrow">
+        Reservering aanvragen
+        <Icon name="arrow-right" size={14} />
+      </a>
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+    {fleet.map((boat) => (
+      <article class="group surface-paper rounded-(--radius-card) p-6 flex flex-col gap-4 hover:border-(--color-ink) hover:-translate-y-1 transition-all duration-500" data-reveal>
+        <div class="aspect-square rounded-xl bg-(--color-ink) text-(--color-sail) grid place-items-center relative overflow-hidden">
+          <svg viewBox="0 0 72 72" class="w-3/4 h-3/4 sail-icon" aria-hidden="true">
+            <path d={boat.sailIcon} fill="var(--color-sail)" opacity="0.95"/>
+            <path d="M22 60 Q36 56 50 60 V62 H22 Z" fill={boat.accent}/>
+          </svg>
+          <div class="absolute inset-0 opacity-30" style="background: radial-gradient(80% 60% at 50% 100%, rgba(189, 211, 214, 0.5), transparent 70%);"></div>
+        </div>
+
+        <header class="flex items-start justify-between gap-2">
+          <h3 class="font-display text-xl">{boat.name}</h3>
+          <span class="chip bg-(--color-sand)/40 text-(--color-ink-soft) text-[0.66rem]">
+            <Icon name="users" size={12} /> {boat.persons}
+          </span>
+        </header>
+
+        <p class="text-sm text-(--color-ink-soft) leading-relaxed">{boat.desc}</p>
+
+        <div class="mt-auto pt-4 border-t border-(--color-line) flex items-center justify-between">
+          <span class="font-display text-lg tabular">{boat.price}</span>
+          <a href="#contact" class="text-xs font-medium text-(--color-ink) hover:text-(--color-signal) flex items-center gap-1 transition-colors">
+            Huur aanvragen
+            <Icon name="arrow-up-right" size={12} />
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

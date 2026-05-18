@@ -1,0 +1,138 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "Zeilschool Het Veerse Gat | Leer zeilen in Veere, Zeeland",
+  description = "Zeilcursussen voor kinderen, jeugd en volwassenen vanuit Veere. Bootverhuur, bedrijfsuitjes en eenvoudige overnachtingen. Watersportverbond-erkend sinds 1972.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0A1E33" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,30..100;1,9..144,300..700,30..100&family=Inter:wght@400;500;600;700&display=swap"
+    />
+
+    <title>{title}</title>
+  </head>
+  <body class="has-intro" id="top">
+    <!-- Demo intro splash -->
+    <div id="demo-intro" data-intro class="demo-intro" aria-modal="true" role="dialog">
+      <div class="demo-intro__inner">
+        <img src="/brand/mark.svg" alt="" width="76" height="76" class="demo-intro__mark" />
+        <p class="demo-intro__eyebrow">Demo · niet de live site</p>
+        <h1 class="demo-intro__title">
+          Hijs het zeil,<br/>kijk even mee.
+        </h1>
+        <p class="demo-intro__body">
+          Dit is een ontwerp-demo voor <strong>Zeilschool Het Veerse Gat</strong> in Veere, gemaakt door Jorik Schut van Schut Marketing. Adres, telefoonnummer, vlooten en cursusopzet komen van veersegat.nl. De vormgeving, copy en het boekingssysteem zijn een voorstel voor hoe de site eruit zou kunnen zien.
+        </p>
+        <ul class="demo-intro__notes">
+          <li>Echt: adres Polredijk 21, contact, certificeringen, type cursussen, vloot.</li>
+          <li>Voorstel: hero-claim, sectiekopjes, sfeerbeelden, live boekingsteller.</li>
+          <li>Het boekingssysteem werkt: probeer een cursus te boeken, de plaatsen lopen direct vol.</li>
+        </ul>
+        <button type="button" data-intro-dismiss class="demo-intro__cta">
+          Bekijk de demo
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+          </svg>
+        </button>
+        <p class="demo-intro__small">Ideeën of correcties welkom: info@schutmarketing.nl</p>
+      </div>
+    </div>
+
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- Toast voor boekingsbevestiging -->
+    <div data-toast class="toast" role="status" aria-live="polite">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <span data-toast-msg>Boeking ontvangen</span>
+    </div>
+
+    <script>
+      // Demo intro dismiss
+      const intro = document.querySelector<HTMLElement>("[data-intro]");
+      const introBtn = document.querySelector<HTMLButtonElement>("[data-intro-dismiss]");
+      if (intro && introBtn) {
+        if (sessionStorage.getItem("vg-intro-dismissed") === "1") {
+          intro.remove();
+          document.body.classList.remove("has-intro");
+        } else {
+          document.body.style.overflow = "hidden";
+          introBtn.addEventListener("click", () => {
+            intro.classList.add("is-leaving");
+            document.body.style.overflow = "";
+            sessionStorage.setItem("vg-intro-dismissed", "1");
+            setTimeout(() => {
+              intro.remove();
+              document.body.classList.remove("has-intro");
+            }, 600);
+          });
+        }
+      }
+
+      // Reveal on scroll
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+      );
+      document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
+
+      // Mobile nav toggle
+      const navBtn = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+      const navPanel = document.querySelector<HTMLElement>("[data-nav-panel]");
+      if (navBtn && navPanel) {
+        navBtn.addEventListener("click", () => {
+          const open = navPanel.classList.toggle("is-open");
+          navBtn.setAttribute("aria-expanded", String(open));
+          document.body.style.overflow = open ? "hidden" : "";
+        });
+        navPanel.querySelectorAll("a").forEach((a) =>
+          a.addEventListener("click", () => {
+            navPanel.classList.remove("is-open");
+            navBtn.setAttribute("aria-expanded", "false");
+            document.body.style.overflow = "";
+          })
+        );
+      }
+
+      // Header shadow on scroll
+      const header = document.querySelector<HTMLElement>("[data-header]");
+      if (header) {
+        const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 8);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+      }
+    </script>
+  </body>
+</html>

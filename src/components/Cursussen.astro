@@ -1,0 +1,414 @@
+---
+import Icon from "./Icon.astro";
+import { courses, categoryLabels, formatDateRange, type CourseCategory } from "../data/courses.ts";
+
+const filters: { key: "all" | CourseCategory; label: string }[] = [
+  { key: "all", label: "Alle weken" },
+  { key: "kind", label: "Kinderen" },
+  { key: "jeugd", label: "Jeugd" },
+  { key: "volwassenen", label: "Volwassenen" },
+  { key: "weekend", label: "Weekenden" },
+];
+---
+
+<section id="cursussen" class="relative scroll-mt-20 py-16 md:py-28 bg-(--color-sail-2) border-y border-(--color-line)">
+  <div class="container-vg space-y-10 md:space-y-12">
+    <div class="grid lg:grid-cols-12 gap-6 lg:gap-10 items-end" data-reveal>
+      <div class="lg:col-span-7 space-y-4">
+        <div class="eyebrow">Cursussen & beschikbaarheid</div>
+        <h2 class="font-display text-[clamp(1.85rem,5.2vw,3.6rem)] leading-[1.02]">
+          Live agenda. Boek <span class="italic">één klik</span> verder.
+        </h2>
+        <p class="text-(--color-ink-soft) max-w-xl leading-relaxed">
+          Aantal vrije plaatsen werkt realtime. Boek je een plek, dan ziet de volgende bezoeker een week later dat er één plaats minder is. Vol is vol, ook in de demo.
+        </p>
+      </div>
+      <div class="lg:col-span-5 lg:text-right flex lg:block items-baseline gap-3 lg:gap-0 lg:space-y-2 pt-2 lg:pt-0">
+        <div class="text-sm text-(--color-ink-soft) order-2 lg:order-none">Vrije plaatsen over alle weken</div>
+        <div class="font-display text-3xl md:text-4xl tabular order-1 lg:order-none" data-stat-remaining>—</div>
+      </div>
+    </div>
+
+    <!-- Filterbar -->
+    <div class="flex flex-wrap items-center gap-2" data-reveal>
+      {filters.map((f, i) => (
+        <button
+          type="button"
+          data-filter={f.key}
+          class={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${i === 0 ? "bg-(--color-ink) text-(--color-sail) border-(--color-ink)" : "bg-transparent text-(--color-ink) border-(--color-line) hover:border-(--color-ink)"}`}
+          aria-pressed={i === 0}
+        >
+          {f.label}
+        </button>
+      ))}
+      <button
+        type="button"
+        data-reset-bookings
+        class="ml-auto text-xs text-(--color-ink-soft) hover:text-(--color-signal) underline underline-offset-4"
+      >
+        Demo resetten
+      </button>
+    </div>
+
+    <!-- Course grid -->
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5" data-course-grid>
+      {courses.map((c) => {
+        const total = c.capacity;
+        const preTakenPct = Math.min(100, Math.round((c.preBooked / total) * 100));
+        return (
+          <article
+            data-course-card
+            data-course-id={c.id}
+            data-course-category={c.category}
+            data-capacity={total}
+            data-pre-booked={c.preBooked}
+            data-price={c.price}
+            class="group surface-paper rounded-(--radius-card) p-6 md:p-7 flex flex-col gap-5 transition-all hover:border-(--color-ink) hover:shadow-[0_24px_50px_-30px_rgba(10,30,51,0.3)]"
+            data-reveal
+          >
+            <header class="flex items-start justify-between gap-3">
+              <div class="space-y-2">
+                <span class="tag-pill">{categoryLabels[c.category]}</span>
+                <h3 class="font-display text-[1.45rem] md:text-[1.6rem] leading-[1.05]">{c.title}</h3>
+              </div>
+              <div class="text-right shrink-0">
+                <div class="text-[0.7rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Vanaf</div>
+                <div class="font-display text-2xl tabular" data-price>€{c.price}</div>
+              </div>
+            </header>
+
+            <dl class="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <dt class="text-[0.66rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Periode</dt>
+                <dd class="mt-0.5">{formatDateRange(c.startDate, c.endDate)}</dd>
+              </div>
+              <div>
+                <dt class="text-[0.66rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Leeftijd</dt>
+                <dd class="mt-0.5">{c.age}</dd>
+              </div>
+              <div>
+                <dt class="text-[0.66rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Boot</dt>
+                <dd class="mt-0.5">{c.boat}</dd>
+              </div>
+              <div>
+                <dt class="text-[0.66rem] uppercase tracking-[0.16em] text-(--color-ink-soft)">Niveau</dt>
+                <dd class="mt-0.5">{c.level}</dd>
+              </div>
+            </dl>
+
+            <div class="text-xs text-(--color-ink-soft)">{c.schedule}</div>
+
+            <!-- Availability -->
+            <div class="space-y-2 pt-2 border-t border-(--color-line)">
+              <div class="flex items-center justify-between gap-3 text-sm">
+                <div class="flex items-center gap-2">
+                  <span class="status-dot status-dot--ok" data-status-dot></span>
+                  <span data-status-label class="font-medium">— van {total} vrij</span>
+                </div>
+                <div class="text-(--color-ink-soft) tabular" data-status-count>—</div>
+              </div>
+              <div class="avail-bar" data-avail-bar>
+                <div class="avail-bar__fill" style={`width: ${preTakenPct}%`} data-avail-fill></div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-1 mt-auto">
+              <button
+                type="button"
+                data-book-trigger
+                class="btn-primary text-xs flex-1 justify-center group-hover:bg-(--color-signal) group-hover:border-(--color-signal) transition-colors"
+              >
+                <span data-book-label>Reserveer plek</span>
+                <Icon name="arrow-right" size={14} />
+              </button>
+              <a href="#contact" class="text-xs text-(--color-ink-soft) hover:text-(--color-signal) underline underline-offset-4">Vragen?</a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <p class="text-xs text-(--color-ink-soft) text-center max-w-xl mx-auto leading-relaxed" data-reveal>
+      Demo-notitie: boekingen worden alleen in deze browser onthouden via localStorage. In een productieversie loopt dit via een echte agenda (bv. Supabase of het bestaande boekingssysteem); de UI blijft hetzelfde.
+    </p>
+  </div>
+</section>
+
+<!-- Booking modal -->
+<div data-modal class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="booking-title" hidden>
+  <div class="modal-card" role="document">
+    <button
+      type="button"
+      data-modal-close
+      class="absolute top-3 right-3 w-9 h-9 rounded-full grid place-items-center text-(--color-ink-soft) hover:text-(--color-ink) hover:bg-(--color-sand)/40 transition-colors"
+      aria-label="Sluit dialog"
+    >
+      <Icon name="close" size={18} />
+    </button>
+
+    <div data-modal-form class="space-y-5">
+      <header class="space-y-1">
+        <div class="eyebrow text-(--color-signal)">Reserveer plek</div>
+        <h3 id="booking-title" class="font-display text-2xl md:text-[1.7rem] leading-tight" data-modal-title>—</h3>
+        <p class="text-sm text-(--color-ink-soft)" data-modal-sub>—</p>
+      </header>
+
+      <div class="rounded-xl bg-(--color-sand)/40 border border-(--color-line) p-3 flex items-center justify-between gap-3 text-sm">
+        <div class="flex items-center gap-2">
+          <Icon name="users" size={16} class="text-(--color-ink-soft)" />
+          <span data-modal-avail>—</span>
+        </div>
+        <div class="tabular font-display text-lg" data-modal-price>—</div>
+      </div>
+
+      <form data-booking-form class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block">
+            <span class="text-xs font-medium text-(--color-ink-soft) uppercase tracking-[0.12em]">Voornaam</span>
+            <input type="text" name="firstName" required class="mt-1 w-full px-3 py-2.5 rounded-lg border border-(--color-line) bg-(--color-sail) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-medium text-(--color-ink-soft) uppercase tracking-[0.12em]">Achternaam</span>
+            <input type="text" name="lastName" required class="mt-1 w-full px-3 py-2.5 rounded-lg border border-(--color-line) bg-(--color-sail) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition" />
+          </label>
+        </div>
+        <label class="block">
+          <span class="text-xs font-medium text-(--color-ink-soft) uppercase tracking-[0.12em]">E-mailadres</span>
+          <input type="email" name="email" required class="mt-1 w-full px-3 py-2.5 rounded-lg border border-(--color-line) bg-(--color-sail) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition" />
+        </label>
+        <label class="block">
+          <span class="text-xs font-medium text-(--color-ink-soft) uppercase tracking-[0.12em]">Aantal plekken</span>
+          <select name="seats" class="mt-1 w-full px-3 py-2.5 rounded-lg border border-(--color-line) bg-(--color-sail) focus:outline-none focus:border-(--color-ink) focus:ring-2 focus:ring-(--color-ink)/10 transition">
+            <option value="1">1 deelnemer</option>
+            <option value="2">2 deelnemers</option>
+            <option value="3">3 deelnemers</option>
+            <option value="4">4 deelnemers</option>
+          </select>
+        </label>
+        <button type="submit" class="btn-signal w-full justify-center">
+          Bevestig reservering
+          <Icon name="arrow-right" size={16} />
+        </button>
+        <p class="text-[0.7rem] text-(--color-ink-soft) text-center">
+          Geen betaling vereist in de demo. Plek wordt direct vastgehouden.
+        </p>
+      </form>
+    </div>
+
+    <div data-modal-success hidden class="text-center space-y-4 py-4">
+      <div class="w-16 h-16 mx-auto rounded-full bg-(--color-ink) text-(--color-sail) grid place-items-center">
+        <Icon name="check" size={28} stroke={2.2} />
+      </div>
+      <h3 class="font-display text-2xl">Reservering vastgelegd</h3>
+      <p class="text-sm text-(--color-ink-soft) max-w-sm mx-auto">
+        We hebben je plek vastgehouden voor <strong data-success-course>—</strong>. In een productieversie krijg je nu direct een bevestigingsmail met betaallink.
+      </p>
+      <button type="button" data-modal-close class="btn-primary mx-auto">
+        Sluit
+        <Icon name="arrow-right" size={16} />
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  type Booking = { courseId: string; seats: number };
+  const STORAGE_KEY = "vg-bookings-v1";
+
+  const readBookings = (): Booking[] => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as Booking[]) : [];
+    } catch {
+      return [];
+    }
+  };
+  const writeBookings = (b: Booking[]) => localStorage.setItem(STORAGE_KEY, JSON.stringify(b));
+  const seatsForCourse = (id: string): number =>
+    readBookings().filter((b) => b.courseId === id).reduce((acc, b) => acc + b.seats, 0);
+
+  const grid = document.querySelector<HTMLElement>("[data-course-grid]");
+  const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-course-card]"));
+  const remainingTotalEl = document.querySelector<HTMLElement>("[data-stat-remaining]");
+
+  const renderCard = (card: HTMLElement) => {
+    const id = card.dataset.courseId!;
+    const capacity = Number(card.dataset.capacity);
+    const preBooked = Number(card.dataset.preBooked);
+    const userBooked = seatsForCourse(id);
+    const taken = preBooked + userBooked;
+    const remaining = Math.max(0, capacity - taken);
+    const pct = Math.min(100, Math.round((taken / capacity) * 100));
+
+    const fill = card.querySelector<HTMLElement>("[data-avail-fill]")!;
+    const bar = card.querySelector<HTMLElement>("[data-avail-bar]")!;
+    const dot = card.querySelector<HTMLElement>("[data-status-dot]")!;
+    const label = card.querySelector<HTMLElement>("[data-status-label]")!;
+    const count = card.querySelector<HTMLElement>("[data-status-count]")!;
+    const bookLabel = card.querySelector<HTMLElement>("[data-book-label]")!;
+    const trigger = card.querySelector<HTMLButtonElement>("[data-book-trigger]")!;
+
+    fill.style.width = `${pct}%`;
+    bar.classList.toggle("is-low", remaining > 0 && remaining <= 3);
+    bar.classList.toggle("is-full", remaining === 0);
+    dot.className = "status-dot " + (remaining === 0 ? "status-dot--full" : remaining <= 3 ? "status-dot--low" : "status-dot--ok");
+    count.textContent = `${remaining} / ${capacity}`;
+
+    if (remaining === 0) {
+      label.textContent = "Volgeboekt";
+      bookLabel.textContent = "Op de wachtlijst";
+      trigger.classList.add("opacity-70");
+      trigger.dataset.full = "1";
+    } else if (remaining === 1) {
+      label.textContent = `Nog 1 plek vrij`;
+      bookLabel.textContent = "Reserveer plek";
+      trigger.classList.remove("opacity-70");
+      delete trigger.dataset.full;
+    } else if (remaining <= 3) {
+      label.textContent = `Bijna vol, nog ${remaining}`;
+      bookLabel.textContent = "Reserveer plek";
+      trigger.classList.remove("opacity-70");
+      delete trigger.dataset.full;
+    } else {
+      label.textContent = `Plek voor ${remaining} van ${capacity}`;
+      bookLabel.textContent = "Reserveer plek";
+      trigger.classList.remove("opacity-70");
+      delete trigger.dataset.full;
+    }
+  };
+
+  const renderAll = () => {
+    cards.forEach(renderCard);
+    if (remainingTotalEl) {
+      const total = cards.reduce((acc, card) => {
+        const cap = Number(card.dataset.capacity);
+        const pre = Number(card.dataset.preBooked);
+        const id = card.dataset.courseId!;
+        return acc + Math.max(0, cap - pre - seatsForCourse(id));
+      }, 0);
+      remainingTotalEl.textContent = String(total);
+    }
+  };
+  renderAll();
+
+  // Filters
+  const filterBtns = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter]"));
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.filter!;
+      filterBtns.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle("bg-(--color-ink)", active);
+        b.classList.toggle("text-(--color-sail)", active);
+        b.classList.toggle("border-(--color-ink)", active);
+        b.setAttribute("aria-pressed", String(active));
+      });
+      cards.forEach((c) => {
+        const match = key === "all" || c.dataset.courseCategory === key;
+        (c as HTMLElement).style.display = match ? "" : "none";
+      });
+    });
+  });
+
+  // Reset
+  document.querySelector<HTMLButtonElement>("[data-reset-bookings]")?.addEventListener("click", () => {
+    if (!confirm("Demo-boekingen wissen? Alle plaatsen lopen weer terug naar de uitgangswaarde.")) return;
+    writeBookings([]);
+    renderAll();
+    showToast("Demo gereset, alle plekken weer beschikbaar");
+  });
+
+  // Modal
+  const modal = document.querySelector<HTMLElement>("[data-modal]")!;
+  const modalTitle = modal.querySelector<HTMLElement>("[data-modal-title]")!;
+  const modalSub = modal.querySelector<HTMLElement>("[data-modal-sub]")!;
+  const modalAvail = modal.querySelector<HTMLElement>("[data-modal-avail]")!;
+  const modalPrice = modal.querySelector<HTMLElement>("[data-modal-price]")!;
+  const modalForm = modal.querySelector<HTMLFormElement>("[data-booking-form]")!;
+  const formWrap = modal.querySelector<HTMLElement>("[data-modal-form]")!;
+  const successWrap = modal.querySelector<HTMLElement>("[data-modal-success]")!;
+  const successCourse = modal.querySelector<HTMLElement>("[data-success-course]")!;
+  const seatsSelect = modalForm.querySelector<HTMLSelectElement>("[name=seats]")!;
+  let activeCourseId: string | null = null;
+
+  const closeModal = () => {
+    modal.classList.remove("is-open");
+    document.body.style.overflow = "";
+    setTimeout(() => {
+      modal.hidden = true;
+      formWrap.hidden = false;
+      successWrap.hidden = true;
+      modalForm.reset();
+    }, 280);
+  };
+
+  modal.querySelectorAll<HTMLButtonElement>("[data-modal-close]").forEach((b) =>
+    b.addEventListener("click", closeModal)
+  );
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal();
+  });
+
+  cards.forEach((card) => {
+    const trigger = card.querySelector<HTMLButtonElement>("[data-book-trigger]")!;
+    trigger.addEventListener("click", () => {
+      const id = card.dataset.courseId!;
+      const capacity = Number(card.dataset.capacity);
+      const preBooked = Number(card.dataset.preBooked);
+      const remaining = Math.max(0, capacity - preBooked - seatsForCourse(id));
+      const title = card.querySelector("h3")?.textContent ?? "";
+      const periode = card.querySelector("dd")?.textContent ?? "";
+      const price = Number(card.dataset.price);
+
+      activeCourseId = id;
+      modalTitle.textContent = title;
+      modalSub.textContent = `${periode} · ${card.querySelectorAll("dd")[2]?.textContent ?? ""}`;
+      modalAvail.textContent = remaining > 0 ? `${remaining} van ${capacity} plekken vrij` : "Wachtlijst, alle plekken vol";
+      modalPrice.textContent = `€${price}`;
+
+      // Limit seats select to remaining
+      Array.from(seatsSelect.options).forEach((opt) => {
+        const need = Number(opt.value);
+        opt.disabled = remaining === 0 || need > remaining;
+      });
+      const firstAvail = Array.from(seatsSelect.options).find((o) => !o.disabled);
+      if (firstAvail) seatsSelect.value = firstAvail.value;
+
+      modal.hidden = false;
+      requestAnimationFrame(() => modal.classList.add("is-open"));
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  modalForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!activeCourseId) return;
+    const data = new FormData(modalForm);
+    const seats = Number(data.get("seats") ?? "1");
+    const bookings = readBookings();
+    bookings.push({ courseId: activeCourseId, seats });
+    writeBookings(bookings);
+    renderAll();
+
+    const card = cards.find((c) => c.dataset.courseId === activeCourseId);
+    successCourse.textContent = card?.querySelector("h3")?.textContent ?? "deze cursus";
+    formWrap.hidden = true;
+    successWrap.hidden = false;
+    showToast(`Plek vastgehouden voor ${seats} ${seats === 1 ? "deelnemer" : "deelnemers"}`);
+  });
+
+  // Toast
+  const toast = document.querySelector<HTMLElement>("[data-toast]");
+  const toastMsg = document.querySelector<HTMLElement>("[data-toast-msg]");
+  let toastTimer: number | undefined;
+  function showToast(msg: string) {
+    if (!toast || !toastMsg) return;
+    toastMsg.textContent = msg;
+    toast.classList.add("is-visible");
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2800);
+  }
+</script>

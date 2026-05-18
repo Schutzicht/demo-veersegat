@@ -1,0 +1,69 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<footer class="surface-deep relative overflow-hidden mt-16 md:mt-24">
+  <!-- Watergolf bovenrand: zachte dome -->
+  <div class="relative -mt-px text-(--color-sail) leading-none" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" class="w-full h-10 md:h-14 block">
+      <path d="M0 0 H1440 V35 Q720 75 0 35 Z" fill="currentColor"/>
+    </svg>
+  </div>
+
+  <div class="container-vg pt-10 md:pt-12 pb-10 md:pb-12 relative">
+    <div class="grid md:grid-cols-12 gap-8 md:gap-12 items-start">
+      <div class="md:col-span-5 space-y-5">
+        <div class="flex items-center gap-3">
+          <img src="/brand/mark.svg" alt="" width="44" height="44" class="w-10 h-10 md:w-11 md:h-11 shrink-0" />
+          <div class="font-display italic text-xl md:text-3xl leading-tight">Zeilschool Het Veerse Gat</div>
+        </div>
+        <p class="text-sm text-(--color-foam) leading-relaxed max-w-md">
+          Sinds 1972 leren wij Zeeland zeilen. Vanuit Veere, op een van de mooiste plekken van Nederland, met erkende instructeurs, een bezielde vloot en een ploeg die het water beter kent dan z'n eigen achtertuin.
+        </p>
+        <div class="flex flex-wrap items-center gap-3 pt-3">
+          <img src="/badges/watersportverbond.png" alt="Watersportverbond erkende opleidingslocatie" width="78" height="78" class="h-14 md:h-16 w-auto opacity-90 bg-(--color-sail) rounded-md p-1.5" />
+          <img src="/badges/watersport-academy.png" alt="Watersport Academy partner" width="78" height="78" class="h-14 md:h-16 w-auto opacity-90 bg-(--color-sail) rounded-md p-1.5" />
+        </div>
+      </div>
+
+      <div class="md:col-span-3 space-y-4 text-sm">
+        <div class="eyebrow text-(--color-foam)/70">Bezoek</div>
+        <a href="https://maps.google.com/?q=Polredijk+21+Veere" target="_blank" rel="noopener" class="flex items-start gap-2.5 text-(--color-sail) hover:text-(--color-signal) transition-colors">
+          <Icon name="pin" size={18} />
+          <span>Polredijk 21<br/>4351 RT Veere</span>
+        </a>
+        <div class="text-(--color-foam) text-xs leading-relaxed pt-1">
+          <div>Mrt - okt: dagelijks open</div>
+          <div>Receptie: 09:00 – 17:00</div>
+        </div>
+      </div>
+
+      <div class="md:col-span-4 space-y-4 text-sm">
+        <div class="eyebrow text-(--color-foam)/70">Contact</div>
+        <div class="flex flex-col gap-2.5">
+          <a href="tel:+31118501398" class="flex items-center gap-2.5 text-(--color-sail) hover:text-(--color-signal) transition-colors">
+            <Icon name="phone" size={18} />
+            <span class="tabular">0118 - 501 398</span>
+          </a>
+          <a href="mailto:info@veersegat.nl" class="flex items-center gap-2.5 text-(--color-sail) hover:text-(--color-signal) transition-colors">
+            <Icon name="mail" size={18} />
+            <span>info@veersegat.nl</span>
+          </a>
+        </div>
+        <div class="flex items-center gap-3 pt-2">
+          <a href="https://www.facebook.com/zeilschoolhetveersegat" target="_blank" rel="noopener" class="w-10 h-10 rounded-full border border-(--color-foam)/30 grid place-items-center text-(--color-sail) hover:bg-(--color-signal) hover:border-(--color-signal) transition-colors" aria-label="Facebook">
+            <Icon name="facebook" size={18} />
+          </a>
+          <a href="https://wa.me/31118501398" target="_blank" rel="noopener" class="w-10 h-10 rounded-full border border-(--color-foam)/30 grid place-items-center text-(--color-sail) hover:bg-(--color-signal) hover:border-(--color-signal) transition-colors" aria-label="WhatsApp">
+            <Icon name="whatsapp" size={18} />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 pt-6 border-t border-(--color-foam)/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-(--color-foam)/70">
+      <div>© <span class="tabular">{new Date().getFullYear()}</span> Zeilschool Het Veerse Gat · Veere, Zeeland</div>
+      <div>Demo-ontwerp door Schut Marketing, niet de live site</div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,83 @@
+---
+import Icon from "./Icon.astro";
+
+const pillars = [
+  {
+    icon: "compass",
+    title: "Eigenwijze school",
+    body: "Geen lopende band. Acht instructeurs, kleine groepen, en een hoofdinstructeur die elke ochtend de wind ruikt voor we het water op gaan.",
+  },
+  {
+    icon: "sail",
+    title: "Drie vloten, één meer",
+    body: "Optimist, Laser Pico, Bahia en Valk, voor elke leeftijd en elk niveau het juiste schip. Onderhoud doen we hier op de werf, niet op afstand.",
+  },
+  {
+    icon: "trophy",
+    title: "CWO-diploma's",
+    body: "Officieel erkend door het Watersportverbond. Vaardigheid wordt getoetst, het diploma krijg je op vrijdagmiddag tussen de moeders en de patat in.",
+  },
+];
+---
+
+<section id="zeilschool" class="container-vg py-16 md:py-28 scroll-mt-20">
+  <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+    <header class="lg:col-span-5 space-y-5 lg:sticky lg:top-24" data-reveal>
+      <div class="eyebrow">De zeilschool</div>
+      <h2 class="font-display text-[clamp(1.85rem,5.2vw,3.4rem)] leading-[1.02]">
+        Een school die <span class="italic">in</span> het water staat, niet ernaast.
+      </h2>
+      <p class="text-(--color-ink-soft) leading-relaxed max-w-md">
+        Wij doen geen massacursussen. Wij doen weekjes waarin een kind op maandag bang is voor het overstag en op vrijdag zelf het commando geeft. Met instructeurs die hier opgegroeid zijn, een werkplaats op het terrein en koffie die altijd te sterk is.
+      </p>
+      <div class="flex flex-wrap items-center gap-3 pt-2">
+        <a href="#cursussen" class="btn-primary">
+          Naar de cursussen
+          <Icon name="arrow-right" size={16} />
+        </a>
+        <a href="#contact" class="link-arrow">
+          Stuur ons een vraag
+          <Icon name="arrow-right" size={14} />
+        </a>
+      </div>
+    </header>
+
+    <div class="lg:col-span-7 space-y-5">
+      {pillars.map((p, i) => (
+        <article class="surface-paper rounded-(--radius-card) p-6 md:p-7 grid grid-cols-[auto_1fr] gap-5 md:gap-6 items-start hover:border-(--color-ink) transition-colors" data-reveal>
+          <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-(--color-ink) text-(--color-sail) grid place-items-center">
+            <Icon name={p.icon} size={22} />
+          </div>
+          <div>
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="font-display text-xl md:text-2xl">{p.title}</h3>
+              <span class="text-(--color-ink-soft) tabular text-sm">{String(i + 1).padStart(2, "0")} / 03</span>
+            </div>
+            <p class="text-(--color-ink-soft) leading-relaxed mt-2 text-[0.95rem]">{p.body}</p>
+          </div>
+        </article>
+      ))}
+
+      <!-- Quote / portret met foto -->
+      <article class="rounded-(--radius-card) bg-(--color-ink) text-(--color-sail) relative overflow-hidden grid md:grid-cols-5" data-reveal>
+        <div class="md:col-span-2 relative aspect-[4/3] md:aspect-auto">
+          <img src="/photos/herfstweek.jpg" alt="Cursisten in een Bahia op het Veerse Meer" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[right_center]" />
+          <div class="absolute inset-0 md:bg-gradient-to-r md:from-transparent md:to-(--color-ink)/70" aria-hidden="true"></div>
+        </div>
+        <div class="md:col-span-3 p-7 md:p-9 relative">
+          <div class="eyebrow text-(--color-signal)">Hoofdinstructeur</div>
+          <blockquote class="font-display italic text-2xl md:text-3xl leading-[1.15] mt-3">
+            "Zeilen leren is niet een trucje. Het is leren omgaan met iets dat je niet onder controle hebt. Dat duurt langer dan een week, maar we beginnen hier."
+          </blockquote>
+          <div class="mt-5 flex items-center gap-3 text-sm text-(--color-foam)">
+            <div class="w-9 h-9 rounded-full bg-(--color-foam)/15 grid place-items-center font-display text-sm">JK</div>
+            <div>
+              <div class="text-(--color-sail)">Jan-Kees de Looff</div>
+              <div class="text-[0.78rem] text-(--color-foam)/70">Sinds 1998 op het Veerse Meer</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

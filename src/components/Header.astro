@@ -1,0 +1,88 @@
+---
+import Icon from "./Icon.astro";
+
+const navItems = [
+  { href: "#zeilschool", label: "Zeilschool" },
+  { href: "#cursussen", label: "Cursussen" },
+  { href: "#verhuur", label: "Verhuur" },
+  { href: "#bedrijfsuitjes", label: "Bedrijfsuitjes" },
+  { href: "#verblijf", label: "Verblijf" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<header data-header class="fixed top-0 inset-x-0 z-50">
+  <div class="header-inner">
+    <div class="container-vg flex items-center justify-between gap-6 py-3.5 md:py-4">
+      <a href="#top" class="flex items-center gap-2.5 md:gap-3 group min-w-0">
+        <img
+          src="/brand/mark.svg"
+          alt=""
+          width="38"
+          height="38"
+          class="block w-8 h-8 md:w-9 md:h-9 shrink-0 transition-transform duration-700 group-hover:rotate-[-8deg]"
+        />
+        <span class="flex flex-col leading-tight min-w-0">
+          <span class="font-display text-[0.95rem] md:text-[1.2rem] tracking-tight italic truncate">
+            <span class="hidden sm:inline">Zeilschool</span>
+            <span class="sm:hidden">Z.</span>
+            Het Veerse Gat
+          </span>
+          <span class="text-[0.58rem] md:text-[0.66rem] uppercase tracking-[0.2em] text-(--color-ink-soft) truncate">Veere · sinds 1972</span>
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-7">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class="text-[0.86rem] font-medium tracking-wide text-(--color-ink) hover:text-(--color-signal) transition-colors"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="hidden md:flex items-center gap-3">
+        <a href="#cursussen" class="btn-signal text-xs">
+          Boek een cursus
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+
+      <button
+        type="button"
+        data-nav-toggle
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        class="lg:hidden flex items-center justify-center w-11 h-11 rounded-full border border-(--color-line) text-(--color-ink)"
+      >
+        <span class="sr-only">Menu openen</span>
+        <Icon name="menu" size={22} />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-nav" data-nav-panel class="mobile-nav-panel lg:hidden">
+    <div class="container-vg flex flex-col gap-1 pt-6 pb-10">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class="block py-4 border-b border-(--color-line) text-2xl font-display italic"
+        >
+          {item.label}
+        </a>
+      ))}
+      <div class="flex flex-col gap-3 pt-6">
+        <a href="#cursussen" class="btn-signal justify-center">
+          Boek een cursus
+          <Icon name="arrow-right" size={16} />
+        </a>
+        <a href="tel:+31118501398" class="btn-ghost justify-center">
+          <Icon name="phone" size={16} />
+          0118 - 501 398
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,27 @@
+---
+const tiles = [
+  { src: "/photos/slider-optimist.jpg", title: "Optimisten in formatie", sub: "Jeugdweek 28, start lijn" },
+  { src: "/photos/slider-kids.jpg", title: "Eerste keer overstag", sub: "OptiFun, dag drie" },
+  { src: "/photos/slider-laser.jpg", title: "Laser Pico's", sub: "Volwassenen op vrijdag" },
+];
+---
+
+<section class="container-vg pt-16 md:pt-20 pb-8" aria-label="Het Veerse Meer in beeld">
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {tiles.map((t) => (
+      <figure class="group relative rounded-(--radius-card) overflow-hidden aspect-[4/3]" data-reveal>
+        <img
+          src={t.src}
+          alt={t.title}
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover object-[right_center] scale-[1.6] origin-right transition-transform duration-[1.4s] group-hover:scale-[1.7]"
+        />
+        <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10, 30, 51, 0) 40%, rgba(10, 30, 51, 0.85) 100%);"></div>
+        <figcaption class="absolute inset-x-0 bottom-0 p-5 text-(--color-sail)">
+          <div class="font-display text-xl italic">{t.title}</div>
+          <div class="text-xs text-(--color-foam) tracking-wide mt-0.5">{t.sub}</div>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</section>

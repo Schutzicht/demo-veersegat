@@ -1,0 +1,84 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<section id="contact" class="container-vg py-16 md:py-28 scroll-mt-20">
+  <div class="grid lg:grid-cols-12 gap-10 lg:gap-14">
+    <div class="lg:col-span-5 space-y-6" data-reveal>
+      <div class="eyebrow">Contact & route</div>
+      <h2 class="font-display text-[clamp(1.85rem,5.2vw,3.6rem)] leading-[1.02]">
+        Kom langs op de <span class="italic">Polredijk</span>. Koffie staat klaar.
+      </h2>
+      <p class="text-(--color-ink-soft) max-w-md leading-relaxed">
+        Bellen werkt het snelst, mailen mag ook. Reserveren doe je het liefst via de cursusagenda hierboven; dan staat het meteen in onze planning.
+      </p>
+
+      <div class="space-y-3 pt-2">
+        <a href="tel:+31118501398" class="flex items-center gap-3 p-4 rounded-2xl surface-paper hover:border-(--color-ink) transition-colors group">
+          <div class="w-11 h-11 rounded-full bg-(--color-ink) text-(--color-sail) grid place-items-center group-hover:bg-(--color-signal) transition-colors">
+            <Icon name="phone" size={18} />
+          </div>
+          <div class="flex-1">
+            <div class="text-xs uppercase tracking-[0.16em] text-(--color-ink-soft)">Bellen</div>
+            <div class="font-display text-lg tabular">0118 - 501 398</div>
+          </div>
+          <Icon name="arrow-up-right" size={16} class="text-(--color-ink-soft) group-hover:text-(--color-signal) transition-colors" />
+        </a>
+
+        <a href="mailto:info@veersegat.nl" class="flex items-center gap-3 p-4 rounded-2xl surface-paper hover:border-(--color-ink) transition-colors group">
+          <div class="w-11 h-11 rounded-full bg-(--color-ink) text-(--color-sail) grid place-items-center group-hover:bg-(--color-signal) transition-colors">
+            <Icon name="mail" size={18} />
+          </div>
+          <div class="flex-1">
+            <div class="text-xs uppercase tracking-[0.16em] text-(--color-ink-soft)">Mailen</div>
+            <div class="font-display text-lg">info@veersegat.nl</div>
+          </div>
+          <Icon name="arrow-up-right" size={16} class="text-(--color-ink-soft) group-hover:text-(--color-signal) transition-colors" />
+        </a>
+
+        <a href="https://maps.google.com/?q=Polredijk+21+Veere" target="_blank" rel="noopener" class="flex items-center gap-3 p-4 rounded-2xl surface-paper hover:border-(--color-ink) transition-colors group">
+          <div class="w-11 h-11 rounded-full bg-(--color-ink) text-(--color-sail) grid place-items-center group-hover:bg-(--color-signal) transition-colors">
+            <Icon name="pin" size={18} />
+          </div>
+          <div class="flex-1">
+            <div class="text-xs uppercase tracking-[0.16em] text-(--color-ink-soft)">Adres</div>
+            <div class="font-display text-lg">Polredijk 21, 4351 RT Veere</div>
+          </div>
+          <Icon name="arrow-up-right" size={16} class="text-(--color-ink-soft) group-hover:text-(--color-signal) transition-colors" />
+        </a>
+      </div>
+
+      <div class="pt-4 grid grid-cols-2 gap-3 text-sm">
+        <div class="surface-paper rounded-2xl p-4">
+          <div class="text-xs uppercase tracking-[0.16em] text-(--color-ink-soft)">Receptie</div>
+          <div class="mt-1 leading-tight">ma – vr · 09:00 – 17:00<br/>za · 09:00 – 13:00</div>
+        </div>
+        <div class="surface-paper rounded-2xl p-4">
+          <div class="text-xs uppercase tracking-[0.16em] text-(--color-ink-soft)">Seizoen</div>
+          <div class="mt-1 leading-tight">Maart t/m oktober<br/>Daarbuiten: op afspraak</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Embedded map placeholder -->
+    <div class="lg:col-span-7" data-reveal>
+      <div class="rounded-(--radius-card) overflow-hidden border border-(--color-line) bg-(--color-ink) relative aspect-[5/4] md:aspect-[4/3]">
+        <iframe
+          title="Locatie Zeilschool Het Veerse Gat"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=3.6485%2C51.5375%2C3.6735%2C51.5485&layer=mapnik&marker=51.5430%2C3.6610"
+          class="absolute inset-0 w-full h-full grayscale-[0.3]"
+          loading="lazy"
+        ></iframe>
+        <a
+          href="https://www.openstreetmap.org/?mlat=51.5430&mlon=3.6610#map=15/51.5430/3.6610"
+          target="_blank"
+          rel="noopener"
+          class="absolute bottom-4 left-4 chip bg-(--color-sail) text-(--color-ink) shadow-lg"
+        >
+          <Icon name="pin" size={14} />
+          Polredijk 21, Veere
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -430,6 +430,10 @@ body.has-intro { overflow: hidden; }
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+@media (max-width: 640px) {
+  /* Toast boven de dock-CTA op mobiel */
+  .toast { bottom: calc(5rem + env(safe-area-inset-bottom, 0px)); }
+}
 
 /* ---- Availability bar ---------------------------------------- */
 .avail-bar {

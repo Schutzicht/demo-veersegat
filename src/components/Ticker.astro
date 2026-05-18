@@ -75,6 +75,14 @@
     transition: color 0.2s;
   }
   .ticker__close:hover { color: var(--color-sail); }
+  @media (max-width: 640px) {
+    /* Op mobiel staat de dock-CTA rechtsonder; ticker omhoog zodat ze niet botsen */
+    .ticker {
+      bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+      width: calc(100vw - 2rem);
+      max-width: 22rem;
+    }
+  }
   @media (min-width: 768px) {
     .ticker { left: 1.5rem; bottom: 1.5rem; }
   }

@@ -31,14 +31,14 @@ const groupsWithCourses = courseGroups
         {groupsWithCourses.map(({ meta }) => (
           <a href={`#group-${meta.key}`} class="cursus-quickjump__pill" data-quickjump={meta.key}>
             <span class="font-medium">{meta.label}</span>
-            <span class="cursus-quickjump__age">{meta.ageRange.replace("vanaf ", "vanaf ").replace(" jaar", " jr")}</span>
+            <span class="cursus-quickjump__age">{meta.ageRange.replace(" jaar", " jr")}</span>
           </a>
         ))}
       </div>
       <button
         type="button"
         data-reset-bookings
-        class="text-xs text-(--color-ink-soft) hover:text-(--color-signal) underline underline-offset-4 shrink-0"
+        class="text-xs text-(--color-ink-soft) hover:text-(--color-signal) underline underline-offset-4 shrink-0 whitespace-nowrap"
       >
         Demo resetten
       </button>

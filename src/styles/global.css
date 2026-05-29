@@ -13,8 +13,10 @@
   --color-sand: #ECECE8;      /* lichte neutrale vulling */
   --color-sand-2: #E0E0DB;
   --color-rope: #9AA1A7;      /* neutraal grijs */
-  --color-signal: #BD4A28;    /* ingehouden terracotta accent */
-  --color-signal-deep: #9C3A1C;
+  --color-signal: #E2231A;    /* huisstijl-rood (Het Veerse Gat) */
+  --color-signal-deep: #B41A14;
+  --color-brand-blue: #1F76C2; /* huisstijl-blauw, alleen voor brand-accenten */
+  --color-brand-blue-deep: #145EA0;
   --color-ink-soft: #6B7278;  /* secundaire tekst op licht */
   --color-line: #E9E9E5;      /* hairline */
   --color-line-2: #DBDBD5;    /* iets sterker */

@@ -1,7 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <circle cx="32" cy="32" r="32" fill="#0B1F36"/>
-  <path d="M30 12 V46 L14 46 Z" fill="#F7F1E6"/>
-  <path d="M34 18 V46 L50 46 Z" fill="#E55934"/>
-  <rect x="29" y="12" width="2" height="38" fill="#F7F1E6"/>
-  <path d="M10 50 Q22 46 32 50 T54 50 V52 H10 Z" fill="#BDD3D6" opacity="0.85"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+  <!-- Zon (rood) -->
+  <circle cx="40" cy="30" r="22" fill="#E2231A"/>
+
+  <!-- Mast met vlag -->
+  <rect x="39" y="4" width="2" height="56" fill="#1F76C2"/>
+  <path d="M41 6 L52 11 L41 16 Z" fill="#E2231A"/>
+
+  <!-- Zeil (wit) -->
+  <path d="M22 60 L39 18 L39 60 Z" fill="#FFFFFF"/>
+  <path d="M39 18 L39 60 L55 60 Z" fill="#FFFFFF"/>
+  <path d="M22 60 L39 18 L39 60 Z" fill="#1F76C2" opacity="0.16"/>
+
+  <!-- Romp -->
+  <path d="M14 62 H66 L58 73 H22 Z" fill="#1F76C2"/>
+
+  <!-- Water-rimpel -->
+  <path d="M10 77 Q24 74 40 77 T70 77" stroke="#1F76C2" stroke-width="2.2" stroke-linecap="round" fill="none"/>
 </svg>

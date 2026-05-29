@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 128" fill="none">
+  <!-- Zon (rood) -->
+  <ellipse cx="40" cy="36" rx="22" ry="24" fill="#E2231A"/>
+
+  <!-- Mast met vlag -->
+  <rect x="39" y="6" width="2" height="60" fill="#1F76C2"/>
+  <path d="M41 8 L52 14 L41 19 Z" fill="#E2231A"/>
+
+  <!-- Zeil -->
+  <path d="M22 64 L39 22 L39 64 Z" fill="#FFFFFF"/>
+  <path d="M39 22 L39 64 L55 64 Z" fill="#FFFFFF"/>
+  <path d="M22 64 L39 22 L39 64 Z" fill="#1F76C2" opacity="0.18"/>
+
+  <!-- Romp -->
+  <path d="M14 66 H66 L58 78 H22 Z" fill="#1F76C2"/>
+
+  <!-- Water-rimpels -->
+  <path d="M10 84 Q24 80 40 84 T70 84" stroke="#1F76C2" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <path d="M16 90 Q28 87 40 90 T64 90" stroke="#1F76C2" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+  <!-- Wordmark "Het Veerse Gat" -->
+  <text x="40" y="115" text-anchor="middle" fill="#E2231A" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="13" letter-spacing="-0.01em">Het Veerse Gat</text>
+</svg>

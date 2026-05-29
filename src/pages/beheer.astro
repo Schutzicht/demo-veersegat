@@ -100,24 +100,26 @@ import DemoDock from "../components/DemoDock.astro";
 
       <!-- ─── INSCHRIJVINGEN ──────────────────────────────────────────── -->
       <section data-panel="inschrijvingen" hidden class="space-y-4">
-        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-3 md:p-4 flex flex-wrap items-center gap-2">
-          <div class="relative flex-1 min-w-[180px]">
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-3 md:p-4 space-y-2 md:space-y-0 md:flex md:flex-wrap md:items-center md:gap-2">
+          <div class="relative md:flex-1 md:min-w-[200px]">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-(--color-ink-soft)"><Icon name="search" size={15} /></span>
             <input type="search" data-filter-search placeholder="Zoek op naam, plaats of kenmerk…" class="w-full pl-9 pr-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm focus:outline-none focus:border-(--color-ink)" />
           </div>
-          <select data-filter-status class="px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm focus:outline-none focus:border-(--color-ink)">
-            <option value="">Alle statussen</option>
-            <option value="nieuw">Nieuw</option>
-            <option value="bevestigd">Bevestigd</option>
-            <option value="wachtlijst">Wachtlijst</option>
-            <option value="geannuleerd">Geannuleerd</option>
-          </select>
-          <select data-filter-boot class="px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm focus:outline-none focus:border-(--color-ink)"></select>
-          <label class="flex items-center gap-2 text-xs text-(--color-ink-soft) px-2 cursor-pointer select-none whitespace-nowrap">
+          <div class="grid grid-cols-2 gap-2 md:contents">
+            <select data-filter-status class="px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm focus:outline-none focus:border-(--color-ink)">
+              <option value="">Alle statussen</option>
+              <option value="nieuw">Nieuw</option>
+              <option value="bevestigd">Bevestigd</option>
+              <option value="wachtlijst">Wachtlijst</option>
+              <option value="geannuleerd">Geannuleerd</option>
+            </select>
+            <select data-filter-boot class="px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm focus:outline-none focus:border-(--color-ink)"></select>
+          </div>
+          <label class="flex items-center gap-2 text-xs text-(--color-ink-soft) py-1 md:px-2 cursor-pointer select-none whitespace-nowrap">
             <input type="checkbox" data-filter-flags class="accent-(--color-signal)" />
             Alleen met signaal
           </label>
-          <button type="button" data-export-csv class="btn-ghost text-xs ml-auto">
+          <button type="button" data-export-csv class="btn-ghost text-xs w-full md:w-auto justify-center md:ml-auto">
             <Icon name="download" size={14} />
             Exporteer naar Excel
           </button>
@@ -142,7 +144,7 @@ import DemoDock from "../components/DemoDock.astro";
 
       <!-- ─── VERHUUR ─────────────────────────────────────────────────── -->
       <section data-panel="verhuur" hidden class="space-y-4">
-        <div data-verhuur-units class="grid sm:grid-cols-3 gap-2.5 md:gap-3"></div>
+        <div data-verhuur-units class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-3"></div>
         <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) overflow-hidden">
           <header class="px-4 md:px-6 py-4 border-b border-(--color-line) bg-(--color-sail-2)">
             <div class="font-display text-lg">Boekingen verblijf, boten & groepen</div>
@@ -159,10 +161,10 @@ import DemoDock from "../components/DemoDock.astro";
           <p class="text-sm text-(--color-ink-soft) max-w-xl leading-relaxed">
             Inschrijvingen, wachtlijst en aanpassingen staan lokaal in je browser. Reset alles, of vul de demo opnieuw met een realistisch seizoen.
           </p>
-          <div class="flex flex-wrap gap-2 pt-1">
-            <button type="button" data-reset="overrides" class="btn-ghost text-xs">Reset alleen bezettings-aanpassingen</button>
-            <button type="button" data-reset="all" class="btn-primary text-xs">Wis alles</button>
-            <button type="button" data-reseed class="btn-signal text-xs ml-auto">Vul demo-data opnieuw</button>
+          <div class="flex flex-col sm:flex-row sm:flex-wrap gap-2 pt-1">
+            <button type="button" data-reset="overrides" class="btn-ghost text-xs justify-center">Reset alleen bezettings-aanpassingen</button>
+            <button type="button" data-reset="all" class="btn-primary text-xs justify-center">Wis alles</button>
+            <button type="button" data-reseed class="btn-signal text-xs justify-center sm:ml-auto">Vul demo-data opnieuw</button>
           </div>
         </div>
         <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-5 md:p-7 space-y-3">
@@ -196,8 +198,8 @@ import DemoDock from "../components/DemoDock.astro";
           <div class="eyebrow text-(--color-signal)">Persoonlijke mail · concept</div>
           <h3 class="font-display text-xl leading-tight">Klaar om te versturen, in jouw toon.</h3>
         </header>
-        <div class="text-xs text-(--color-ink-soft) mb-1">Aan: <span data-mail-to class="font-medium text-(--color-ink)"></span></div>
-        <div class="text-xs text-(--color-ink-soft) mb-2">Onderwerp: <span data-mail-subject class="font-medium text-(--color-ink)"></span></div>
+        <div class="text-xs text-(--color-ink-soft) mb-1 break-words">Aan: <span data-mail-to class="font-medium text-(--color-ink) break-all"></span></div>
+        <div class="text-xs text-(--color-ink-soft) mb-2 break-words">Onderwerp: <span data-mail-subject class="font-medium text-(--color-ink)"></span></div>
         <textarea data-mail-body rows="12" class="w-full p-3 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm leading-relaxed focus:outline-none focus:border-(--color-ink)"></textarea>
         <div class="flex flex-wrap items-center gap-2 pt-3">
           <button type="button" data-mail-copy class="btn-primary text-xs">
@@ -264,7 +266,10 @@ import DemoDock from "../components/DemoDock.astro";
 
       .modal-card--mail { max-width: 36rem; }
 
-      .bz-row { display:flex; align-items:center; gap:0.7rem; padding:0.55rem 0; }
+      .bz-row { display:flex; align-items:center; gap:0.55rem; padding:0.55rem 0; flex-wrap:wrap; }
+      @media (min-width: 640px) { .bz-row { gap:0.7rem; flex-wrap:nowrap; } }
+      .bz-row > [data-bar-wrap] { flex: 1 1 100%; order: 99; min-width: 0; }
+      @media (min-width: 640px) { .bz-row > [data-bar-wrap] { flex: 1 1 auto; order: initial; } }
       .cap-step { width:26px; height:26px; border-radius:7px; border:1px solid var(--color-line); background: var(--color-sail-2); color: var(--color-ink); display:grid; place-items:center; cursor:pointer; font-size:0.9rem; line-height:1; }
       .cap-step:hover { border-color: var(--color-ink); }
 
@@ -440,11 +445,11 @@ import DemoDock from "../components/DemoDock.astro";
             const barClass = st.closed || st.full ? "is-full" : st.remaining <= 2 ? "is-low" : "";
             return `
             <div class="bz-row" data-klas="${klasId}">
-              <div class="w-20 shrink-0 text-sm font-medium">${b.label}</div>
-              <div class="flex-1 min-w-0">
+              <div class="w-16 sm:w-20 shrink-0 text-sm font-medium">${b.label}</div>
+              <div data-bar-wrap>
                 <div class="avail-bar ${barClass}"><div class="avail-bar__fill" style="width:${st.closed ? 100 : st.pct}%"></div></div>
               </div>
-              <div class="w-14 shrink-0 text-right text-xs tabular ${st.closed ? "text-(--color-ink-soft)" : ""}">${st.closed ? "dicht" : `${st.booked}/${st.capacity}`}</div>
+              <div class="w-12 sm:w-14 shrink-0 text-right text-xs tabular ${st.closed ? "text-(--color-ink-soft)" : ""}">${st.closed ? "dicht" : `${st.booked}/${st.capacity}`}</div>
               <div class="flex items-center gap-1 shrink-0">
                 <button class="cap-step" data-act="cap-" data-klas="${klasId}" aria-label="Capaciteit −">−</button>
                 <button class="cap-step" data-act="cap+" data-klas="${klasId}" aria-label="Capaciteit +">+</button>

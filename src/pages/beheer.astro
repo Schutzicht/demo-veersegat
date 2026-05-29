@@ -9,14 +9,14 @@ import DemoDock from "../components/DemoDock.astro";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0A1E33" />
+    <meta name="theme-color" content="#0E1216" />
     <meta name="robots" content="noindex" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,30..100;1,9..144,300..700,30..100&family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     />
     <title>Beheer · Zeilschool Het Veerse Gat</title>
   </head>
@@ -27,13 +27,13 @@ import DemoDock from "../components/DemoDock.astro";
         <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
           <img src="/brand/mark.svg" alt="" width="32" height="32" class="w-7 h-7 md:w-8 md:h-8 shrink-0" />
           <div class="leading-tight min-w-0">
-            <div class="font-display italic text-[0.95rem] md:text-lg truncate">Het Veerse Gat · Beheer</div>
+            <div class="font-display font-semibold text-[0.95rem] md:text-lg tracking-[-0.02em] truncate">Het Veerse Gat · Beheer</div>
             <div class="text-[0.56rem] md:text-[0.62rem] uppercase tracking-[0.2em] text-(--color-foam)/70 truncate">Inschrijvingen, bezetting & verhuur</div>
           </div>
         </div>
         <div class="flex items-center gap-2">
           <span class="hidden sm:inline-flex chip border border-(--color-foam)/25 text-(--color-foam) text-[0.66rem]">
-            <span class="w-1.5 h-1.5 rounded-full bg-(--color-signal) shimmer"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-(--color-foam)"></span>
             Demo
           </span>
           <a href="/" class="btn-ghost text-xs text-(--color-sail) border-(--color-foam)/30 hover:bg-(--color-sail) hover:text-(--color-ink)">
@@ -67,10 +67,9 @@ import DemoDock from "../components/DemoDock.astro";
 
         <!-- Piek-simulatie -->
         <div class="rounded-(--radius-card) surface-deep relative overflow-hidden p-5 md:p-6">
-          <div class="absolute inset-0 opacity-[0.06] pointer-events-none" style="background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);mix-blend-mode:screen;"></div>
           <div class="relative grid md:grid-cols-12 gap-4 items-center">
             <div class="md:col-span-8 space-y-1.5">
-              <div class="eyebrow text-(--color-signal)">1 januari, 15:00 uur</div>
+              <div class="eyebrow text-(--color-foam)">1 januari, 15:00 uur</div>
               <h2 class="font-display text-xl md:text-2xl leading-tight">Het moment dat alles tegelijk binnenkomt.</h2>
               <p class="text-sm text-(--color-foam) max-w-xl leading-relaxed">
                 Zestig inschrijvingen in een paar minuten, vrienden die naast elkaar op de bank zitten te klikken. Druk op de knop en zie hoe het systeem ze opvangt: realtime tellen, en wat vol is klikt vanzelf dicht. Geen dubbele boekingen meer.
@@ -241,15 +240,15 @@ import DemoDock from "../components/DemoDock.astro";
       .toggle.is-on .toggle__dot { transform: translateX(16px); }
 
       .flag-pill { display:inline-flex; align-items:center; gap:0.3rem; padding:0.18rem 0.5rem; border-radius:999px; font-size:0.68rem; line-height:1.2; font-weight:500; }
-      .flag-pill--actie { background: rgba(228,90,43,0.12); color: var(--color-signal-deep); border:1px solid rgba(228,90,43,0.3); }
-      .flag-pill--let-op { background: rgba(199,166,100,0.18); color:#7a5e1f; border:1px solid rgba(199,166,100,0.45); }
-      .flag-pill--info { background: rgba(31,91,130,0.1); color: var(--color-tide); border:1px solid rgba(31,91,130,0.25); }
+      .flag-pill--actie { background: rgba(189,74,40,0.10); color: var(--color-signal-deep); border:1px solid rgba(189,74,40,0.25); }
+      .flag-pill--let-op { background: rgba(107,114,120,0.10); color: var(--color-ink); border:1px solid var(--color-line-2); }
+      .flag-pill--info { background: rgba(107,114,120,0.08); color: var(--color-ink-soft); border:1px solid var(--color-line); }
 
       .status-chip { display:inline-flex; align-items:center; gap:0.3rem; padding:0.2rem 0.55rem; border-radius:999px; font-size:0.68rem; font-weight:500; letter-spacing:0.02em; }
-      .status-chip--nieuw { background: rgba(228,90,43,0.12); color: var(--color-signal-deep); }
-      .status-chip--bevestigd { background: rgba(63,143,90,0.14); color:#2f7048; }
-      .status-chip--wachtlijst { background: rgba(199,166,100,0.2); color:#7a5e1f; }
-      .status-chip--geannuleerd { background: rgba(90,110,131,0.14); color: var(--color-ink-soft); }
+      .status-chip--nieuw { background: rgba(189,74,40,0.10); color: var(--color-signal-deep); }
+      .status-chip--bevestigd { background: rgba(79,129,99,0.12); color:#2f7048; }
+      .status-chip--wachtlijst { background: rgba(107,114,120,0.12); color: var(--color-ink); }
+      .status-chip--geannuleerd { background: rgba(107,114,120,0.08); color: var(--color-ink-soft); }
 
       .insch-row { display:flex; align-items:center; gap:0.85rem; padding:0.7rem 1rem; cursor:pointer; transition:background 0.15s; }
       .insch-row:hover { background: var(--color-sail-2); }
@@ -258,9 +257,9 @@ import DemoDock from "../components/DemoDock.astro";
       .mini-avatar { width:36px; height:36px; border-radius:999px; display:grid; place-items:center; font-weight:600; font-size:0.8rem; color: var(--color-sail); flex-shrink:0; }
 
       /* Drawer */
-      .drawer-backdrop { position: fixed; inset: 0; z-index: 80; background: rgba(10,30,51,0.45); backdrop-filter: blur(3px); display:flex; justify-content:flex-end; opacity:0; transition: opacity 0.3s var(--ease-out-quart); }
+      .drawer-backdrop { position: fixed; inset: 0; z-index: 80; background: rgba(14,18,22,0.45); backdrop-filter: blur(3px); display:flex; justify-content:flex-end; opacity:0; transition: opacity 0.3s var(--ease-out-quart); }
       .drawer-backdrop.is-open { opacity: 1; }
-      .drawer { width: min(30rem, 100%); height: 100%; background: var(--color-sail-2); overflow-y: auto; box-shadow: -20px 0 60px -30px rgba(10,30,51,0.5); transform: translateX(100%); transition: transform 0.35s var(--ease-out-quart); }
+      .drawer { width: min(30rem, 100%); height: 100%; background: var(--color-sail-2); overflow-y: auto; box-shadow: -20px 0 60px -30px rgba(14,18,22,0.5); transform: translateX(100%); transition: transform 0.35s var(--ease-out-quart); }
       .drawer-backdrop.is-open .drawer { transform: translateX(0); }
 
       .modal-card--mail { max-width: 36rem; }

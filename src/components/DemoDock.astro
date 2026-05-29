@@ -76,7 +76,7 @@ const { active } = Astro.props;
     color: var(--color-sail);
     border-radius: 999px;
     border: 1px solid color-mix(in oklab, var(--color-sail) 18%, transparent);
-    box-shadow: 0 18px 40px -22px rgba(10, 30, 51, 0.55);
+    box-shadow: 0 18px 40px -22px rgba(14,18,22, 0.55);
     font-family: var(--font-sans);
     transition: opacity 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
   }
@@ -103,7 +103,6 @@ const { active } = Astro.props;
     border-radius: 999px;
     background: var(--color-signal);
     box-shadow: 0 0 0 3px rgba(228, 90, 43, 0.25);
-    animation: dock-pulse 2.4s ease-in-out infinite;
   }
   @keyframes dock-pulse {
     0%, 100% { box-shadow: 0 0 0 3px rgba(228, 90, 43, 0.25); }
@@ -169,7 +168,7 @@ const { active } = Astro.props;
     font-size: 0.72rem;
     font-weight: 500;
     cursor: pointer;
-    box-shadow: 0 14px 30px -18px rgba(10, 30, 51, 0.5);
+    box-shadow: 0 14px 30px -18px rgba(14,18,22, 0.5);
     opacity: 0;
     transform: translateY(-6px);
     transition: opacity 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
@@ -215,7 +214,6 @@ const { active } = Astro.props;
       border-radius: 999px;
       box-shadow: 0 20px 40px -16px rgba(228, 90, 43, 0.55), 0 2px 0 rgba(0, 0, 0, 0.08);
       gap: 0.55rem;
-      animation: dock-mobile-bob 3.6s ease-in-out infinite;
     }
     .demo-dock__tab:not(.is-active) .demo-dock__tab-mobile { display: inline; }
     .demo-dock__tab:not(.is-active) svg {

@@ -3,115 +3,72 @@ import Icon from "./Icon.astro";
 ---
 
 <section class="relative overflow-hidden bg-(--color-ink) text-(--color-sail)">
-  <!-- Background photo -->
+  <!-- Achtergrondbeeld -->
   <div class="absolute inset-0" aria-hidden="true">
     <img
       src="/photos/zonsondergang.jpg"
       alt=""
-      class="w-full h-full object-cover object-[center_60%]"
+      class="w-full h-full object-cover object-[center_55%]"
       loading="eager"
       fetchpriority="high"
     />
-    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10, 30, 51, 0.75) 0%, rgba(10, 30, 51, 0.45) 35%, rgba(10, 30, 51, 0.5) 70%, rgba(10, 30, 51, 0.9) 100%);"></div>
-    <div class="absolute inset-0" style="background: radial-gradient(80% 60% at 75% 30%, rgba(228, 90, 43, 0.18), transparent 60%);"></div>
-    <div class="absolute inset-0 opacity-[0.06]" style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;); mix-blend-mode: screen;"></div>
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(14,18,22,0.55) 0%, rgba(14,18,22,0.35) 40%, rgba(14,18,22,0.7) 100%);"></div>
   </div>
 
-  <!-- Compass rose subtle -->
-  <svg viewBox="0 0 120 120" class="absolute top-28 right-6 md:right-12 w-20 h-20 md:w-28 md:h-28 text-(--color-sail)/20 hidden sm:block" aria-hidden="true">
-    <g class="compass">
-      <circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="1"/>
-      <circle cx="60" cy="60" r="40" fill="none" stroke="currentColor" stroke-width="1"/>
-      <path d="M60 6 L66 60 L60 54 L54 60 Z" fill="currentColor"/>
-      <path d="M60 114 L66 60 L60 66 L54 60 Z" fill="currentColor" opacity="0.6"/>
-      <path d="M6 60 L60 54 L54 60 L60 66 Z" fill="currentColor" opacity="0.6"/>
-      <path d="M114 60 L60 54 L66 60 L60 66 Z" fill="currentColor" opacity="0.6"/>
-    </g>
-  </svg>
-
-  <div class="container-vg relative pt-28 md:pt-44 pb-16 md:pb-32">
-    <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end">
-      <div class="lg:col-span-8 space-y-6 md:space-y-7">
-        <div class="flex flex-wrap items-center gap-2.5" data-reveal>
-          <span class="chip bg-(--color-signal)/15 text-(--color-signal) border border-(--color-signal)/30">
-            <span class="w-1.5 h-1.5 rounded-full bg-(--color-signal) shimmer"></span>
-            <span data-i18n="hero.chip.season">Seizoen 2026 geopend</span>
-          </span>
-          <span class="chip text-(--color-foam) border border-(--color-foam)/25" data-i18n="hero.chip.verified">Watersportverbond erkend</span>
-          <span class="chip text-(--color-foam) border border-(--color-foam)/25" data-i18n="hero.chip.since">Sinds 1972</span>
-        </div>
-
-        <h1 class="font-display text-[clamp(1.75rem,7.4vw,5.6rem)] leading-[0.98] tracking-tight text-balance" data-reveal>
-          <span data-i18n="hero.title.line1">Leer zeilen op het</span><br/>
-          <span class="italic text-(--color-signal)" data-i18n="hero.title.lake">Veerse Meer</span><span data-i18n="hero.title.line3">,</span><br/>
-          <span class="italic-none" data-i18n="hero.title.tail">met de wind van Veere.</span>
-        </h1>
-
-        <p class="text-base md:text-lg text-(--color-foam) max-w-xl leading-relaxed" data-reveal data-i18n="hero.body">
-          Op de Polredijk, vijf minuten van de oude havenkom, leiden we al meer dan vijftig jaar zeilers op. Kinderen die voor het eerst de giek ontwijken, volwassenen die eindelijk hun CWO halen, families die een week op het water willen wonen. Klein, eigenwijs, en met een vloot die er stáát.
-        </p>
-
-        <div class="flex flex-wrap items-center gap-3 pt-2" data-reveal>
-          <a href="#agenda" class="btn-signal">
-            <span data-i18n="hero.cta.primary">Bekijk beschikbaarheid</span>
-            <Icon name="arrow-right" size={16} />
-          </a>
-          <a href="#zeilschool" class="link-arrow text-(--color-sail) border-(--color-foam)/40 hover:border-(--color-sail)">
-            <span data-i18n="hero.cta.secondary">Hoe wij lesgeven</span>
-            <Icon name="arrow-right" size={14} />
-          </a>
-        </div>
+  <div class="container-vg relative pt-36 md:pt-52 pb-16 md:pb-24">
+    <div class="max-w-4xl">
+      <div class="text-[0.72rem] uppercase tracking-[0.2em] text-(--color-foam) mb-6" data-reveal data-i18n="header.subtitle">
+        Veere · sinds 1972
       </div>
 
-      <!-- Hero stat panel -->
-      <aside class="lg:col-span-4 lg:pl-4" data-reveal>
-        <div class="rounded-[22px] border border-(--color-foam)/20 bg-(--color-ink)/55 backdrop-blur-xl p-5 md:p-6 space-y-4">
-          <div class="flex items-center gap-3 pb-3 border-b border-(--color-foam)/15">
-            <Icon name="wind" size={20} class="text-(--color-signal)" />
-            <div>
-              <div class="text-[0.7rem] uppercase tracking-[0.18em] text-(--color-foam)/70" data-i18n="hero.stat.weather">Vandaag op het Veerse Meer</div>
-              <div class="text-sm">ZW · 3 Beaufort · 17°C</div>
-            </div>
-          </div>
-          <div class="grid grid-cols-3 gap-3 text-center">
-            <div>
-              <div class="font-display text-3xl text-(--color-sail)">53</div>
-              <div class="text-[0.66rem] uppercase tracking-[0.16em] text-(--color-foam)/65 mt-1" data-i18n="hero.stat.years">jaar les</div>
-            </div>
-            <div>
-              <div class="font-display text-3xl text-(--color-sail)">31</div>
-              <div class="text-[0.66rem] uppercase tracking-[0.16em] text-(--color-foam)/65 mt-1" data-i18n="hero.stat.boats">boten</div>
-            </div>
-            <div>
-              <div class="font-display text-3xl text-(--color-sail)">8</div>
-              <div class="text-[0.66rem] uppercase tracking-[0.16em] text-(--color-foam)/65 mt-1" data-i18n="hero.stat.instructors">instructeurs</div>
-            </div>
-          </div>
-          <a href="#agenda" class="flex items-center justify-between gap-3 rounded-2xl bg-(--color-signal)/15 border border-(--color-signal)/40 px-4 py-3 hover:bg-(--color-signal)/25 transition-colors">
-            <div>
-              <div class="text-xs uppercase tracking-[0.16em] text-(--color-signal)" data-i18n="hero.next.label">Eerstvolgende week</div>
-              <div class="text-sm text-(--color-sail) mt-0.5">16 – 17 mei · Weekendcursus Valk</div>
-            </div>
-            <Icon name="arrow-right" size={16} class="text-(--color-signal)" />
-          </a>
-        </div>
-      </aside>
+      <h1 class="font-display text-[clamp(2.4rem,8vw,5.6rem)] leading-[0.98] tracking-[-0.045em] text-balance" data-reveal>
+        <span data-i18n="hero.title.line1">Leer zeilen op het</span>
+        <span data-i18n="hero.title.lake"> Veerse Meer</span><span data-i18n="hero.title.line3">.</span>
+      </h1>
+
+      <p class="text-base md:text-xl text-(--color-foam-2) max-w-2xl leading-relaxed mt-7" data-reveal data-i18n="hero.body">
+        Vijf minuten van de oude havenkom leiden we al meer dan vijftig jaar zeilers op. Kinderen die voor het eerst de giek ontwijken, volwassenen die hun CWO halen, families die een week op het water willen wonen. Klein, eigenwijs, en met een vloot die er staat.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 pt-9" data-reveal>
+        <a href="#agenda" class="btn-invert">
+          <span data-i18n="hero.cta.primary">Bekijk beschikbaarheid</span>
+          <Icon name="arrow-right" size={16} />
+        </a>
+        <a href="#zeilschool" class="link-arrow text-(--color-sail) border-(--color-foam)/40 hover:border-(--color-sail)">
+          <span data-i18n="hero.cta.secondary">Hoe wij lesgeven</span>
+          <Icon name="arrow-right" size={14} />
+        </a>
+      </div>
+    </div>
+
+    <!-- Rustige statistiek-rij -->
+    <div class="mt-16 md:mt-24 pt-8 border-t border-(--color-sail)/15 grid grid-cols-3 gap-6 max-w-2xl" data-reveal>
+      <div>
+        <div class="font-display text-3xl md:text-4xl tabular">53</div>
+        <div class="text-[0.68rem] uppercase tracking-[0.16em] text-(--color-foam)/70 mt-1.5" data-i18n="hero.stat.years">jaar les</div>
+      </div>
+      <div>
+        <div class="font-display text-3xl md:text-4xl tabular">31</div>
+        <div class="text-[0.68rem] uppercase tracking-[0.16em] text-(--color-foam)/70 mt-1.5" data-i18n="hero.stat.boats">boten</div>
+      </div>
+      <div>
+        <div class="font-display text-3xl md:text-4xl tabular">8</div>
+        <div class="text-[0.68rem] uppercase tracking-[0.16em] text-(--color-foam)/70 mt-1.5" data-i18n="hero.stat.instructors">instructeurs</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Logo / certificering marquee -->
-<div class="border-y border-(--color-line) bg-(--color-sail-2) py-4 overflow-hidden">
-  <div class="marquee-track gap-12 text-(--color-ink-soft) text-sm md:text-[0.95rem] tracking-wide">
-    {Array.from({ length: 2 }).map(() => (
-      <div class="flex items-center gap-12 pr-12 shrink-0">
-        <span class="flex items-center gap-2 font-medium"><span class="w-1 h-1 rounded-full bg-(--color-signal)"></span> Watersportverbond erkende vaarschool</span>
-        <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-(--color-rope)"></span> CWO Zeilen niveau I, II en III</span>
-        <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-(--color-tide)"></span> Watersport Academy partner</span>
-        <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-(--color-signal)"></span> Lid HISWA-RECRON</span>
-        <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-(--color-rope)"></span> Erkend leerbedrijf SBB</span>
-        <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-(--color-tide)"></span> 4.8 / 5 op Google · 312 reviews</span>
-      </div>
-    ))}
+<!-- Rustige certificeringsregel -->
+<div class="border-b border-(--color-line) bg-(--color-sail-2)">
+  <div class="container-vg py-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[0.7rem] uppercase tracking-[0.14em] text-(--color-ink-soft)">
+    <span>Watersportverbond erkend</span>
+    <span class="hidden sm:inline text-(--color-line-2)">·</span>
+    <span>CWO niveau I &ndash; III</span>
+    <span class="hidden sm:inline text-(--color-line-2)">·</span>
+    <span>Watersport Academy partner</span>
+    <span class="hidden md:inline text-(--color-line-2)">·</span>
+    <span class="hidden md:inline">4.8 / 5 · 312 reviews</span>
   </div>
 </div>

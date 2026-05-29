@@ -18,7 +18,7 @@ const groups = boats
       <div class="lg:col-span-7 space-y-4">
         <div class="eyebrow">Zeilkampen 2026 · live agenda</div>
         <h2 class="font-display text-[clamp(1.85rem,5.2vw,3.6rem)] leading-[1.02]">
-          Kies de boot, kies de week, <span class="italic">zie meteen</span> wat vrij is.
+          Kies de boot, kies de week, <span class="">zie meteen</span> wat vrij is.
         </h2>
         <p class="text-(--color-ink-soft) max-w-xl leading-relaxed">
           Acht zomerweken, een herfstweek en losse weekenden. Per boot een eigen vloot met een vast aantal plekken. Vol is vol: zodra een boot dichtklikt, kun je je nog wel op de wachtlijst zetten.
@@ -43,7 +43,7 @@ const groups = boats
       <button
         type="button"
         data-reset-demo
-        class="text-xs text-(--color-ink-soft) hover:text-(--color-signal) underline underline-offset-4 shrink-0 whitespace-nowrap"
+        class="text-xs text-(--color-ink-soft) hover:text-(--color-ink) underline underline-offset-4 shrink-0 whitespace-nowrap"
       >
         Demo resetten
       </button>
@@ -88,7 +88,7 @@ const groups = boats
                 data-week-label={week.label}
                 data-dates={formatDateRange(week.startDate, week.endDate)}
                 data-schedule={week.schedule}
-                class="group surface-paper rounded-(--radius-card) p-4 md:p-5 flex flex-col gap-3 transition-all hover:border-(--color-ink) hover:shadow-[0_20px_44px_-30px_rgba(10,30,51,0.3)]"
+                class="group surface-paper rounded-(--radius-card) p-4 md:p-5 flex flex-col gap-3 transition-all hover:border-(--color-ink) hover:shadow-[0_20px_44px_-30px_rgba(14,18,22,0.3)]"
                 data-reveal
               >
                 <header class="flex items-start justify-between gap-2">
@@ -120,7 +120,7 @@ const groups = boats
                 <button
                   type="button"
                   data-book-trigger
-                  class="btn-primary text-xs w-full justify-center group-hover:bg-(--color-signal) group-hover:border-(--color-signal) transition-colors mt-1"
+                  class="btn-primary text-xs w-full justify-center transition-colors mt-1"
                 >
                   <span data-book-label>Schrijf in</span>
                   <Icon name="arrow-right" size={13} />
@@ -134,7 +134,7 @@ const groups = boats
 
     <p class="text-xs text-(--color-ink-soft) text-center max-w-2xl mx-auto leading-relaxed" data-reveal>
       Inschrijvingen worden in deze demo lokaal in je browser bewaard. Bekijk de
-      <a href="/beheer" class="underline underline-offset-2 hover:text-(--color-signal)">beheerkant</a>
+      <a href="/beheer" class="underline underline-offset-2 hover:text-(--color-ink)">beheerkant</a>
       om te zien hoe Karen ze verwerkt. In productie loopt dit live via één systeem; geen dubbele boekingen, geen Excel meer.
     </p>
   </div>
@@ -405,7 +405,7 @@ const groups = boats
   .reg-field textarea:focus {
     outline: none;
     border-color: var(--color-ink);
-    box-shadow: 0 0 0 3px rgba(10, 30, 51, 0.08);
+    box-shadow: 0 0 0 3px rgba(14,18,22, 0.08);
   }
   .reg-hint { display: block; margin-top: 0.3rem; font-size: 0.72rem; color: var(--color-ink-soft); }
 

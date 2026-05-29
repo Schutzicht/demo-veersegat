@@ -1,0 +1,778 @@
+---
+import Icon from "./Icon.astro";
+import { boats, klassen, weekById, formatDateRange } from "../data/domain";
+
+const groups = boats
+  .map((b) => ({
+    boat: b,
+    items: klassen
+      .filter((k) => k.boat === b.key)
+      .map((k) => ({ klas: k, week: weekById(k.weekId)! })),
+  }))
+  .filter((g) => g.items.length > 0);
+---
+
+<section id="agenda" class="relative scroll-mt-20 py-16 md:py-28 bg-(--color-sail-2) border-y border-(--color-line)">
+  <div class="container-vg space-y-10 md:space-y-14">
+    <div class="grid lg:grid-cols-12 gap-6 lg:gap-10 items-end" data-reveal>
+      <div class="lg:col-span-7 space-y-4">
+        <div class="eyebrow">Zeilkampen 2026 · live agenda</div>
+        <h2 class="font-display text-[clamp(1.85rem,5.2vw,3.6rem)] leading-[1.02]">
+          Kies de boot, kies de week, <span class="italic">zie meteen</span> wat vrij is.
+        </h2>
+        <p class="text-(--color-ink-soft) max-w-xl leading-relaxed">
+          Acht zomerweken, een herfstweek en losse weekenden. Per boot een eigen vloot met een vast aantal plekken. Vol is vol: zodra een boot dichtklikt, kun je je nog wel op de wachtlijst zetten.
+        </p>
+      </div>
+      <div class="lg:col-span-5 lg:text-right flex lg:block items-baseline gap-3 lg:gap-0 lg:space-y-1 pt-2 lg:pt-0">
+        <div class="text-sm text-(--color-ink-soft) order-2 lg:order-none">Vrije plekken, alle weken samen</div>
+        <div class="font-display text-3xl md:text-4xl tabular order-1 lg:order-none" data-stat-remaining>—</div>
+      </div>
+    </div>
+
+    <!-- Quick-jump per boot -->
+    <nav class="cursus-quickjump" aria-label="Snel naar boot-type" data-reveal>
+      <div class="cursus-quickjump__scroll">
+        {groups.map(({ boat }) => (
+          <a href={`#boot-${boat.key}`} class="cursus-quickjump__pill" data-quickjump={boat.key}>
+            <span class="font-medium">{boat.label}</span>
+            <span class="cursus-quickjump__age">{boat.ageMin}–{boat.ageMax === 99 ? "18+" : boat.ageMax} jr</span>
+          </a>
+        ))}
+      </div>
+      <button
+        type="button"
+        data-reset-demo
+        class="text-xs text-(--color-ink-soft) hover:text-(--color-signal) underline underline-offset-4 shrink-0 whitespace-nowrap"
+      >
+        Demo resetten
+      </button>
+    </nav>
+
+    <!-- Boot-groepen -->
+    <div class="space-y-12 md:space-y-16">
+      {groups.map(({ boat, items }) => (
+        <article id={`boot-${boat.key}`} class="scroll-mt-32" aria-labelledby={`boot-${boat.key}-heading`}>
+          <header class="grid md:grid-cols-12 gap-5 md:gap-8 mb-6 md:mb-8 items-start">
+            <div class="md:col-span-4 flex items-start gap-3.5 min-w-0">
+              <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-(--color-ink) text-(--color-sail) grid place-items-center shrink-0">
+                <svg viewBox="0 0 64 64" class="w-7 h-7 md:w-8 md:h-8" aria-hidden="true">
+                  <path d={boat.sailPath} fill="currentColor" />
+                </svg>
+              </div>
+              <div class="min-w-0">
+                <div class="eyebrow">{boat.label}</div>
+                <h3 id={`boot-${boat.key}-heading`} class="font-display text-2xl md:text-[1.8rem] leading-tight mt-0.5">
+                  {boat.ageMin}–{boat.ageMax === 99 ? "18+" : boat.ageMax} jaar
+                </h3>
+              </div>
+            </div>
+            <div class="md:col-span-6">
+              <p class="text-(--color-ink-soft) text-[0.95rem] leading-relaxed">{boat.blurb}</p>
+            </div>
+            <div class="md:col-span-2 md:text-right space-y-1.5">
+              <span class="tag-pill">CWO {["–", "I", "II", "III"][boat.cwoMax]}</span>
+              <div class="text-[0.7rem] text-(--color-ink-soft) tabular">{boat.capacityPerWeek} plekken / week</div>
+            </div>
+          </header>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5 md:gap-4">
+            {items.map(({ klas, week }) => (
+              <article
+                data-klas-card
+                data-klas-id={klas.id}
+                data-capacity={klas.capacity}
+                data-baseline={klas.baseline}
+                data-price={klas.price}
+                data-boat={boat.key}
+                data-week-label={week.label}
+                data-dates={formatDateRange(week.startDate, week.endDate)}
+                data-schedule={week.schedule}
+                class="group surface-paper rounded-(--radius-card) p-4 md:p-5 flex flex-col gap-3 transition-all hover:border-(--color-ink) hover:shadow-[0_20px_44px_-30px_rgba(10,30,51,0.3)]"
+                data-reveal
+              >
+                <header class="flex items-start justify-between gap-2">
+                  <div class="min-w-0">
+                    <div class="font-display text-lg leading-tight">{week.label}</div>
+                    <div class="text-xs text-(--color-ink-soft) tabular mt-0.5">{formatDateRange(week.startDate, week.endDate)}</div>
+                  </div>
+                  <div class="text-right shrink-0">
+                    <div class="text-[0.6rem] uppercase tracking-[0.14em] text-(--color-ink-soft)">vanaf</div>
+                    <div class="font-display text-lg tabular">€{klas.price}</div>
+                  </div>
+                </header>
+
+                <div class="text-[0.7rem] text-(--color-ink-soft) tabular">{week.schedule}</div>
+
+                <div class="space-y-1.5 pt-2 mt-auto border-t border-(--color-line)">
+                  <div class="flex items-center justify-between gap-2 text-xs">
+                    <span class="flex items-center gap-1.5 min-w-0">
+                      <span class="status-dot status-dot--ok" data-status-dot></span>
+                      <span data-status-label class="font-medium truncate">—</span>
+                    </span>
+                    <span class="text-(--color-ink-soft) tabular shrink-0" data-status-count>—</span>
+                  </div>
+                  <div class="avail-bar" data-avail-bar>
+                    <div class="avail-bar__fill" data-avail-fill style="width:0%"></div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  data-book-trigger
+                  class="btn-primary text-xs w-full justify-center group-hover:bg-(--color-signal) group-hover:border-(--color-signal) transition-colors mt-1"
+                >
+                  <span data-book-label>Schrijf in</span>
+                  <Icon name="arrow-right" size={13} />
+                </button>
+              </article>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <p class="text-xs text-(--color-ink-soft) text-center max-w-2xl mx-auto leading-relaxed" data-reveal>
+      Inschrijvingen worden in deze demo lokaal in je browser bewaard. Bekijk de
+      <a href="/beheer" class="underline underline-offset-2 hover:text-(--color-signal)">beheerkant</a>
+      om te zien hoe Karen ze verwerkt. In productie loopt dit live via één systeem; geen dubbele boekingen, geen Excel meer.
+    </p>
+  </div>
+</section>
+
+<!-- ─── Inschrijf-modal (meerstaps) ─────────────────────────────────────── -->
+<div data-reg-modal class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="reg-title" hidden>
+  <div class="modal-card modal-card--wide" role="document">
+    <button
+      type="button"
+      data-reg-close
+      class="absolute top-3 right-3 w-9 h-9 rounded-full grid place-items-center text-(--color-ink-soft) hover:text-(--color-ink) hover:bg-(--color-sand)/40 transition-colors z-10"
+      aria-label="Sluit"
+    >
+      <Icon name="close" size={18} />
+    </button>
+
+    <!-- Klas-kop -->
+    <header class="space-y-2 pr-8">
+      <div class="eyebrow text-(--color-signal)" data-reg-eyebrow>Inschrijven</div>
+      <h3 id="reg-title" class="font-display text-2xl leading-tight" data-reg-title>—</h3>
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="chip bg-(--color-sand)/40 text-(--color-ink-soft) border border-(--color-line)" data-reg-dates>—</span>
+        <span class="chip bg-(--color-sand)/40 text-(--color-ink-soft) border border-(--color-line)" data-reg-avail>—</span>
+      </div>
+    </header>
+
+    <!-- Stap-indicator -->
+    <ol class="reg-steps" data-reg-steps>
+      <li data-step-dot="1" class="is-active"><span>1</span> Kind</li>
+      <li data-step-dot="2"><span>2</span> Ervaring</li>
+      <li data-step-dot="3"><span>3</span> Ouder</li>
+      <li data-step-dot="4"><span>4</span> Controle</li>
+    </ol>
+
+    <form data-reg-form class="mt-1">
+      <!-- Stap 1: het kind -->
+      <fieldset data-step="1" class="space-y-3.5">
+        <div class="grid grid-cols-2 gap-3">
+          <label class="reg-field">
+            <span>Voornaam kind</span>
+            <input type="text" name="voornaam" required autocomplete="off" />
+          </label>
+          <label class="reg-field">
+            <span>Achternaam</span>
+            <input type="text" name="achternaam" required autocomplete="off" />
+          </label>
+        </div>
+        <label class="reg-field">
+          <span>Geboortedatum</span>
+          <input type="date" name="birthdate" required min="2002-01-01" max="2021-12-31" />
+          <small data-age-hint class="reg-hint"></small>
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="reg-field">
+            <span>Lengte (cm)</span>
+            <input type="number" name="lengthCm" required min="90" max="210" inputmode="numeric" />
+          </label>
+          <label class="reg-field">
+            <span>Gewicht (kg)</span>
+            <input type="number" name="weightKg" required min="15" max="120" inputmode="numeric" />
+          </label>
+        </div>
+        <!-- Live advies (de "te groot voor de Optimist"-intelligentie, vriendelijk) -->
+        <div data-advies hidden class="reg-advies">
+          <Icon name="compass" size={16} />
+          <span data-advies-text></span>
+        </div>
+        <fieldset class="reg-field">
+          <span class="mb-1.5 block">Hoe doet je kind mee?</span>
+          <div class="grid gap-2">
+            <label class="reg-radio">
+              <input type="radio" name="verblijf" value="intern" required />
+              <span><strong>Intern</strong> — slaapt de hele week op het terrein (op de boot)</span>
+            </label>
+            <label class="reg-radio">
+              <input type="radio" name="verblijf" value="extern" />
+              <span><strong>Extern</strong> — komt elke ochtend, gaat 's avonds naar huis</span>
+            </label>
+            <label class="reg-radio">
+              <input type="radio" name="verblijf" value="extern-min" />
+              <span><strong>Extern-min</strong> — komt overdag, eet mee, blijft niet slapen</span>
+            </label>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <!-- Stap 2: ervaring & wensen -->
+      <fieldset data-step="2" class="space-y-3.5" hidden>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="reg-field">
+            <span>Al behaald</span>
+            <select name="huidigDiploma">
+              <option value="0">Nog geen</option>
+              <option value="1">CWO I</option>
+              <option value="2">CWO II</option>
+              <option value="3">CWO III</option>
+            </select>
+          </label>
+          <label class="reg-field">
+            <span>Gaat voor</span>
+            <select name="doelDiploma">
+              <option value="0">Gewoon plezier</option>
+              <option value="1">CWO I</option>
+              <option value="2">CWO II</option>
+              <option value="3">CWO III</option>
+            </select>
+          </label>
+        </div>
+        <label class="reg-field">
+          <span>Dieet of allergie <em class="reg-opt">(optioneel)</em></span>
+          <input type="text" name="dieet" placeholder="bv. notenallergie, vegetarisch" autocomplete="off" />
+        </label>
+        <label class="reg-field">
+          <span>Medicijnen of bijzonderheden <em class="reg-opt">(optioneel)</em></span>
+          <textarea name="medicijnen" rows="2" placeholder="bv. Ventolin bij benauwdheid"></textarea>
+        </label>
+        <label class="reg-field" data-kamergenoot-wrap hidden>
+          <span>Wil graag op de kamer bij <em class="reg-opt">(optioneel)</em></span>
+          <input type="text" name="kamergenoot" placeholder="naam van vriend(in)" autocomplete="off" />
+        </label>
+        <label class="reg-check">
+          <input type="checkbox" name="komtAlleen" />
+          <span>Mijn kind komt alleen en kent hier nog niemand</span>
+        </label>
+      </fieldset>
+
+      <!-- Stap 3: ouder/verzorger -->
+      <fieldset data-step="3" class="space-y-3.5" hidden>
+        <label class="reg-field">
+          <span>Naam ouder / verzorger</span>
+          <input type="text" name="ouderNaam" required autocomplete="name" />
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="reg-field">
+            <span>E-mailadres</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <label class="reg-field">
+            <span>Telefoon</span>
+            <input type="tel" name="telefoon" required autocomplete="tel" placeholder="06 ..." />
+          </label>
+        </div>
+        <label class="reg-field">
+          <span>Woonplaats <em class="reg-opt">(optioneel)</em></span>
+          <input type="text" name="plaats" autocomplete="address-level2" />
+        </label>
+        <p class="text-[0.72rem] text-(--color-ink-soft) leading-relaxed">
+          Karen mailt iedereen persoonlijk terug, geen standaardmail. Je telefoonnummer is voor het geval er iets te overleggen valt over boot of niveau.
+        </p>
+      </fieldset>
+
+      <!-- Stap 4: controle & bevestigen -->
+      <fieldset data-step="4" class="space-y-3" hidden>
+        <div class="rounded-xl border border-(--color-line) bg-(--color-sail-2) divide-y divide-(--color-line)" data-summary></div>
+        <div data-advies-summary hidden class="reg-advies reg-advies--soft">
+          <Icon name="compass" size={16} />
+          <span data-advies-summary-text></span>
+        </div>
+        <div data-waitlist-note hidden class="rounded-xl border border-(--color-signal)/30 bg-(--color-signal)/10 p-3 text-xs text-(--color-signal-deep) leading-relaxed">
+          Deze boot zit vol. Je komt op de wachtlijst, eerst aangemeld eerst aan de beurt. Zodra er een plek vrijkomt belt of mailt Karen je persoonlijk.
+        </div>
+        <p class="text-[0.72rem] text-(--color-ink-soft) text-center">Geen betaling in de demo. In productie volgt direct een bevestigingsmail met betaallink.</p>
+      </fieldset>
+
+      <!-- Navigatie -->
+      <div class="flex items-center gap-3 pt-5 mt-1">
+        <button type="button" data-reg-prev class="btn-ghost text-xs" hidden>
+          <Icon name="arrow-right" size={14} class="rotate-180" />
+          Vorige
+        </button>
+        <button type="button" data-reg-next class="btn-primary text-xs ml-auto">
+          Volgende
+          <Icon name="arrow-right" size={14} />
+        </button>
+        <button type="submit" data-reg-submit class="btn-signal text-xs ml-auto" hidden>
+          <span data-reg-submit-label>Inschrijving versturen</span>
+          <Icon name="arrow-right" size={14} />
+        </button>
+      </div>
+    </form>
+
+    <!-- Successcherm -->
+    <div data-reg-success hidden class="text-center space-y-4 py-3">
+      <div class="w-16 h-16 mx-auto rounded-full grid place-items-center" data-success-icon>
+        <Icon name="check" size={28} stroke={2.2} />
+      </div>
+      <h3 class="font-display text-2xl" data-success-title>Inschrijving binnen</h3>
+      <p class="text-sm text-(--color-ink-soft) max-w-sm mx-auto leading-relaxed" data-success-body>—</p>
+      <div class="text-xs text-(--color-ink-soft) tabular">Kenmerk <span data-success-ref class="font-medium">—</span></div>
+      <button type="button" data-reg-close class="btn-primary mx-auto">
+        Sluit
+        <Icon name="arrow-right" size={16} />
+      </button>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .modal-card--wide { max-width: 34rem; }
+
+  .reg-steps {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 1.25rem 0 1.1rem;
+    padding: 0;
+    list-style: none;
+    font-size: 0.66rem;
+    letter-spacing: 0.02em;
+  }
+  .reg-steps li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--color-ink-soft);
+    opacity: 0.55;
+    white-space: nowrap;
+    transition: opacity 0.25s;
+  }
+  .reg-steps li span {
+    width: 18px; height: 18px;
+    display: grid; place-items: center;
+    border-radius: 999px;
+    background: var(--color-sand);
+    color: var(--color-ink);
+    font-weight: 600;
+    font-size: 0.6rem;
+  }
+  .reg-steps li.is-active { opacity: 1; color: var(--color-ink); }
+  .reg-steps li.is-active span { background: var(--color-signal); color: var(--color-sail); }
+  .reg-steps li.is-done { opacity: 0.9; }
+  .reg-steps li.is-done span { background: var(--color-ink); color: var(--color-sail); }
+  @media (max-width: 420px) {
+    .reg-steps li:not(.is-active) span { font-size: 0; }
+    .reg-steps li { font-size: 0; gap: 0; }
+    .reg-steps li span { font-size: 0.6rem; }
+    .reg-steps li.is-active { font-size: 0.66rem; gap: 0.35rem; }
+  }
+
+  .reg-field { display: block; }
+  .reg-field > span:first-child {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-ink-soft);
+    margin-bottom: 0.3rem;
+  }
+  .reg-opt { font-style: normal; text-transform: none; letter-spacing: 0; opacity: 0.7; font-weight: 400; }
+  .reg-field input,
+  .reg-field select,
+  .reg-field textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--color-line);
+    background: var(--color-sail);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 0.9rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .reg-field textarea { resize: none; }
+  .reg-field input:focus,
+  .reg-field select:focus,
+  .reg-field textarea:focus {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 3px rgba(10, 30, 51, 0.08);
+  }
+  .reg-hint { display: block; margin-top: 0.3rem; font-size: 0.72rem; color: var(--color-ink-soft); }
+
+  .reg-radio, .reg-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.6rem;
+    background: var(--color-sail);
+    cursor: pointer;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .reg-radio input, .reg-check input { margin-top: 0.15rem; accent-color: var(--color-signal); flex-shrink: 0; }
+  .reg-radio:hover, .reg-check:hover { border-color: var(--color-ink); }
+  .reg-radio:has(input:checked) { border-color: var(--color-signal); background: color-mix(in oklab, var(--color-signal) 6%, var(--color-sail)); }
+  .reg-check { margin-top: 0.2rem; }
+
+  .reg-advies {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.6rem;
+    background: color-mix(in oklab, var(--color-rope) 16%, var(--color-sail));
+    border: 1px solid color-mix(in oklab, var(--color-rope) 45%, var(--color-line));
+    color: var(--color-ink);
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  .reg-advies svg { color: var(--color-rope); margin-top: 1px; flex-shrink: 0; }
+  .reg-advies--soft { background: var(--color-sail-2); }
+
+  [data-summary] dl { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 0.85rem; font-size: 0.82rem; }
+  [data-summary] dt { color: var(--color-ink-soft); }
+  [data-summary] dd { font-weight: 500; text-align: right; }
+
+  [data-success-icon] { background: var(--color-ink); color: var(--color-sail); }
+  [data-success-icon].is-waitlist { background: var(--color-signal); }
+</style>
+
+<script>
+  import {
+    submitRegistration, klasState, seed, resetRegistrations, onChange,
+  } from "../data/store";
+  import { boatByKey, diplomaLabel, verblijfShort, type DiplomaLevel, type Verblijfsvorm } from "../data/domain";
+
+  seed(); // zorgt dat de demo "leeft" bij eerste bezoek
+
+  const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-klas-card]"));
+  const remainingTotalEl = document.querySelector<HTMLElement>("[data-stat-remaining]");
+
+  // ─── Beschikbaarheid renderen ──────────────────────────────────────────────
+  let statTween: number | null = null;
+  const animateStat = (target: number) => {
+    if (!remainingTotalEl) return;
+    if (statTween === null) { remainingTotalEl.textContent = String(target); statTween = target; return; }
+    const start = statTween, delta = target - start;
+    if (delta === 0) return;
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - t0) / 600);
+      const v = Math.round(start + delta * (1 - Math.pow(1 - t, 4)));
+      remainingTotalEl.textContent = String(v);
+      if (t < 1) requestAnimationFrame(step); else statTween = target;
+    };
+    requestAnimationFrame(step);
+  };
+
+  const renderCard = (card: HTMLElement) => {
+    const id = card.dataset.klasId!;
+    const capacity = Number(card.dataset.capacity);
+    const st = klasState(id);
+    const remaining = st.remaining;
+    const pct = st.pct;
+
+    const fill = card.querySelector<HTMLElement>("[data-avail-fill]")!;
+    const bar = card.querySelector<HTMLElement>("[data-avail-bar]")!;
+    const dot = card.querySelector<HTMLElement>("[data-status-dot]")!;
+    const label = card.querySelector<HTMLElement>("[data-status-label]")!;
+    const count = card.querySelector<HTMLElement>("[data-status-count]")!;
+    const bookLabel = card.querySelector<HTMLElement>("[data-book-label]")!;
+    const trigger = card.querySelector<HTMLButtonElement>("[data-book-trigger]")!;
+
+    fill.style.width = `${st.closed || st.full ? 100 : pct}%`;
+    bar.classList.toggle("is-low", !st.closed && remaining > 0 && remaining <= 2);
+    bar.classList.toggle("is-full", st.closed || st.full);
+    dot.className = "status-dot " + (st.closed || st.full ? "status-dot--full" : remaining <= 2 ? "status-dot--low" : "status-dot--ok");
+    count.textContent = st.closed ? "dicht" : `${remaining}/${capacity}`;
+
+    if (st.closed) { label.textContent = "Tijdelijk dicht"; bookLabel.textContent = "Wachtlijst"; trigger.dataset.mode = "waitlist"; }
+    else if (st.full) { label.textContent = "Vol"; bookLabel.textContent = "Wachtlijst"; trigger.dataset.mode = "waitlist"; }
+    else if (remaining === 1) { label.textContent = "Nog 1 plek"; bookLabel.textContent = "Schrijf in"; trigger.dataset.mode = "book"; }
+    else if (remaining <= 2) { label.textContent = `Nog ${remaining} plekken`; bookLabel.textContent = "Schrijf in"; trigger.dataset.mode = "book"; }
+    else { label.textContent = `${remaining} vrij`; bookLabel.textContent = "Schrijf in"; trigger.dataset.mode = "book"; }
+  };
+
+  const renderAll = () => {
+    cards.forEach(renderCard);
+    const total = cards.reduce((acc, c) => {
+      const st = klasState(c.dataset.klasId!);
+      return acc + (st.closed ? 0 : st.remaining);
+    }, 0);
+    animateStat(total);
+  };
+  renderAll();
+  onChange(renderAll);
+
+  // ─── Quick-jump actieve pill ─────────────────────────────────────────────────
+  const pills = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-quickjump]"));
+  const sections = Array.from(document.querySelectorAll<HTMLElement>("[id^='boot-']"));
+  if (pills.length && sections.length && "IntersectionObserver" in window) {
+    const obs = new IntersectionObserver((entries) => {
+      const vis = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (vis) { const key = vis.target.id.replace("boot-", ""); pills.forEach((p) => p.classList.toggle("is-active", p.dataset.quickjump === key)); }
+    }, { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75] });
+    sections.forEach((s) => obs.observe(s));
+  }
+
+  // ─── Reset ───────────────────────────────────────────────────────────────────
+  document.querySelector<HTMLButtonElement>("[data-reset-demo]")?.addEventListener("click", () => {
+    if (!confirm("Demo resetten? Inschrijvingen gaan terug naar de uitgangswaarde.")) return;
+    resetRegistrations();
+    seed(true);
+    renderAll();
+    showToast("Demo gereset");
+  });
+
+  // ─── Modal ────────────────────────────────────────────────────────────────────
+  const modal = document.querySelector<HTMLElement>("[data-reg-modal]")!;
+  const form = modal.querySelector<HTMLFormElement>("[data-reg-form]")!;
+  const successWrap = modal.querySelector<HTMLElement>("[data-reg-success]")!;
+  const stepsEls = Array.from(modal.querySelectorAll<HTMLElement>("[data-step]"));
+  const dots = Array.from(modal.querySelectorAll<HTMLElement>("[data-step-dot]"));
+  const prevBtn = modal.querySelector<HTMLButtonElement>("[data-reg-prev]")!;
+  const nextBtn = modal.querySelector<HTMLButtonElement>("[data-reg-next]")!;
+  const submitBtn = modal.querySelector<HTMLButtonElement>("[data-reg-submit]")!;
+  const titleEl = modal.querySelector<HTMLElement>("[data-reg-title]")!;
+  const datesEl = modal.querySelector<HTMLElement>("[data-reg-dates]")!;
+  const availEl = modal.querySelector<HTMLElement>("[data-reg-avail]")!;
+  const eyebrowEl = modal.querySelector<HTMLElement>("[data-reg-eyebrow]")!;
+  const ageHint = modal.querySelector<HTMLElement>("[data-age-hint]")!;
+  const adviesBox = modal.querySelector<HTMLElement>("[data-advies]")!;
+  const adviesText = modal.querySelector<HTMLElement>("[data-advies-text]")!;
+  const kamergenootWrap = modal.querySelector<HTMLElement>("[data-kamergenoot-wrap]")!;
+  const summaryEl = modal.querySelector<HTMLElement>("[data-summary]")!;
+  const adviesSummary = modal.querySelector<HTMLElement>("[data-advies-summary]")!;
+  const adviesSummaryText = modal.querySelector<HTMLElement>("[data-advies-summary-text]")!;
+  const waitlistNote = modal.querySelector<HTMLElement>("[data-waitlist-note]")!;
+  const submitLabel = modal.querySelector<HTMLElement>("[data-reg-submit-label]")!;
+
+  let activeKlas: string | null = null;
+  let activeMode: "book" | "waitlist" = "book";
+  let step = 1;
+  const TOTAL_STEPS = 4;
+
+  const fld = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
+
+  const setStep = (n: number) => {
+    step = Math.max(1, Math.min(TOTAL_STEPS, n));
+    stepsEls.forEach((el) => { el.hidden = Number(el.dataset.step) !== step; });
+    dots.forEach((d) => {
+      const dn = Number(d.dataset.stepDot);
+      d.classList.toggle("is-active", dn === step);
+      d.classList.toggle("is-done", dn < step);
+    });
+    prevBtn.hidden = step === 1;
+    nextBtn.hidden = step === TOTAL_STEPS;
+    submitBtn.hidden = step !== TOTAL_STEPS;
+    if (step === TOTAL_STEPS) buildSummary();
+    // focus eerste veld
+    const firstInput = stepsEls[step - 1].querySelector<HTMLElement>("input,select,textarea");
+    setTimeout(() => firstInput?.focus(), 50);
+  };
+
+  const validateStep = (): boolean => {
+    const current = stepsEls[step - 1];
+    const required = Array.from(current.querySelectorAll<HTMLInputElement>("[required]"));
+    for (const el of required) {
+      if (!el.reportValidity()) return false;
+    }
+    if (step === 1 && !fld("verblijf")) { /* radios */ }
+    if (step === 1) {
+      const checked = form.querySelector<HTMLInputElement>("input[name=verblijf]:checked");
+      if (!checked) { alert("Kies hoe je kind meedoet (intern, extern of extern-min)."); return false; }
+    }
+    return true;
+  };
+
+  // Live advies obv lengte/gewicht (de slimme doorschuif-tip)
+  const updateAdvies = () => {
+    if (!activeKlas) return;
+    const card = cards.find((c) => c.dataset.klasId === activeKlas);
+    const boatKey = card?.dataset.boat;
+    const boat = boatKey ? boatByKey(boatKey) : undefined;
+    if (!boat) return;
+    const len = Number((fld("lengthCm") as HTMLInputElement)?.value || 0);
+    const wt = Number((fld("weightKg") as HTMLInputElement)?.value || 0);
+    const next = boat.nextUp ? boatByKey(boat.nextUp) : null;
+    let msg = "";
+    if (next && (len > boat.lengthMaxCm || wt > boat.weightMaxKg)) {
+      msg = `Voor deze maat is je kind misschien wat groot voor de ${boat.label}. De ${next.label} zit vaak fijner; Karen kijkt er bij je inschrijving even naar mee.`;
+    }
+    adviesBox.hidden = !msg;
+    adviesText.textContent = msg;
+  };
+
+  const updateAgeHint = () => {
+    const v = (fld("birthdate") as HTMLInputElement)?.value;
+    if (!v) { ageHint.textContent = ""; return; }
+    const b = new Date(v);
+    const ref = new Date();
+    let age = ref.getFullYear() - b.getFullYear();
+    const m = ref.getMonth() - b.getMonth();
+    if (m < 0 || (m === 0 && ref.getDate() < b.getDate())) age--;
+    ageHint.textContent = age >= 0 && age < 100 ? `${age} jaar` : "";
+  };
+
+  const buildSummary = () => {
+    if (!activeKlas) return;
+    const card = cards.find((c) => c.dataset.klasId === activeKlas)!;
+    const boat = boatByKey(card.dataset.boat!);
+    const get = (n: string) => (fld(n) as HTMLInputElement)?.value ?? "";
+    const verblijf = (form.querySelector<HTMLInputElement>("input[name=verblijf]:checked")?.value ?? "extern") as Verblijfsvorm;
+    const rows: [string, string][] = [
+      ["Kind", `${get("voornaam")} ${get("achternaam")}`.trim() || "—"],
+      ["Boot & week", `${boat?.label ?? ""} · ${card.dataset.weekLabel}`],
+      ["Meedoen", verblijfShort[verblijf]],
+      ["Lengte / gewicht", `${get("lengthCm")} cm · ${get("weightKg")} kg`],
+      ["Diploma", `${diplomaLabel(Number(get("huidigDiploma")) as DiplomaLevel)} → ${diplomaLabel(Number(get("doelDiploma")) as DiplomaLevel)}`],
+      ["Ouder", get("ouderNaam") || "—"],
+      ["Contact", [get("email"), get("telefoon")].filter(Boolean).join(" · ") || "—"],
+    ];
+    summaryEl.innerHTML = rows.map(([k, v]) => `<dl><dt>${k}</dt><dd>${escapeHtml(v)}</dd></dl>`).join("");
+
+    // advies in samenvatting
+    const len = Number(get("lengthCm")), wt = Number(get("weightKg"));
+    const next = boat?.nextUp ? boatByKey(boat.nextUp) : null;
+    if (boat && next && (len > boat.lengthMaxCm || wt > boat.weightMaxKg)) {
+      adviesSummary.hidden = false;
+      adviesSummaryText.textContent = `Let op: mogelijk wat groot voor de ${boat.label}. We sturen je inschrijving door en kijken samen naar de ${next.label}.`;
+    } else {
+      adviesSummary.hidden = true;
+    }
+
+    // wachtlijst-melding
+    const st = klasState(activeKlas);
+    waitlistNote.hidden = !(st.full || st.closed);
+    submitLabel.textContent = (st.full || st.closed) ? "Op de wachtlijst zetten" : "Inschrijving versturen";
+  };
+
+  const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+
+  const openModal = (card: HTMLElement) => {
+    activeKlas = card.dataset.klasId!;
+    activeMode = (card.querySelector<HTMLButtonElement>("[data-book-trigger]")?.dataset.mode as "book" | "waitlist") ?? "book";
+    const boat = boatByKey(card.dataset.boat!);
+    const st = klasState(activeKlas);
+    titleEl.textContent = `${boat?.label} · ${card.dataset.weekLabel}`;
+    datesEl.textContent = card.dataset.dates ?? "";
+    eyebrowEl.textContent = activeMode === "waitlist" ? "Wachtlijst" : "Inschrijven";
+    availEl.textContent = st.closed ? "Tijdelijk dicht" : st.full ? "Vol — wachtlijst" : `${st.remaining} van ${st.capacity} vrij`;
+
+    form.reset();
+    form.hidden = false;
+    successWrap.hidden = true;
+    adviesBox.hidden = true;
+    kamergenootWrap.hidden = true;
+    setStep(1);
+
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add("is-open"));
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("is-open");
+    document.body.style.overflow = "";
+    setTimeout(() => { modal.hidden = true; }, 280);
+  };
+
+  cards.forEach((card) => {
+    card.querySelector<HTMLButtonElement>("[data-book-trigger]")!.addEventListener("click", () => openModal(card));
+  });
+  modal.querySelectorAll<HTMLButtonElement>("[data-reg-close]").forEach((b) => b.addEventListener("click", closeModal));
+  modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal(); });
+
+  nextBtn.addEventListener("click", () => { if (validateStep()) setStep(step + 1); });
+  prevBtn.addEventListener("click", () => setStep(step - 1));
+
+  // veld-listeners
+  form.addEventListener("input", (e) => {
+    const t = e.target as HTMLElement;
+    const name = (t as HTMLInputElement).name;
+    if (name === "lengthCm" || name === "weightKg") updateAdvies();
+    if (name === "birthdate") updateAgeHint();
+  });
+  form.addEventListener("change", (e) => {
+    const t = e.target as HTMLInputElement;
+    if (t.name === "verblijf") kamergenootWrap.hidden = t.value !== "intern";
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!activeKlas || !validateStep()) return;
+    const get = (n: string) => (fld(n) as HTMLInputElement)?.value ?? "";
+    const verblijf = (form.querySelector<HTMLInputElement>("input[name=verblijf]:checked")?.value ?? "extern") as Verblijfsvorm;
+    const komtAlleen = (form.querySelector<HTMLInputElement>("input[name=komtAlleen]") as HTMLInputElement)?.checked ?? false;
+
+    const res = submitRegistration({
+      klasId: activeKlas,
+      voornaam: get("voornaam"),
+      achternaam: get("achternaam"),
+      birthdate: get("birthdate"),
+      lengthCm: Number(get("lengthCm")),
+      weightKg: Number(get("weightKg")),
+      verblijf,
+      huidigDiploma: Number(get("huidigDiploma")) as DiplomaLevel,
+      doelDiploma: Number(get("doelDiploma")) as DiplomaLevel,
+      ouderNaam: get("ouderNaam"),
+      email: get("email"),
+      telefoon: get("telefoon"),
+      plaats: get("plaats"),
+      dieet: get("dieet"),
+      medicijnen: get("medicijnen"),
+      kamergenoot: get("kamergenoot"),
+      komtAlleen,
+    });
+
+    // successcherm
+    const card = cards.find((c) => c.dataset.klasId === activeKlas)!;
+    const boat = boatByKey(card.dataset.boat!);
+    const naam = get("voornaam");
+    const icon = modal.querySelector<HTMLElement>("[data-success-icon]")!;
+    const sTitle = modal.querySelector<HTMLElement>("[data-success-title]")!;
+    const sBody = modal.querySelector<HTMLElement>("[data-success-body]")!;
+    const sRef = modal.querySelector<HTMLElement>("[data-success-ref]")!;
+    icon.classList.toggle("is-waitlist", res.waitlisted);
+    if (res.waitlisted) {
+      sTitle.textContent = "Op de wachtlijst gezet";
+      sBody.innerHTML = `${escapeHtml(naam)} staat op de wachtlijst voor de <strong>${boat?.label} · ${card.dataset.weekLabel}</strong>. Komt er een plek vrij, dan hoor je het persoonlijk van Karen.`;
+      showToast("Op de wachtlijst gezet");
+    } else {
+      sTitle.textContent = "Inschrijving binnen";
+      sBody.innerHTML = `Top! ${escapeHtml(naam)} staat genoteerd voor de <strong>${boat?.label} · ${card.dataset.weekLabel}</strong>. Karen kijkt 'm na en mailt je persoonlijk terug, meestal binnen een dag.`;
+      showToast(`Inschrijving binnen voor ${naam}`);
+      window.dispatchEvent(new CustomEvent("vg-booking-made", { detail: { courseLabel: `${boat?.label} · ${card.dataset.weekLabel}`, seats: 1, naam } }));
+    }
+    sRef.textContent = res.registration.ref;
+    form.hidden = true;
+    successWrap.hidden = false;
+    renderAll();
+  });
+
+  // ─── Toast (gedeeld) ──────────────────────────────────────────────────────────
+  const toast = document.querySelector<HTMLElement>("[data-toast]");
+  const toastMsg = document.querySelector<HTMLElement>("[data-toast-msg]");
+  let toastTimer: number | undefined;
+  function showToast(msg: string) {
+    if (!toast || !toastMsg) return;
+    toastMsg.textContent = msg;
+    toast.classList.add("is-visible");
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2800);
+  }
+</script>

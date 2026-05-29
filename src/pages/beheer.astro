@@ -1,0 +1,737 @@
+---
+import "../styles/global.css";
+import Icon from "../components/Icon.astro";
+import DemoDock from "../components/DemoDock.astro";
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0A1E33" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,30..100;1,9..144,300..700,30..100&family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <title>Beheer · Zeilschool Het Veerse Gat</title>
+  </head>
+  <body class="bg-(--color-sail-2) min-h-screen">
+    <!-- Topbar -->
+    <header class="bg-(--color-ink) text-(--color-sail) sticky top-0 z-40">
+      <div class="container-vg flex items-center justify-between gap-4 py-3 md:py-3.5">
+        <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
+          <img src="/brand/mark.svg" alt="" width="32" height="32" class="w-7 h-7 md:w-8 md:h-8 shrink-0" />
+          <div class="leading-tight min-w-0">
+            <div class="font-display italic text-[0.95rem] md:text-lg truncate">Het Veerse Gat · Beheer</div>
+            <div class="text-[0.56rem] md:text-[0.62rem] uppercase tracking-[0.2em] text-(--color-foam)/70 truncate">Inschrijvingen, bezetting & verhuur</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="hidden sm:inline-flex chip border border-(--color-foam)/25 text-(--color-foam) text-[0.66rem]">
+            <span class="w-1.5 h-1.5 rounded-full bg-(--color-signal) shimmer"></span>
+            Demo
+          </span>
+          <a href="/" class="btn-ghost text-xs text-(--color-sail) border-(--color-foam)/30 hover:bg-(--color-sail) hover:text-(--color-ink)">
+            <Icon name="arrow-up-right" size={14} />
+            <span class="hidden sm:inline">Publieke site</span>
+            <span class="sm:hidden">Site</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <DemoDock active="admin" />
+
+    <!-- Tab-balk -->
+    <nav class="bg-(--color-sail-2) border-b border-(--color-line) sticky top-[52px] md:top-[57px] z-30">
+      <div class="container-vg flex items-center gap-1.5 overflow-x-auto py-2.5 no-scrollbar">
+        <button type="button" data-tab="vandaag" class="tab-btn is-active">Vandaag</button>
+        <button type="button" data-tab="inschrijvingen" class="tab-btn">Inschrijvingen <span class="tab-count" data-tabcount-insch></span></button>
+        <button type="button" data-tab="bezetting" class="tab-btn">Bezetting</button>
+        <button type="button" data-tab="verhuur" class="tab-btn">Verhuur & verblijf</button>
+        <button type="button" data-tab="instellingen" class="tab-btn">Instellingen</button>
+      </div>
+    </nav>
+
+    <main class="container-vg py-4 md:py-7 space-y-5 md:space-y-7">
+
+      <!-- ─── VANDAAG ─────────────────────────────────────────────────── -->
+      <section data-panel="vandaag" class="space-y-5 md:space-y-6">
+        <!-- KPI's -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-3" data-kpis></div>
+
+        <!-- Piek-simulatie -->
+        <div class="rounded-(--radius-card) surface-deep relative overflow-hidden p-5 md:p-6">
+          <div class="absolute inset-0 opacity-[0.06] pointer-events-none" style="background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);mix-blend-mode:screen;"></div>
+          <div class="relative grid md:grid-cols-12 gap-4 items-center">
+            <div class="md:col-span-8 space-y-1.5">
+              <div class="eyebrow text-(--color-signal)">1 januari, 15:00 uur</div>
+              <h2 class="font-display text-xl md:text-2xl leading-tight">Het moment dat alles tegelijk binnenkomt.</h2>
+              <p class="text-sm text-(--color-foam) max-w-xl leading-relaxed">
+                Zestig inschrijvingen in een paar minuten, vrienden die naast elkaar op de bank zitten te klikken. Druk op de knop en zie hoe het systeem ze opvangt: realtime tellen, en wat vol is klikt vanzelf dicht. Geen dubbele boekingen meer.
+              </p>
+            </div>
+            <div class="md:col-span-4 md:text-right">
+              <button type="button" data-sim-rush class="btn-signal w-full md:w-auto justify-center">
+                <Icon name="zap" size={16} />
+                Simuleer de toeloop
+              </button>
+              <div class="text-[0.7rem] text-(--color-foam)/70 mt-2 tabular" data-sim-status>Klaar wanneer jij dat bent.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Te verwerken -->
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) overflow-hidden">
+          <header class="px-4 md:px-6 py-4 border-b border-(--color-line) bg-(--color-sail-2) flex items-center justify-between gap-3">
+            <div>
+              <div class="font-display text-lg leading-tight">Te verwerken</div>
+              <div class="text-xs text-(--color-ink-soft) mt-0.5">Nieuwe inschrijvingen. Het systeem seint waar je even naar moet kijken; jij beslist.</div>
+            </div>
+            <span class="chip bg-(--color-signal)/10 text-(--color-signal) border border-(--color-signal)/30 tabular shrink-0" data-queue-count>0</span>
+          </header>
+          <div data-queue class="divide-y divide-(--color-line)"></div>
+        </div>
+      </section>
+
+      <!-- ─── INSCHRIJVINGEN ──────────────────────────────────────────── -->
+      <section data-panel="inschrijvingen" hidden class="space-y-4">
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-3 md:p-4 flex flex-wrap items-center gap-2">
+          <div class="relative flex-1 min-w-[180px]">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-(--color-ink-soft)"><Icon name="search" size={15} /></span>
+            <input type="search" data-filter-search placeholder="Zoek op naam, plaats of kenmerk…" class="w-full pl-9 pr-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm focus:outline-none focus:border-(--color-ink)" />
+          </div>
+          <select data-filter-status class="px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm focus:outline-none focus:border-(--color-ink)">
+            <option value="">Alle statussen</option>
+            <option value="nieuw">Nieuw</option>
+            <option value="bevestigd">Bevestigd</option>
+            <option value="wachtlijst">Wachtlijst</option>
+            <option value="geannuleerd">Geannuleerd</option>
+          </select>
+          <select data-filter-boot class="px-3 py-2 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm focus:outline-none focus:border-(--color-ink)"></select>
+          <label class="flex items-center gap-2 text-xs text-(--color-ink-soft) px-2 cursor-pointer select-none whitespace-nowrap">
+            <input type="checkbox" data-filter-flags class="accent-(--color-signal)" />
+            Alleen met signaal
+          </label>
+          <button type="button" data-export-csv class="btn-ghost text-xs ml-auto">
+            <Icon name="download" size={14} />
+            Exporteer naar Excel
+          </button>
+        </div>
+
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) overflow-hidden">
+          <div data-insch-list class="divide-y divide-(--color-line)"></div>
+        </div>
+        <p class="text-xs text-(--color-ink-soft) text-center" data-insch-meta></p>
+      </section>
+
+      <!-- ─── BEZETTING ───────────────────────────────────────────────── -->
+      <section data-panel="bezetting" hidden class="space-y-4">
+        <div class="rounded-(--radius-card) surface-paper p-4 md:p-5">
+          <div class="font-display text-lg">Bezetting per week en boot</div>
+          <p class="text-sm text-(--color-ink-soft) mt-0.5 max-w-2xl leading-relaxed">
+            Elke boot heeft een vast aantal plekken. Zet een boot handmatig dicht, of pas de capaciteit aan. Wat vol is, is op de site meteen dicht; bezoekers komen dan op de wachtlijst.
+          </p>
+        </div>
+        <div data-bezetting class="grid md:grid-cols-2 gap-3.5"></div>
+      </section>
+
+      <!-- ─── VERHUUR ─────────────────────────────────────────────────── -->
+      <section data-panel="verhuur" hidden class="space-y-4">
+        <div data-verhuur-units class="grid sm:grid-cols-3 gap-2.5 md:gap-3"></div>
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) overflow-hidden">
+          <header class="px-4 md:px-6 py-4 border-b border-(--color-line) bg-(--color-sail-2)">
+            <div class="font-display text-lg">Boekingen verblijf, boten & groepen</div>
+            <div class="text-xs text-(--color-ink-soft) mt-0.5">Eén overzicht. In productie koppelt dit aan je verhuursysteem, zodat een huisje plus een bootje in één keer klopt.</div>
+          </header>
+          <div data-verhuur-list class="divide-y divide-(--color-line)"></div>
+        </div>
+      </section>
+
+      <!-- ─── INSTELLINGEN ────────────────────────────────────────────── -->
+      <section data-panel="instellingen" hidden class="space-y-4">
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-5 md:p-7 space-y-4">
+          <div class="font-display text-lg">Demo-data</div>
+          <p class="text-sm text-(--color-ink-soft) max-w-xl leading-relaxed">
+            Inschrijvingen, wachtlijst en aanpassingen staan lokaal in je browser. Reset alles, of vul de demo opnieuw met een realistisch seizoen.
+          </p>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button type="button" data-reset="overrides" class="btn-ghost text-xs">Reset alleen bezettings-aanpassingen</button>
+            <button type="button" data-reset="all" class="btn-primary text-xs">Wis alles</button>
+            <button type="button" data-reseed class="btn-signal text-xs ml-auto">Vul demo-data opnieuw</button>
+          </div>
+        </div>
+        <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-5 md:p-7 space-y-3">
+          <div class="font-display text-lg">In productie</div>
+          <p class="text-sm text-(--color-ink-soft) max-w-xl leading-relaxed">Dezelfde schermen, dan gekoppeld aan een echte database. Een inschrijving levert automatisch op:</p>
+          <ul class="space-y-1.5 text-sm text-(--color-ink-soft) pl-4 list-disc">
+            <li>Een persoonlijke bevestigingsmail (jouw toon, automatisch voorgevuld)</li>
+            <li>Een seintje aan jouw kant zodra een week vol dreigt te raken</li>
+            <li>Realtime dichtklikken, dus nooit meer dubbel geboekt</li>
+            <li>Wachtlijst-trigger: bij een annulering meteen de eerste benaderen</li>
+            <li>Export naar Excel of een koppeling met je boekhouding</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- ─── Detail-drawer ───────────────────────────────────────────────── -->
+    <div data-drawer-backdrop class="drawer-backdrop" hidden>
+      <aside data-drawer class="drawer" role="dialog" aria-modal="true" aria-label="Inschrijving">
+        <div data-drawer-body></div>
+      </aside>
+    </div>
+
+    <!-- ─── Mail-concept modal ──────────────────────────────────────────── -->
+    <div data-mail-modal class="modal-backdrop" role="dialog" aria-modal="true" hidden>
+      <div class="modal-card modal-card--mail" role="document">
+        <button type="button" data-mail-close class="absolute top-3 right-3 w-9 h-9 rounded-full grid place-items-center text-(--color-ink-soft) hover:text-(--color-ink) hover:bg-(--color-sand)/40 transition-colors" aria-label="Sluit">
+          <Icon name="close" size={18} />
+        </button>
+        <header class="space-y-1 pr-8 mb-3">
+          <div class="eyebrow text-(--color-signal)">Persoonlijke mail · concept</div>
+          <h3 class="font-display text-xl leading-tight">Klaar om te versturen, in jouw toon.</h3>
+        </header>
+        <div class="text-xs text-(--color-ink-soft) mb-1">Aan: <span data-mail-to class="font-medium text-(--color-ink)"></span></div>
+        <div class="text-xs text-(--color-ink-soft) mb-2">Onderwerp: <span data-mail-subject class="font-medium text-(--color-ink)"></span></div>
+        <textarea data-mail-body rows="12" class="w-full p-3 rounded-lg border border-(--color-line) bg-(--color-sail-2) text-sm leading-relaxed focus:outline-none focus:border-(--color-ink)"></textarea>
+        <div class="flex flex-wrap items-center gap-2 pt-3">
+          <button type="button" data-mail-copy class="btn-primary text-xs">
+            <Icon name="check" size={14} />
+            <span data-mail-copy-label>Kopieer tekst</span>
+          </button>
+          <span class="text-[0.7rem] text-(--color-ink-soft)">In productie verstuurt deze knop de mail direct.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div data-toast class="toast" role="status" aria-live="polite">
+      <Icon name="check" size={18} stroke={2.2} />
+      <span data-toast-msg>Opgeslagen</span>
+    </div>
+
+    <style is:global>
+      .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+
+      .tab-btn {
+        font-size: 0.84rem; padding: 0.45rem 0.9rem; border-radius: 999px;
+        border: 1px solid transparent; background: transparent; color: var(--color-ink-soft);
+        cursor: pointer; transition: all 0.2s; font-weight: 500; white-space: nowrap; flex-shrink: 0;
+        display: inline-flex; align-items: center; gap: 0.4rem;
+      }
+      .tab-btn:hover { color: var(--color-ink); }
+      .tab-btn.is-active { background: var(--color-ink); color: var(--color-sail); }
+      .tab-count {
+        font-size: 0.64rem; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
+        background: var(--color-signal); color: var(--color-sail); display: inline-grid; place-items: center;
+        font-variant-numeric: tabular-nums;
+      }
+      .tab-count:empty { display: none; }
+
+      .toggle { position: relative; width: 36px; height: 20px; background: var(--color-sand); border-radius: 999px; transition: background 0.25s; flex-shrink: 0; cursor: pointer; }
+      .toggle__dot { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--color-sail); border-radius: 999px; transition: transform 0.25s var(--ease-out-quart); box-shadow: 0 2px 4px rgba(0,0,0,0.18); }
+      .toggle.is-on { background: var(--color-signal); }
+      .toggle.is-on .toggle__dot { transform: translateX(16px); }
+
+      .flag-pill { display:inline-flex; align-items:center; gap:0.3rem; padding:0.18rem 0.5rem; border-radius:999px; font-size:0.68rem; line-height:1.2; font-weight:500; }
+      .flag-pill--actie { background: rgba(228,90,43,0.12); color: var(--color-signal-deep); border:1px solid rgba(228,90,43,0.3); }
+      .flag-pill--let-op { background: rgba(199,166,100,0.18); color:#7a5e1f; border:1px solid rgba(199,166,100,0.45); }
+      .flag-pill--info { background: rgba(31,91,130,0.1); color: var(--color-tide); border:1px solid rgba(31,91,130,0.25); }
+
+      .status-chip { display:inline-flex; align-items:center; gap:0.3rem; padding:0.2rem 0.55rem; border-radius:999px; font-size:0.68rem; font-weight:500; letter-spacing:0.02em; }
+      .status-chip--nieuw { background: rgba(228,90,43,0.12); color: var(--color-signal-deep); }
+      .status-chip--bevestigd { background: rgba(63,143,90,0.14); color:#2f7048; }
+      .status-chip--wachtlijst { background: rgba(199,166,100,0.2); color:#7a5e1f; }
+      .status-chip--geannuleerd { background: rgba(90,110,131,0.14); color: var(--color-ink-soft); }
+
+      .insch-row { display:flex; align-items:center; gap:0.85rem; padding:0.7rem 1rem; cursor:pointer; transition:background 0.15s; }
+      .insch-row:hover { background: var(--color-sail-2); }
+      @media (min-width:768px){ .insch-row { padding:0.8rem 1.5rem; } }
+
+      .mini-avatar { width:36px; height:36px; border-radius:999px; display:grid; place-items:center; font-weight:600; font-size:0.8rem; color: var(--color-sail); flex-shrink:0; }
+
+      /* Drawer */
+      .drawer-backdrop { position: fixed; inset: 0; z-index: 80; background: rgba(10,30,51,0.45); backdrop-filter: blur(3px); display:flex; justify-content:flex-end; opacity:0; transition: opacity 0.3s var(--ease-out-quart); }
+      .drawer-backdrop.is-open { opacity: 1; }
+      .drawer { width: min(30rem, 100%); height: 100%; background: var(--color-sail-2); overflow-y: auto; box-shadow: -20px 0 60px -30px rgba(10,30,51,0.5); transform: translateX(100%); transition: transform 0.35s var(--ease-out-quart); }
+      .drawer-backdrop.is-open .drawer { transform: translateX(0); }
+
+      .modal-card--mail { max-width: 36rem; }
+
+      .bz-row { display:flex; align-items:center; gap:0.7rem; padding:0.55rem 0; }
+      .cap-step { width:26px; height:26px; border-radius:7px; border:1px solid var(--color-line); background: var(--color-sail-2); color: var(--color-ink); display:grid; place-items:center; cursor:pointer; font-size:0.9rem; line-height:1; }
+      .cap-step:hover { border-color: var(--color-ink); }
+
+      .kpi { border-radius: 14px; background: var(--color-sail); border:1px solid var(--color-line); padding: 0.85rem 0.95rem; }
+      .kpi__label { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.13em; color: var(--color-ink-soft); display:flex; align-items:center; gap:0.35rem; }
+      .kpi__value { font-family: var(--font-display); font-size: clamp(1.5rem, 5vw, 2rem); line-height:1; margin-top:0.35rem; font-variant-numeric: tabular-nums; }
+      .kpi__sub { font-size:0.68rem; color: var(--color-ink-soft); margin-top:0.3rem; }
+    </style>
+
+    <script>
+      import {
+        seed, totals, getRegistrations, getBookings, klasState, flagsFor,
+        setRegStatus, moveRegistration, deleteRegistration, toggleClosed, setCapacity,
+        simulateRush, resetAll, resetOverrides, onChange,
+        type Registration,
+      } from "../data/store";
+      import {
+        boats, boatByKey, klassen, klasById, weeks, weekById, stays, rentals,
+        formatDateRange, diplomaLabel, verblijfShort, verblijfLabels, ageFromBirthdate,
+      } from "../data/domain";
+
+      seed();
+
+      // ─── helpers ──────────────────────────────────────────────────────────
+      const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector<T>(s);
+      const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll<T>(s));
+      const esc = (s: string) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+
+      const boatColors: Record<string, string> = { optimist: "#1F5B82", pico: "#E45A2B", bahia: "#3F8F5A", valk: "#C7A664", allround: "#143A5C" };
+      const avatarColor = (r: Registration) => boatColors[klasById(r.klasId)?.boat ?? ""] ?? "#0A1E33";
+      const initials = (r: Registration) => (r.voornaam[0] ?? "") + (r.achternaam[0] ?? "");
+
+      const fmtDateTime = (ts: number) => new Date(ts).toLocaleString("nl-NL", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+      const fmtDate = (iso: string) => new Date(iso).toLocaleDateString("nl-NL", { day: "2-digit", month: "short", year: "numeric" });
+
+      const klasLabel = (klasId: string) => {
+        const k = klasById(klasId); if (!k) return klasId;
+        const w = weekById(k.weekId); const b = boatByKey(k.boat);
+        return `${b?.label} · ${w?.label}`;
+      };
+      const klasDates = (klasId: string) => {
+        const k = klasById(klasId); const w = k ? weekById(k.weekId) : undefined;
+        return w ? formatDateRange(w.startDate, w.endDate) : "";
+      };
+      const regAge = (r: Registration) => {
+        const k = klasById(r.klasId); const w = k ? weekById(k.weekId) : undefined;
+        return ageFromBirthdate(r.birthdate, w?.startDate);
+      };
+
+      const statusChip = (s: string) => `<span class="status-chip status-chip--${s}">${s[0].toUpperCase() + s.slice(1)}</span>`;
+      const flagPills = (r: Registration) => flagsFor(r).map((f) => `<span class="flag-pill flag-pill--${f.severity}">${esc(f.message)}</span>`).join(" ");
+      const hasActieFlag = (r: Registration) => flagsFor(r).some((f) => f.severity === "actie");
+
+      // verplaats-doel (nextUp in dezelfde week), bv. Optimist → Pico
+      const nextKlasFor = (r: Registration): string | null => {
+        const k = klasById(r.klasId); const b = k ? boatByKey(k.boat) : undefined;
+        if (!k || !b?.nextUp) return null;
+        const target = `${k.weekId}-${b.nextUp}`;
+        return klasById(target) ? target : null;
+      };
+
+      // ─── KPI's ────────────────────────────────────────────────────────────
+      const renderKPIs = () => {
+        const t = totals();
+        const items = [
+          { label: "Inschrijvingen", icon: "users", value: t.inschrijvingen, sub: `${t.bevestigd} bevestigd · ${t.nieuw} nieuw` },
+          { label: "Te verwerken", icon: "clock", value: t.nieuw, sub: `${t.flagsActie} met een signaal` },
+          { label: "Bezetting", icon: "layers", value: `${t.bezettingPct}%`, sub: `${t.bezet} van ${t.capaciteit} plekken` },
+          { label: "Wachtlijst", icon: "alert", value: t.wachtlijst, sub: t.wachtlijst ? "wacht op een vrije plek" : "niemand wacht" },
+        ];
+        $("[data-kpis]")!.innerHTML = items.map((k) => `
+          <div class="kpi">
+            <div class="kpi__label">${k.label}</div>
+            <div class="kpi__value">${k.value}</div>
+            <div class="kpi__sub">${k.sub}</div>
+          </div>`).join("");
+        const tc = $("[data-tabcount-insch]")!; tc.textContent = String(t.nieuw || "");
+      };
+
+      // ─── Te verwerken (queue) ───────────────────────────────────────────────
+      const renderQueue = () => {
+        const regs = getRegistrations().filter((r) => r.status === "nieuw").sort((a, b) => b.ts - a.ts);
+        $("[data-queue-count]")!.textContent = String(regs.length);
+        const wrap = $("[data-queue]")!;
+        if (!regs.length) {
+          wrap.innerHTML = `<div class="px-4 md:px-6 py-10 text-center text-sm text-(--color-ink-soft)">Niets te doen. Alles is verwerkt.</div>`;
+          return;
+        }
+        wrap.innerHTML = regs.map((r) => {
+          const flags = flagsFor(r);
+          const nk = nextKlasFor(r);
+          const showMove = nk && hasActieFlag(r);
+          return `
+          <div class="px-4 md:px-6 py-3.5">
+            <div class="flex items-start gap-3">
+              <div class="mini-avatar" style="background:${avatarColor(r)}">${esc(initials(r))}</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-medium">${esc(r.voornaam)} ${esc(r.achternaam)}</span>
+                  <span class="text-xs text-(--color-ink-soft) tabular">${regAge(r)} jr · ${esc(verblijfShort[r.verblijf])}</span>
+                  ${r.returning ? '<span class="chip bg-(--color-rope)/20 text-[#7a5e1f] text-[0.6rem]">terugkerend</span>' : ""}
+                </div>
+                <div class="text-xs text-(--color-ink-soft) mt-0.5">${esc(klasLabel(r.klasId))} · ${fmtDateTime(r.ts)}</div>
+                ${flags.length ? `<div class="flex flex-wrap gap-1.5 mt-2">${flags.map((f) => `<span class="flag-pill flag-pill--${f.severity}">${esc(f.message)}</span>`).join("")}</div>` : ""}
+                <div class="flex flex-wrap items-center gap-1.5 mt-2.5">
+                  <button class="btn-signal text-[0.72rem] py-1.5 px-3" data-act="bevestig" data-id="${r.id}">Bevestig</button>
+                  ${showMove ? `<button class="btn-ghost text-[0.72rem] py-1.5 px-3" data-act="verplaats" data-id="${r.id}" data-target="${nk}">Verplaats naar ${esc(boatByKey(klasById(nk!)!.boat)!.label)}</button>` : ""}
+                  <button class="btn-ghost text-[0.72rem] py-1.5 px-3" data-act="mail" data-id="${r.id}">Persoonlijke mail</button>
+                  <button class="text-[0.72rem] text-(--color-ink-soft) hover:text-(--color-signal) underline underline-offset-4 ml-1" data-act="open" data-id="${r.id}">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        }).join("");
+      };
+
+      // ─── Inschrijvingen-tabel ────────────────────────────────────────────────
+      const filters = { search: "", status: "", boot: "", flagsOnly: false };
+
+      const populateBootFilter = () => {
+        const sel = $("[data-filter-boot]") as HTMLSelectElement;
+        sel.innerHTML = `<option value="">Alle boten</option>` + boats.map((b) => `<option value="${b.key}">${b.label}</option>`).join("");
+      };
+
+      const matchesFilter = (r: Registration): boolean => {
+        if (filters.status && r.status !== filters.status) return false;
+        if (filters.boot && klasById(r.klasId)?.boat !== filters.boot) return false;
+        if (filters.flagsOnly && flagsFor(r).length === 0) return false;
+        if (filters.search) {
+          const q = filters.search.toLowerCase();
+          const hay = `${r.voornaam} ${r.achternaam} ${r.plaats} ${r.ref} ${r.ouderNaam} ${klasLabel(r.klasId)}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      };
+
+      const renderInschrijvingen = () => {
+        const all = getRegistrations().sort((a, b) => b.ts - a.ts);
+        const list = all.filter(matchesFilter);
+        const wrap = $("[data-insch-list]")!;
+        if (!list.length) {
+          wrap.innerHTML = `<div class="px-4 md:px-6 py-10 text-center text-sm text-(--color-ink-soft)">Geen inschrijvingen die hieraan voldoen.</div>`;
+        } else {
+          wrap.innerHTML = list.map((r) => {
+            const flags = flagsFor(r);
+            return `
+            <div class="insch-row" data-act="open" data-id="${r.id}">
+              <div class="mini-avatar" style="background:${avatarColor(r)}">${esc(initials(r))}</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-medium truncate">${esc(r.voornaam)} ${esc(r.achternaam)}</span>
+                  ${flags.some((f) => f.severity === "actie") ? '<span class="flag-pill flag-pill--actie shrink-0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span>' : flags.length ? `<span class="text-(--color-ink-soft) shrink-0" title="${flags.length} signaal">•</span>` : ""}
+                </div>
+                <div class="text-xs text-(--color-ink-soft) truncate">${esc(klasLabel(r.klasId))} · ${regAge(r)} jr · ${esc(verblijfShort[r.verblijf])}</div>
+              </div>
+              <div class="hidden sm:block text-xs text-(--color-ink-soft) tabular shrink-0">${r.ref}</div>
+              <div class="shrink-0">${statusChip(r.status)}</div>
+              <span class="text-(--color-ink-soft) shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+            </div>`;
+          }).join("");
+        }
+        $("[data-insch-meta]")!.textContent = `${list.length} van ${all.length} inschrijvingen`;
+      };
+
+      // ─── Bezetting-matrix ─────────────────────────────────────────────────────
+      const renderBezetting = () => {
+        const wrap = $("[data-bezetting]")!;
+        wrap.innerHTML = weeks.map((w) => {
+          const rows = w.boats.map((boatKey) => {
+            const klasId = `${w.id}-${boatKey}`;
+            const st = klasState(klasId);
+            const b = boatByKey(boatKey)!;
+            const barClass = st.closed || st.full ? "is-full" : st.remaining <= 2 ? "is-low" : "";
+            return `
+            <div class="bz-row" data-klas="${klasId}">
+              <div class="w-20 shrink-0 text-sm font-medium">${b.label}</div>
+              <div class="flex-1 min-w-0">
+                <div class="avail-bar ${barClass}"><div class="avail-bar__fill" style="width:${st.closed ? 100 : st.pct}%"></div></div>
+              </div>
+              <div class="w-14 shrink-0 text-right text-xs tabular ${st.closed ? "text-(--color-ink-soft)" : ""}">${st.closed ? "dicht" : `${st.booked}/${st.capacity}`}</div>
+              <div class="flex items-center gap-1 shrink-0">
+                <button class="cap-step" data-act="cap-" data-klas="${klasId}" aria-label="Capaciteit −">−</button>
+                <button class="cap-step" data-act="cap+" data-klas="${klasId}" aria-label="Capaciteit +">+</button>
+              </div>
+              <div class="toggle ${st.closed ? "" : "is-on"}" data-act="toggle" data-klas="${klasId}" role="switch" aria-checked="${!st.closed}" title="${st.closed ? "Gesloten" : "Open"}"><span class="toggle__dot"></span></div>
+            </div>`;
+          }).join("");
+          const wk = weekById(w.id)!;
+          const wState = w.boats.map((bk) => klasState(`${w.id}-${bk}`));
+          const totWait = wState.reduce((a, s) => a + s.waitlist, 0);
+          return `
+          <div class="rounded-(--radius-card) bg-(--color-sail) border border-(--color-line) p-4 md:p-5">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <div>
+                <div class="font-display text-lg leading-tight">${w.label}</div>
+                <div class="text-xs text-(--color-ink-soft) tabular">${formatDateRange(wk.startDate, wk.endDate)}</div>
+              </div>
+              ${totWait ? `<span class="chip bg-(--color-rope)/20 text-[#7a5e1f] text-[0.62rem]">${totWait} op wachtlijst</span>` : ""}
+            </div>
+            ${rows}
+          </div>`;
+        }).join("");
+      };
+
+      // ─── Verhuur ───────────────────────────────────────────────────────────────
+      const renderVerhuur = () => {
+        const bookings = getBookings();
+        const unitsWrap = $("[data-verhuur-units]")!;
+        const stayCards = stays.map((s) => {
+          const used = bookings.filter((b) => b.kind === "verblijf" && b.productKey === s.key && b.status !== "geannuleerd").length;
+          return `<div class="kpi"><div class="kpi__label">${s.label}</div><div class="kpi__value">${used}<span class="text-base text-(--color-ink-soft)">/${s.units}</span></div><div class="kpi__sub">${used >= s.units ? "vol bezet" : `${s.units - used} vrij`}</div></div>`;
+        }).join("");
+        unitsWrap.innerHTML = stayCards;
+
+        const wrap = $("[data-verhuur-list]")!;
+        if (!bookings.length) { wrap.innerHTML = `<div class="px-4 md:px-6 py-10 text-center text-sm text-(--color-ink-soft)">Nog geen boekingen.</div>`; return; }
+        const kindIcon: Record<string, string> = { verblijf: "home", boot: "anchor", groep: "users" };
+        wrap.innerHTML = bookings.slice().sort((a, b) => b.ts - a.ts).map((b) => `
+          <div class="px-4 md:px-6 py-3.5 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-(--color-ink)/5 grid place-items-center text-(--color-ink-soft) shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${kindIcon[b.kind] === "anchor" ? '<circle cx="12" cy="5" r="3"/><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/>' : kindIcon[b.kind] === "users" ? '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>' : '<path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/>'}</svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-medium truncate">${esc(b.productLabel)} <span class="text-(--color-ink-soft) font-normal">· ${esc(b.naam)}</span></div>
+              <div class="text-xs text-(--color-ink-soft) tabular">${fmtDate(b.date)} · ${b.qty} ${esc(b.qtyUnit)} · ${b.ref}</div>
+            </div>
+            <div class="shrink-0">${statusChip(b.status)}</div>
+          </div>`).join("");
+      };
+
+      // ─── Drawer (detail) ──────────────────────────────────────────────────────
+      const drawerBackdrop = $("[data-drawer-backdrop]")!;
+      const drawerBody = $("[data-drawer-body]")!;
+      let drawerId: string | null = null;
+
+      const openDrawer = (id: string) => {
+        const r = getRegistrations().find((x) => x.id === id);
+        if (!r) return;
+        drawerId = id;
+        const k = klasById(r.klasId)!; const b = boatByKey(k.boat)!;
+        const flags = flagsFor(r);
+        const nk = nextKlasFor(r);
+        const detail = (label: string, val: string) => `<div class="flex justify-between gap-3 py-2 border-b border-(--color-line) text-sm"><span class="text-(--color-ink-soft)">${label}</span><span class="font-medium text-right">${esc(val)}</span></div>`;
+        drawerBody.innerHTML = `
+          <div class="sticky top-0 bg-(--color-ink) text-(--color-sail) px-5 py-4 flex items-start justify-between gap-3 z-10">
+            <div>
+              <div class="font-display text-xl leading-tight">${esc(r.voornaam)} ${esc(r.achternaam)}</div>
+              <div class="text-xs text-(--color-foam)/80 mt-0.5">${esc(r.ref)} · ${statusChip(r.status)}</div>
+            </div>
+            <button data-act="drawer-close" class="w-9 h-9 rounded-full grid place-items-center text-(--color-foam) hover:bg-white/10 transition" aria-label="Sluit"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12"/><path d="m18 6-12 12"/></svg></button>
+          </div>
+          <div class="p-5 space-y-4">
+            ${flags.length ? `<div class="space-y-1.5">${flags.map((f) => `<div class="flag-pill flag-pill--${f.severity} !flex w-full !justify-start text-left py-1.5">${esc(f.message)}</div>`).join("")}</div>` : `<div class="text-sm text-(--color-ink-soft) flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3F8F5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Geen signalen, ziet er goed uit.</div>`}
+
+            <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-4">
+              ${detail("Boot &amp; week", `${b.label} · ${weekById(k.weekId)!.label}`)}
+              ${detail("Periode", klasDates(r.klasId))}
+              ${detail("Leeftijd", `${regAge(r)} jaar`)}
+              ${detail("Lengte / gewicht", `${r.lengthCm} cm · ${r.weightKg} kg`)}
+              ${detail("Meedoen", verblijfLabels[r.verblijf])}
+              ${detail("Behaald diploma", diplomaLabel(r.huidigDiploma))}
+              ${detail("Gaat voor", diplomaLabel(r.doelDiploma))}
+            </div>
+
+            <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-4">
+              ${detail("Ouder / verzorger", r.ouderNaam || "—")}
+              ${detail("E-mail", r.email || "—")}
+              ${detail("Telefoon", r.telefoon || "—")}
+              ${detail("Woonplaats", r.plaats || "—")}
+            </div>
+
+            ${(r.dieet || r.medicijnen || r.kamergenoot || r.komtAlleen) ? `
+            <div class="rounded-xl bg-(--color-sail) border border-(--color-line) px-4">
+              ${r.dieet ? detail("Dieet/allergie", r.dieet) : ""}
+              ${r.medicijnen ? detail("Medicijnen", r.medicijnen) : ""}
+              ${r.kamergenoot ? detail("Kamergenoot", r.kamergenoot) : ""}
+              ${r.komtAlleen ? detail("Komt alleen", "ja, kent hier nog niemand") : ""}
+            </div>` : ""}
+
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              ${r.status !== "bevestigd" ? `<button class="btn-signal text-xs justify-center" data-act="bevestig" data-id="${r.id}">Bevestig plek</button>` : `<button class="btn-ghost text-xs justify-center" data-act="wachtlijst" data-id="${r.id}">Naar wachtlijst</button>`}
+              <button class="btn-primary text-xs justify-center" data-act="mail" data-id="${r.id}">Persoonlijke mail</button>
+              ${nk ? `<button class="btn-ghost text-xs justify-center" data-act="verplaats" data-id="${r.id}" data-target="${nk}">Verplaats → ${esc(boatByKey(klasById(nk)!.boat)!.label)}</button>` : ""}
+              <button class="btn-ghost text-xs justify-center !border-(--color-signal)/40 !text-(--color-signal)" data-act="annuleer" data-id="${r.id}">Annuleren</button>
+            </div>
+            <div class="text-[0.7rem] text-(--color-ink-soft) text-center pt-1">Binnengekomen ${fmtDateTime(r.ts)}</div>
+          </div>`;
+        drawerBackdrop.hidden = false;
+        requestAnimationFrame(() => drawerBackdrop.classList.add("is-open"));
+        document.body.style.overflow = "hidden";
+      };
+      const closeDrawer = () => {
+        drawerBackdrop.classList.remove("is-open");
+        document.body.style.overflow = "";
+        drawerId = null;
+        setTimeout(() => { drawerBackdrop.hidden = true; }, 320);
+      };
+      drawerBackdrop.addEventListener("click", (e) => { if (e.target === drawerBackdrop) closeDrawer(); });
+
+      // ─── Mail-concept ─────────────────────────────────────────────────────────
+      const mailModal = $("[data-mail-modal]")!;
+      const buildMail = (r: Registration) => {
+        const k = klasById(r.klasId)!; const b = boatByKey(k.boat)!; const w = weekById(k.weekId)!;
+        const st = klasState(r.klasId);
+        const groet = r.returning ? `Wat leuk dat ${r.voornaam} er weer bij is` : `Wat leuk dat ${r.voornaam} zich heeft aangemeld`;
+        const flags = flagsFor(r);
+        const tallFlag = flags.find((f) => f.severity === "actie");
+        const nk = nextKlasFor(r);
+        const adviesregel = tallFlag && nk
+          ? `\n\nEén ding: qua lengte zit ${r.voornaam} zo'n beetje op het randje voor de ${b.label}. Ik denk dat de ${boatByKey(klasById(nk)!.boat)!.label} eigenlijk fijner vaart. Zullen we dat zo doen? Laat maar weten, anders houd ik 'm gewoon in de ${b.label}.`
+          : "";
+        const wachtregel = (r.status === "wachtlijst" || st.full)
+          ? `\n\nDe ${b.label} in ${w.label} zit op dit moment vol, dus ik heb ${r.voornaam} op de wachtlijst gezet. Zodra er een plek vrijkomt ben jij als eerste aan de beurt; ik bel of mail je dan meteen.`
+          : `\n\nIk heb de plek voor ${r.voornaam} vastgelegd. Je hoeft verder niets te doen; vlak voor de week stuur ik nog een mailtje met de praktische dingen.`;
+        const intern = r.verblijf === "intern" ? ` ${r.voornaam} slaapt die week bij ons op het terrein, daar zorgen we goed voor.` : "";
+        const subject = `Je aanmelding voor ${b.label} · ${w.label}`;
+        const body = `Hallo ${r.ouderNaam.split(" ")[0] || "daar"},
+
+${groet} voor de ${b.label} in ${w.label} (${formatDateRange(w.startDate, w.endDate)}).${intern}${wachtregel}${adviesregel}
+
+Heb je nog vragen, bel gerust even. Tot in ${w.kind === "weekend" ? "het weekend" : "de zomer"}!
+
+Hartelijke groet,
+Karen
+Zeilschool Het Veerse Gat · 0118 - 501 398`;
+        return { to: r.email, subject, body };
+      };
+      const openMail = (id: string) => {
+        const r = getRegistrations().find((x) => x.id === id); if (!r) return;
+        const m = buildMail(r);
+        $("[data-mail-to]")!.textContent = m.to;
+        $("[data-mail-subject]")!.textContent = m.subject;
+        ($("[data-mail-body]") as HTMLTextAreaElement).value = m.body;
+        mailModal.hidden = false;
+        requestAnimationFrame(() => mailModal.classList.add("is-open"));
+        document.body.style.overflow = "hidden";
+      };
+      const closeMail = () => {
+        mailModal.classList.remove("is-open");
+        if (!drawerBackdrop.classList.contains("is-open")) document.body.style.overflow = "";
+        setTimeout(() => { mailModal.hidden = true; }, 280);
+      };
+      $("[data-mail-close]")!.addEventListener("click", closeMail);
+      mailModal.addEventListener("click", (e) => { if (e.target === mailModal) closeMail(); });
+      $("[data-mail-copy]")!.addEventListener("click", async () => {
+        const text = ($("[data-mail-body]") as HTMLTextAreaElement).value;
+        try { await navigator.clipboard.writeText(text); } catch {}
+        $("[data-mail-copy-label]")!.textContent = "Gekopieerd!";
+        setTimeout(() => { $("[data-mail-copy-label]")!.textContent = "Kopieer tekst"; }, 1800);
+      });
+
+      // ─── Acties (event-delegatie) ───────────────────────────────────────────
+      document.addEventListener("click", (e) => {
+        const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-act]");
+        if (!btn) return;
+        const act = btn.dataset.act!;
+        const id = btn.dataset.id;
+        if (act === "drawer-close") return closeDrawer();
+        if (act === "open" && id) return openDrawer(id);
+        if (act === "mail" && id) return openMail(id);
+        if (act === "bevestig" && id) { setRegStatus(id, "bevestigd"); showToast("Plek bevestigd"); if (drawerId === id) closeDrawer(); return; }
+        if (act === "wachtlijst" && id) { setRegStatus(id, "wachtlijst"); showToast("Op de wachtlijst gezet"); if (drawerId === id) closeDrawer(); return; }
+        if (act === "annuleer" && id) { if (confirm("Inschrijving annuleren?")) { setRegStatus(id, "geannuleerd"); showToast("Geannuleerd"); if (drawerId === id) closeDrawer(); } return; }
+        if (act === "verplaats" && id && btn.dataset.target) {
+          const tgt = btn.dataset.target;
+          moveRegistration(id, tgt);
+          showToast(`Verplaatst naar ${boatByKey(klasById(tgt)!.boat)!.label}`);
+          if (drawerId === id) openDrawer(id);
+          return;
+        }
+        if (act === "toggle" && btn.dataset.klas) { toggleClosed(btn.dataset.klas); return; }
+        if (act === "cap+" && btn.dataset.klas) { const st = klasState(btn.dataset.klas); setCapacity(btn.dataset.klas, st.capacity + 1); return; }
+        if (act === "cap-" && btn.dataset.klas) { const st = klasState(btn.dataset.klas); setCapacity(btn.dataset.klas, Math.max(st.booked, st.capacity - 1)); return; }
+      });
+
+      // ─── Tabs ─────────────────────────────────────────────────────────────────
+      let activeTab = "vandaag";
+      const tabs = $$<HTMLButtonElement>("[data-tab]");
+      const panels = $$<HTMLElement>("[data-panel]");
+      const showTab = (key: string) => {
+        activeTab = key;
+        tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === key));
+        panels.forEach((p) => { p.hidden = p.dataset.panel !== key; });
+        renderActive();
+      };
+      tabs.forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab!)));
+
+      // ─── Filters ────────────────────────────────────────────────────────────────
+      ($("[data-filter-search]") as HTMLInputElement).addEventListener("input", (e) => { filters.search = (e.target as HTMLInputElement).value; renderInschrijvingen(); });
+      ($("[data-filter-status]") as HTMLSelectElement).addEventListener("change", (e) => { filters.status = (e.target as HTMLSelectElement).value; renderInschrijvingen(); });
+      ($("[data-filter-boot]") as HTMLSelectElement).addEventListener("change", (e) => { filters.boot = (e.target as HTMLSelectElement).value; renderInschrijvingen(); });
+      ($("[data-filter-flags]") as HTMLInputElement).addEventListener("change", (e) => { filters.flagsOnly = (e.target as HTMLInputElement).checked; renderInschrijvingen(); });
+
+      // ─── CSV-export ───────────────────────────────────────────────────────────────
+      $("[data-export-csv]")!.addEventListener("click", () => {
+        const regs = getRegistrations().filter(matchesFilter);
+        const cols = ["Kenmerk", "Status", "Voornaam", "Achternaam", "Leeftijd", "Lengte (cm)", "Gewicht (kg)", "Boot", "Week", "Periode", "Meedoen", "Behaald", "Doel", "Ouder", "E-mail", "Telefoon", "Plaats", "Dieet", "Medicijnen", "Kamergenoot", "Komt alleen", "Signalen"];
+        const rows = regs.map((r) => {
+          const k = klasById(r.klasId)!;
+          return [r.ref, r.status, r.voornaam, r.achternaam, regAge(r), r.lengthCm, r.weightKg, boatByKey(k.boat)!.label, weekById(k.weekId)!.label, klasDates(r.klasId), verblijfShort[r.verblijf], diplomaLabel(r.huidigDiploma), diplomaLabel(r.doelDiploma), r.ouderNaam, r.email, r.telefoon, r.plaats, r.dieet, r.medicijnen, r.kamergenoot, r.komtAlleen ? "ja" : "", flagsFor(r).map((f) => f.message).join(" | ")];
+        });
+        const csvCell = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+        const csv = "﻿" + [cols, ...rows].map((row) => row.map(csvCell).join(";")).join("\r\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = `inschrijvingen-veerse-gat.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(`${regs.length} inschrijvingen geëxporteerd`);
+      });
+
+      // ─── Piek-simulatie ─────────────────────────────────────────────────────────
+      let rushing = false;
+      $("[data-sim-rush]")!.addEventListener("click", () => {
+        if (rushing) return;
+        rushing = true;
+        showTab("vandaag");
+        const statusEl = $("[data-sim-status]")!;
+        let total = 0;
+        const target = 28 + Math.floor(Math.random() * 10);
+        const tick = () => {
+          const added = simulateRush(2 + Math.floor(Math.random() * 3));
+          total += added;
+          statusEl.textContent = `${total} inschrijvingen binnengekomen…`;
+          if (total < target) {
+            setTimeout(tick, 180 + Math.random() * 220);
+          } else {
+            statusEl.textContent = `${total} inschrijvingen verwerkt. Bekijk de wachtrij hieronder.`;
+            rushing = false;
+          }
+        };
+        tick();
+      });
+
+      // ─── Reset / reseed ─────────────────────────────────────────────────────────
+      $$("[data-reset]").forEach((btn) => btn.addEventListener("click", () => {
+        const what = (btn as HTMLElement).dataset.reset!;
+        if (what === "overrides") { if (confirm("Bezettings-aanpassingen terugzetten?")) { resetOverrides(); showToast("Aanpassingen teruggezet"); } return; }
+        if (what === "all") { if (confirm("Alle demo-data wissen?")) { resetAll(); seed(true); showToast("Alles gereset"); } return; }
+      }));
+      $("[data-reseed]")!.addEventListener("click", () => { if (confirm("Demo-data opnieuw vullen?")) { resetAll(); seed(true); showToast("Demo-data ververst"); } });
+
+      // ─── Render-dispatcher ────────────────────────────────────────────────────────
+      const renderActive = () => {
+        renderKPIs();
+        if (activeTab === "vandaag") renderQueue();
+        else if (activeTab === "inschrijvingen") renderInschrijvingen();
+        else if (activeTab === "bezetting") renderBezetting();
+        else if (activeTab === "verhuur") renderVerhuur();
+      };
+
+      populateBootFilter();
+      renderActive();
+      onChange(() => { renderActive(); if (drawerId) { /* drawer blijft, herrender niet nodig */ } });
+
+      // ─── Toast ────────────────────────────────────────────────────────────────────
+      const toast = $("[data-toast]"); const toastMsg = $("[data-toast-msg]");
+      let toastTimer: number | undefined;
+      function showToast(msg: string) {
+        if (!toast || !toastMsg) return;
+        toastMsg.textContent = msg;
+        toast.classList.add("is-visible");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2400);
+      }
+    </script>
+  </body>
+</html>

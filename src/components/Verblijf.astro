@@ -1,22 +1,12 @@
 ---
 import Icon from "./Icon.astro";
+import { stays } from "../data/domain";
 
-const stays = [
-  {
-    type: "Trekkershut",
-    title: "Drie trekkershutten",
-    body: "Eenvoudige houten hutten op het terrein, max 6 personen, met gedeelde sanitair-units. Ideaal voor families die de jeugdweek combineren met een korte vakantie.",
-    specs: ["6 personen", "Gedeeld sanitair", "Vanaf € 65 / nacht"],
-    accent: "var(--color-tide)",
-  },
-  {
-    type: "Appartement",
-    title: "Het zeilappartement",
-    body: "Boven de loods, met balkon, eigen keukentje en uitzicht over het meer. Twee slaapkamers, slaapt vier personen comfortabel.",
-    specs: ["4 personen", "Eigen sanitair", "Vanaf € 145 / nacht"],
-    accent: "var(--color-signal)",
-  },
-];
+const unitLabel: Record<string, string> = {
+  nacht: "per nacht",
+  "2 nachten": "per 2 nachten",
+  week: "per week",
+};
 ---
 
 <section id="verblijf" class="container-vg py-16 md:py-28 scroll-mt-20">
@@ -27,35 +17,64 @@ const stays = [
         Blijf <span class="italic">slapen</span>, en hoor 's ochtends de eerste touw-tikken.
       </h2>
       <p class="text-(--color-ink-soft) max-w-xl leading-relaxed">
-        Geen luxe-resort. Wel een terrein waar je 's ochtends bij het ontbijt al ziet hoe de wind staat, en waar de kinderen na de cursus zo het water weer in lopen.
+        Geen luxe-resort, dat hoeft ook niet. Wel een terrein waar je bij het ontbijt al ziet hoe de wind staat. Van een eenvoudige trekkershut tot een geïsoleerd huisje met eigen badkamer: kies wat past.
       </p>
+    </div>
+    <div class="lg:col-span-5 lg:text-right text-sm text-(--color-ink-soft) leading-relaxed">
+      Boek je een huisje én een bootje? Dan zetten we dat in één keer goed, geen los formulier.
     </div>
   </div>
 
-  <div class="grid md:grid-cols-2 gap-5">
+  <!-- Keuken-band: vers koken voor het hele kamp -->
+  <div class="relative rounded-(--radius-card) overflow-hidden mb-4 md:mb-5 group" data-reveal>
+    <img src="/photos/keuken.jpg" alt="De keuken waar vers voor het hele kamp wordt gekookt" loading="lazy" class="w-full h-56 md:h-72 object-cover object-center group-hover:scale-[1.03] transition-transform duration-[1.4s]" />
+    <div class="absolute inset-0" style="background: linear-gradient(90deg, rgba(10,30,51,0.72) 0%, rgba(10,30,51,0.35) 50%, rgba(10,30,51,0.15) 100%);"></div>
+    <div class="absolute inset-0 flex items-center">
+      <div class="px-5 md:px-10 max-w-md text-(--color-sail)">
+        <div class="eyebrow text-(--color-foam)">Aan tafel</div>
+        <h3 class="font-display text-xl md:text-2xl leading-tight mt-1">'s Zomers koken we vers, voor zestig tot tachtig man, drie keer per dag.</h3>
+        <p class="text-sm text-(--color-foam) mt-2 leading-relaxed">Huur je de boot of de kantine, dan hoort de keuken erbij. Alles wordt vers gesneden; geen groothandel.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-4 md:gap-5">
     {stays.map((s) => (
       <article class="surface-paper rounded-(--radius-card) overflow-hidden flex flex-col group hover:border-(--color-ink) transition-colors" data-reveal>
-        <div class="relative h-52 md:h-64 overflow-hidden">
-          {s.type === "Trekkershut" ? (
-            <img src="/photos/zonsondergang.jpg" alt="Trekkershutten aan het Veerse Meer bij zonsondergang" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[80%_center] scale-[1.05] group-hover:scale-110 transition-transform duration-[1.2s]" />
-          ) : (
-            <img src="/photos/water-texture.jpg" alt="Het Veerse Meer" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.2s]" />
-          )}
-          <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,30,51,0) 30%, rgba(10,30,51,0.55) 100%);"></div>
-          <span class="absolute top-4 left-4 chip bg-(--color-sail)/95 text-(--color-ink) backdrop-blur">{s.type}</span>
+        <div class="relative h-48 md:h-52 overflow-hidden">
+          <img src={s.photo} alt={s.label} loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.2s]" />
+          <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,30,51,0) 40%, rgba(10,30,51,0.6) 100%);"></div>
+          <span class="absolute top-3 left-3 chip bg-(--color-sail)/95 text-(--color-ink) backdrop-blur text-[0.66rem]">{s.units}× beschikbaar</span>
+          <div class="absolute bottom-3 left-4 right-4">
+            <div class="font-display text-xl text-(--color-sail) leading-none">{s.label}</div>
+            <div class="text-[0.7rem] text-(--color-foam) mt-1">{s.tagline}</div>
+          </div>
         </div>
-        <div class="p-6 md:p-7 flex flex-col gap-4">
-          <h3 class="font-display text-2xl">{s.title}</h3>
-          <p class="text-(--color-ink-soft) text-[0.95rem] leading-relaxed">{s.body}</p>
-          <ul class="flex flex-wrap gap-2 pt-2">
-            {s.specs.map((spec) => (
-              <li class="chip bg-(--color-sand)/40 text-(--color-ink-soft) border border-(--color-line)">{spec}</li>
+        <div class="p-5 md:p-6 flex flex-col gap-3.5 flex-1">
+          <p class="text-(--color-ink-soft) text-[0.9rem] leading-relaxed">{s.body}</p>
+          <ul class="flex flex-wrap gap-1.5">
+            {s.features.map((f) => (
+              <li class="chip bg-(--color-sand)/40 text-(--color-ink-soft) border border-(--color-line) text-[0.66rem]">{f}</li>
             ))}
           </ul>
-          <a href="#contact" class="mt-2 link-arrow self-start">
-            Beschikbaarheid checken
-            <Icon name="arrow-right" size={14} />
-          </a>
+          <div class="mt-auto pt-4 border-t border-(--color-line) flex items-end justify-between gap-2">
+            <div>
+              <div class="font-display text-xl tabular leading-none">€{s.priceFrom}</div>
+              <div class="text-[0.66rem] text-(--color-ink-soft) mt-1">{unitLabel[s.unit]} · {s.sleeps}</div>
+            </div>
+            <button
+              type="button"
+              class="btn-primary text-xs"
+              data-reserveer
+              data-kind="verblijf"
+              data-key={s.key}
+              data-label={s.label}
+              data-unit={s.unit === "nacht" ? "nachten" : s.unit === "2 nachten" ? "nachten" : "weken"}
+            >
+              Beschikbaarheid
+              <Icon name="arrow-right" size={13} />
+            </button>
+          </div>
         </div>
       </article>
     ))}
